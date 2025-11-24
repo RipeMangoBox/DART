@@ -5,13 +5,13 @@ Train a diffusion model on images.
 
 import os
 import json
-from utils.fixseed import fixseed
-from utils.parser_util import train_args
+from utilss.fixseed import fixseed
+from utilss.parser_util import train_args
 from utils import dist_util
-from utils.training_loop import TrainLoop
+from utilss.training_loop import TrainLoop
 from data_loaders.get_data import get_dataset_loader
-from utils.model_util import create_model_and_diffusion
-from utils.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform, WandbPlatform  # required for the eval operation
+from utilss.model_util import create_model_and_diffusion
+from utilss.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform, WandbPlatform  # required for the eval operation
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"  
 
 

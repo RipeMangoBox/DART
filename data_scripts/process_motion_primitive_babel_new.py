@@ -30,7 +30,7 @@ import hydra
 from pytorch3d import transforms
 
 from config_files.data_paths import *
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 
 
 def have_overlap(seg1, seg2):

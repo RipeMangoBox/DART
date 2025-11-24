@@ -21,7 +21,7 @@ import pickle
 import json
 import copy
 
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 from pytorch3d import transforms
 
 from scipy.spatial.transform import Rotation as R

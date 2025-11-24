@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-from utils.visualize.joints2smpl.src import config
+from utilss.visualize.joints2smpl.src import config
 
 # Guassian
 def gmof(x, sigma):

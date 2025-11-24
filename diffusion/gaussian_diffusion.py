@@ -18,7 +18,7 @@ from copy import deepcopy
 from diffusion.nn import mean_flat, sum_flat
 from diffusion.losses import normal_kl, discretized_gaussian_log_likelihood
 from data_loaders.humanml.scripts import motion_process
-from utils.smpl_utils import get_smplx_param_from_6d
+from utilss.smpl_utils import get_smplx_param_from_6d
 from pytorch3d import transforms
 import torch_dct as dct
 

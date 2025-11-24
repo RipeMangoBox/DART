@@ -11,7 +11,7 @@ from data_loaders.humanml.utils.utils import *
 from os.path import join as pjoin
 from data_loaders.humanml.data.dataset import collate_fn
 import codecs as cs
-from utils.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform  # required for the eval operation
+from utilss.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform  # required for the eval operation
 
 
 class Logger(object):

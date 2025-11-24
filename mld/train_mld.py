@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+
 import pdb
 import random
 import time
@@ -28,7 +30,7 @@ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
 from model.mld_vae import AutoMldVae
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
-from utils.smpl_utils import get_smplx_param_from_6d
+from utilss.smpl_utils import get_smplx_param_from_6d
 from pytorch3d import transforms
 from diffusion import gaussian_diffusion as gd
 from diffusion.respace import SpacedDiffusion, space_timesteps
@@ -107,7 +109,7 @@ class MLDArgs:
 
     track: int = 1
     wandb_project_name: str = "mld_denoiser"
-    wandb_entity: str = "interaction"
+    wandb_entity: str = "MangoBox"
 
 
 def create_gaussian_diffusion(args, enable_ddim=True):

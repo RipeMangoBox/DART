@@ -1,0 +1,23 @@
+"# tyro YAML.\n!dataclass:ReachLocationArgs\nanneal_lr: true\nbatch_size: 8192\nclip_coef:\
+  \ 0.2\nclip_vloss: true\ndenoiser_checkpoint: ./mld_denoiser/mld_fps_clip_euler/checkpoint_300000.pt\n\
+  device: !!python/object/apply:torch.device\n- cuda\nent_coef: 0.0\nenv_args: !dataclass:EnvArgs\n\
+  \  enable_export: 1\n  env_id: reach_location_mld\n  export_interval: 1000\n  goal_angle_delta:\
+  \ 0.0\n  goal_angle_init: 120.0\n  goal_dist_max_clamp: 5.0\n  goal_dist_max_delta:\
+  \ 1.0\n  goal_dist_max_init: 5.0\n  goal_dist_min: 0.5\n  goal_range: 1.0\n  goal_schedule_interval:\
+  \ 50000\n  max_export: 16\n  num_envs: 256\n  num_steps: 32\n  obs_goal_angle_clip:\
+  \ 60.0\n  obs_goal_dist_clip: 5.0\n  smooth_rollout: 0\n  success_threshold: 0.3\n\
+  \  terminate_threshold: 100.0\n  texts: !!python/tuple\n  - walk\n  - run\n  - hop\
+  \ on left leg\n  use_predicted_joints: 1\n  weight_delta: 0.0\n  weight_dist: 1.0\n\
+  \  weight_foot_floor: 100.0\n  weight_jerk: 0.0\n  weight_orient: 0.1\n  weight_rotation:\
+  \ 10.0\n  weight_skate: 100.0\n  weight_skate_delta: 0.0\n  weight_skate_max: 1.0\n\
+  \  weight_skate_rigid: 0.0\n  weight_success: 1.0\nexp_name: fixtext_repeat_floor100_hop10_skate100\n\
+  gae_lambda: 0.95\ngamma: 0.99\nguidance_param: 5.0\ninit_data_path: ./data/stand.pkl\n\
+  learning_rate: 0.0003\nmax_grad_norm: 0.1\nminibatch_size: 1024\nmotion_model_args:\
+  \ null\nnorm_adv: true\nnum_iterations: 24414\nnum_minibatches: 8\npolicy_args:\
+  \ !dataclass:PolicyArgs\n  activation: lrelu\n  architecture: mlp\n  dropout: 0.1\n\
+  \  latent_dim: 512\n  lora_rank: 16\n  max_log_std: 1.0\n  min_log_std: -1.0\n \
+  \ n_blocks: 2\n  pred_std: 0\n  use_lora: 0\n  use_tanh_scale: 1\n  use_zero_init:\
+  \ 1\nrespacing: ddim10\nresume_checkpoint: null\nsave_model: true\nseed: 1\ntarget_kl:\
+  \ null\ntest_goal_path: null\ntorch_deterministic: true\ntotal_timesteps: 200000000\n\
+  track: 1\nupdate_epochs: 10\nvf_coef: 0.5\nwandb_entity: interaction\nwandb_project_name:\
+  \ reach_location\n"

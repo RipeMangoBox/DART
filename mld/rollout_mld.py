@@ -24,8 +24,8 @@ import copy
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
 from model.mld_vae import AutoMldVae
 from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
-from utils.smpl_utils import *
-from utils.misc_util import encode_text, compose_texts_with_and
+from utilss.smpl_utils import *
+from utilss.misc_util import encode_text, compose_texts_with_and
 from pytorch3d import transforms
 from diffusion import gaussian_diffusion as gd
 from diffusion.respace import SpacedDiffusion, space_timesteps

@@ -2,7 +2,7 @@ import pickle
 import json
 from pathlib import Path
 import numpy as np
-from utils.misc_util import *
+from utilss.misc_util import *
 
 dataset_dir = Path('/home/kaizhao/projects/mdm/hml3d_filter')
 with open(dataset_dir / 'test_dataset.pkl', 'rb') as f:

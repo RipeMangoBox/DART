@@ -7,8 +7,8 @@ import random
 from pytorch3d import transforms
 from torch.cuda import amp
 
-from utils.misc_util import encode_text
-from utils.smpl_utils import *
+from utilss.misc_util import encode_text
+from utilss.smpl_utils import *
 
 class EnvReachLocationMLD:
     def __init__(self, input_args, denoiser_args, denoiser_model, vae_args, vae_model, diffusion, dataset):

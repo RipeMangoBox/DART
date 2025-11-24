@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from utils.rotation_conversions import axis_angle_to_matrix, matrix_to_axis_angle, matrix_to_euler_angles
+from utilss.rotation_conversions import axis_angle_to_matrix, matrix_to_axis_angle, matrix_to_euler_angles
 from scipy.spatial.transform import Rotation as R
 
 
@@ -36,7 +36,7 @@ def preprocess_smplh(data, pose_rep):
     # STEP 5: apply transformation to motion rep
     for k in toconcat:
         if pose_rep == "rot6d":
-            from utils.rotation_conversions import axis_angle_to_rotation_6d
+            from utilss.rotation_conversions import axis_angle_to_rotation_6d
             if k == "transl":
                 # pad translation with zeros in 3 channels (no rotational meaning)
                 data[k] = np.concatenate([data[k], np.zeros((data[k].shape[0], 3))], axis=1)[:, np.newaxis, :] # motion -> (n_frames, 1, 3/6)

@@ -1,6 +1,11 @@
 from __future__ import annotations
 
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import random
 import time
 from dataclasses import dataclass, asdict, make_dataclass
@@ -21,11 +26,13 @@ import copy
 from model.mld_vae import AutoMldVae
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
-from utils.smpl_utils import get_smplx_param_from_6d
+from utilss.smpl_utils import get_smplx_param_from_6d
 from pytorch3d import transforms
 from diffusion.nn import mean_flat, sum_flat
 
 debug = 0
+
+
 
 @dataclass
 class VAEArgs:
@@ -128,7 +135,7 @@ class Args:
 
     track: int = 1
     wandb_project_name: str = "mld_vae"
-    wandb_entity: str = "interaction"
+    wandb_entity: str = "MangoBox"
 
 class Trainer:
     def __init__(self, args: Args):

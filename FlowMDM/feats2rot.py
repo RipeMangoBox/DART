@@ -4,7 +4,7 @@ import torch
 import numpy as np
 import pickle
 import json
-from utils.rotation_conversions import matrix_to_axis_angle, rotation_6d_to_matrix
+from utilss.rotation_conversions import matrix_to_axis_angle, rotation_6d_to_matrix
 
 def convert_feat(feat_path):
     config_path = feat_path.parent / feat_path.name.replace('.pt', '_kwargs.json')

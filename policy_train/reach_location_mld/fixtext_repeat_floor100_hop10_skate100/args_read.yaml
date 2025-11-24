@@ -1,0 +1,82 @@
+anneal_lr: true
+batch_size: 8192
+clip_coef: 0.2
+clip_vloss: true
+denoiser_checkpoint: ./mld_denoiser/mld_fps_clip_euler/checkpoint_300000.pt
+device: !!python/object/apply:torch.device
+- cuda
+ent_coef: 0.0
+env_args:
+  enable_export: 1
+  env_id: reach_location_mld
+  export_interval: 1000
+  goal_angle_delta: 0.0
+  goal_angle_init: 120.0
+  goal_dist_max_clamp: 5.0
+  goal_dist_max_delta: 1.0
+  goal_dist_max_init: 5.0
+  goal_dist_min: 0.5
+  goal_range: 1.0
+  goal_schedule_interval: 50000
+  max_export: 16
+  num_envs: 256
+  num_steps: 32
+  obs_goal_angle_clip: 60.0
+  obs_goal_dist_clip: 5.0
+  smooth_rollout: 0
+  success_threshold: 0.3
+  terminate_threshold: 100.0
+  texts: !!python/tuple
+  - walk
+  - run
+  - hop on left leg
+  use_predicted_joints: 1
+  weight_delta: 0.0
+  weight_dist: 1.0
+  weight_foot_floor: 100.0
+  weight_jerk: 0.0
+  weight_orient: 0.1
+  weight_rotation: 10.0
+  weight_skate: 100.0
+  weight_skate_delta: 0.0
+  weight_skate_max: 1.0
+  weight_skate_rigid: 0.0
+  weight_success: 1.0
+exp_name: fixtext_repeat_floor100_hop10_skate100
+gae_lambda: 0.95
+gamma: 0.99
+guidance_param: 5.0
+init_data_path: ./data/stand.pkl
+learning_rate: 0.0003
+max_grad_norm: 0.1
+minibatch_size: 1024
+motion_model_args: null
+norm_adv: true
+num_iterations: 24414
+num_minibatches: 8
+policy_args:
+  activation: lrelu
+  architecture: mlp
+  dropout: 0.1
+  latent_dim: 512
+  lora_rank: 16
+  max_log_std: 1.0
+  min_log_std: -1.0
+  n_blocks: 2
+  pred_std: 0
+  use_lora: 0
+  use_tanh_scale: 1
+  use_zero_init: 1
+respacing: ddim10
+resume_checkpoint: null
+save_model: true
+seed: 1
+target_kl: null
+test_goal_path: null
+torch_deterministic: true
+total_timesteps: 200000000
+track: 1
+update_epochs: 10
+vf_coef: 0.5
+wandb_entity: interaction
+wandb_project_name: reach_location

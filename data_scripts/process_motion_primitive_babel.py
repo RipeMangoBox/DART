@@ -30,7 +30,7 @@ import hydra
 
 
 from config_files.data_paths import *
-from utils.smpl_utils import convert_smpl_aa_to_rotmat
+from utilss.smpl_utils import convert_smpl_aa_to_rotmat
 
 
 def calc_calibrate_offset(body_mesh_model, betas, transl, pose):

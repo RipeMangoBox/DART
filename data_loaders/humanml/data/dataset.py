@@ -1,10 +1,15 @@
 import time
+import sys
+import os
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+# sys.path.insert(0, script_dir)
+# project_root = os.path.dirname(script_dir)  # 如果在子目录中
+# sys.path.insert(0, project_root)
 
 import smplx
 import torch
 from torch.utils import data
 import numpy as np
-import os
 from os.path import join as pjoin
 import random
 import codecs as cs
@@ -22,8 +27,8 @@ import json
 import multiprocessing as mp
 
 from config_files.data_paths import *
-from utils.smpl_utils import *
-from utils.misc_util import have_overlap, get_overlap, load_and_freeze_clip, encode_text, compose_texts_with_and
+from utilss.smpl_utils import *
+from utilss.misc_util import have_overlap, get_overlap, load_and_freeze_clip, encode_text, compose_texts_with_and
 import torch.nn.functional as F
 
 # import spacy

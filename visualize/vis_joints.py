@@ -18,7 +18,7 @@ cNorm = colors.Normalize(vmin=0, vmax=1)
 scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
 
 from config_files.data_paths import *
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 
 
 # https://stackoverflow.com/a/20865751/14532053

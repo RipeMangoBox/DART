@@ -6,7 +6,7 @@ import numpy as np
 import json
 from os.path import join as ospj
 from config_files.data_paths import *
-from utils.misc_util import have_overlap, encode_text, load_and_freeze_clip
+from utilss.misc_util import have_overlap, encode_text, load_and_freeze_clip
 from tqdm import tqdm
 import time
 import smplx

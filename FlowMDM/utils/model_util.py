@@ -1,7 +1,7 @@
 from model.FlowMDM import FlowMDM
 from diffusion import gaussian_diffusion as gd
 from diffusion.respace import SpacedDiffusion, space_timesteps
-from utils.parser_util import get_cond_mode
+from utilss.parser_util import get_cond_mode
 from model.cfg_sampler import wrap_model
 import torch
 

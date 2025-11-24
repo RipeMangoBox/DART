@@ -183,7 +183,7 @@ class CompMDMUnfoldingGeneratedDataset(CompMDMGeneratedDataset):
                         transl = torch.tensor(unfolded["transl"]) # --> [seq_len, 3], translations
 
                         # we need to go from 3x3 matrices to axis angle, and then we got it :)
-                        from utils.rotation_conversions import matrix_to_axis_angle
+                        from utilss.rotation_conversions import matrix_to_axis_angle
                         rots = matrix_to_axis_angle(rots) # --> [seq_len, 22, 3], axis angle
 
                         from data_loaders.amass.tools.smpl import smpl_data_to_matrix_and_trans

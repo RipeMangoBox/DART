@@ -19,7 +19,7 @@ scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
 
 from pyrender.trackball import Trackball
 from config_files.data_paths import *
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 
 
 # https://stackoverflow.com/a/20865751/14532053

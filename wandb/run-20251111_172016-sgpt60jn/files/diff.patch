@@ -1,0 +1,53 @@
+diff --git a/mld/train_mld.py b/mld/train_mld.py
+index bf7cbe0..c5d7c4a 100644
+--- a/mld/train_mld.py
++++ b/mld/train_mld.py
+@@ -1,6 +1,8 @@
+ from __future__ import annotations
+ 
+ import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
++
+ import pdb
+ import random
+ import time
+@@ -107,7 +109,7 @@ class MLDArgs:
+ 
+     track: int = 1
+     wandb_project_name: str = "mld_denoiser"
+-    wandb_entity: str = "interaction"
++    wandb_entity: str = "MangoBox"
+ 
+ 
+ def create_gaussian_diffusion(args, enable_ddim=True):
+diff --git a/mld/train_mvae.py b/mld/train_mvae.py
+index 2457392..3e3006d 100644
+--- a/mld/train_mvae.py
++++ b/mld/train_mvae.py
+@@ -1,6 +1,8 @@
+ from __future__ import annotations
+ 
+ import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
++
+ import random
+ import time
+ from dataclasses import dataclass, asdict, make_dataclass
+@@ -27,6 +29,8 @@ from diffusion.nn import mean_flat, sum_flat
+ 
+ debug = 0
+ 
++
++
+ @dataclass
+ class VAEArgs:
+     arch: str = "all_encoder"
+@@ -128,7 +132,7 @@ class Args:
+ 
+     track: int = 1
+     wandb_project_name: str = "mld_vae"
+-    wandb_entity: str = "interaction"
++    wandb_entity: str = "MangoBox"
+ 
+ class Trainer:
+     def __init__(self, args: Args):

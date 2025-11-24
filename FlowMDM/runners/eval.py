@@ -1,5 +1,5 @@
-from utils.parser_util import evaluation_parser
-from utils.fixseed import fixseed
+from utilss.parser_util import evaluation_parser
+from utilss.fixseed import fixseed
 from datetime import datetime
 from data_loaders.model_motion_loaders import get_mdm_loader
 from data_loaders.humanml.utils.metrics import *
@@ -7,7 +7,7 @@ from data_loaders.humanml.networks.evaluator_wrapper import EvaluatorMDMWrapper
 from collections import OrderedDict
 from data_loaders.humanml.scripts.motion_process import *
 from data_loaders.humanml.utils.utils import *
-from utils.model_util import load_model
+from utilss.model_util import load_model
 
 from diffusion import logger
 from utils import dist_util
@@ -16,7 +16,7 @@ from diffusion.diffusion_wrappers import DiffusionWrapper_FlowMDM as DiffusionWr
 
 torch.multiprocessing.set_sharing_strategy('file_system')
 
-from utils.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
+from utilss.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
 
 
 EVAL_FILES = {

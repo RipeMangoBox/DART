@@ -6,7 +6,7 @@ import numpy as np
 import json
 from os.path import join as ospj
 from config_files.data_paths import *
-from utils.misc_util import have_overlap
+from utilss.misc_util import have_overlap
 from tqdm import tqdm
 
 # AMASS dataset names from website are slightly different from what used in BABEL

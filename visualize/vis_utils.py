@@ -6,7 +6,7 @@ from trimesh import Trimesh
 import os
 import torch
 from visualize.simplify_loc2rot import joints2smpl
-from utils.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
+from utilss.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
 
 class npy2obj:
     def __init__(self, npy_path, sample_idx, rep_idx, device=0, cuda=True):

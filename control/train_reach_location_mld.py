@@ -16,14 +16,14 @@ from torch.distributions.normal import Normal
 from torch.utils.tensorboard import SummaryWriter
 from pathlib import Path
 
-from utils.parser_util import load_args_from_model
-from utils.model_util import create_model_and_diffusion, load_model_wo_clip, load_saved_model
+from utilss.parser_util import load_args_from_model
+from utilss.model_util import create_model_and_diffusion, load_model_wo_clip, load_saved_model
 from utils import dist_util
 from torch.utils.data import DataLoader
 from model.cfg_sampler import ClassifierFreeSampleModel
 from data_loaders.humanml.data.dataset import SinglePrimitiveDataset
-from utils.smpl_utils import *
-from utils.misc_util import encode_text, compose_texts_with_and, dict_to_args
+from utilss.smpl_utils import *
+from utilss.misc_util import encode_text, compose_texts_with_and, dict_to_args
 from pytorch3d import transforms
 from tqdm import tqdm
 

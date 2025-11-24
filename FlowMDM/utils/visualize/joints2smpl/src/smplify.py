@@ -11,7 +11,7 @@ from customloss import (camera_fitting_loss,
                         body_fitting_loss_3d, 
                         )
 from prior import MaxMixturePrior
-from utils.visualize.joints2smpl.src import config
+from utilss.visualize.joints2smpl.src import config
 
 
 

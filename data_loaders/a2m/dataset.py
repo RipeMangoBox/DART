@@ -2,9 +2,9 @@ import random
 
 import numpy as np
 import torch
-# from utils.action_label_to_idx import action_label_to_idx
+# from utilss.action_label_to_idx import action_label_to_idx
 from data_loaders.tensors import collate
-from utils.misc import to_torch
+from utilss.misc import to_torch
 import utils.rotation_conversions as geometry
 
 class Dataset(torch.utils.data.Dataset):

@@ -6,7 +6,7 @@ import pickle
 
 from os.path import join as pjoin
 
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 from pytorch3d import transforms
 
 device = 'cuda'

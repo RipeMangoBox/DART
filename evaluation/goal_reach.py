@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import pickle
 import json
-from utils.smpl_utils import *
+from utilss.smpl_utils import *
 from evaluation.inbetween import get_metric_statistics, calc_skate
 
 debug = 0

@@ -10,7 +10,7 @@ import argparse
 import os
 
 from config_files.data_paths import *
-from utils.smpl_utils import convert_smpl_aa_to_rotmat
+from utilss.smpl_utils import convert_smpl_aa_to_rotmat
 
 # https://stackoverflow.com/a/20865751/14532053
 class _Getch:

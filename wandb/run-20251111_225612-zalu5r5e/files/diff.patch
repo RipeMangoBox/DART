@@ -1,0 +1,3093 @@
+diff --git a/FlowMDM/data_loaders/amass/sampling/base.py b/FlowMDM/data_loaders/amass/sampling/base.py
+index 7667cec..597d441 100644
+--- a/FlowMDM/data_loaders/amass/sampling/base.py
++++ b/FlowMDM/data_loaders/amass/sampling/base.py
+@@ -18,7 +18,7 @@
+ from typing import Optional
+ from dataclasses import dataclass
+ import numpy as np
+-# from utils.parser_util import frame_sampler_parser
++# from utilss.parser_util import frame_sampler_parser
+ 
+ 
+ @dataclass
+diff --git a/FlowMDM/data_loaders/datasets_composition.py b/FlowMDM/data_loaders/datasets_composition.py
+index c15d645..6b90d3c 100644
+--- a/FlowMDM/data_loaders/datasets_composition.py
++++ b/FlowMDM/data_loaders/datasets_composition.py
+@@ -183,7 +183,7 @@ class CompMDMUnfoldingGeneratedDataset(CompMDMGeneratedDataset):
+                         transl = torch.tensor(unfolded["transl"]) # --> [seq_len, 3], translations
+ 
+                         # we need to go from 3x3 matrices to axis angle, and then we got it :)
+-                        from utils.rotation_conversions import matrix_to_axis_angle
++                        from utilss.rotation_conversions import matrix_to_axis_angle
+                         rots = matrix_to_axis_angle(rots) # --> [seq_len, 22, 3], axis angle
+ 
+                         from data_loaders.amass.tools.smpl import smpl_data_to_matrix_and_trans
+diff --git a/FlowMDM/data_loaders/humanml/networks/trainers.py b/FlowMDM/data_loaders/humanml/networks/trainers.py
+index 9d74a8e..53b6804 100644
+--- a/FlowMDM/data_loaders/humanml/networks/trainers.py
++++ b/FlowMDM/data_loaders/humanml/networks/trainers.py
+@@ -11,7 +11,7 @@ from data_loaders.humanml.utils.utils import *
+ from os.path import join as pjoin
+ from data_loaders.humanml.data.dataset import collate_fn
+ import codecs as cs
+-from utils.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform  # required for the eval operation
++from utilss.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform  # required for the eval operation
+ 
+ 
+ class Logger(object):
+diff --git a/FlowMDM/feats2rot.py b/FlowMDM/feats2rot.py
+index 2135b9b..4abeb27 100644
+--- a/FlowMDM/feats2rot.py
++++ b/FlowMDM/feats2rot.py
+@@ -4,7 +4,7 @@ import torch
+ import numpy as np
+ import pickle
+ import json
+-from utils.rotation_conversions import matrix_to_axis_angle, rotation_6d_to_matrix
++from utilss.rotation_conversions import matrix_to_axis_angle, rotation_6d_to_matrix
+ 
+ def convert_feat(feat_path):
+     config_path = feat_path.parent / feat_path.name.replace('.pt', '_kwargs.json')
+diff --git a/FlowMDM/model/smpl.py b/FlowMDM/model/smpl.py
+index ff0a1fd..561110a 100644
+--- a/FlowMDM/model/smpl.py
++++ b/FlowMDM/model/smpl.py
+@@ -13,7 +13,7 @@ from smplx.lbs import vertices2joints
+ # change 0 and 8
+ action2motion_joints = [8, 1, 2, 3, 4, 5, 6, 7, 0, 9, 10, 11, 12, 13, 14, 21, 24, 38]
+ 
+-from utils.config import SMPL_MODEL_PATH, JOINT_REGRESSOR_TRAIN_EXTRA, SMPLX_MODEL_PATH
++from utilss.config import SMPL_MODEL_PATH, JOINT_REGRESSOR_TRAIN_EXTRA, SMPLX_MODEL_PATH
+ 
+ JOINTSTYPE_ROOT = {"a2m": 0, # action2motion
+                    "smpl": 0,
+diff --git a/FlowMDM/runners/eval.py b/FlowMDM/runners/eval.py
+index 79e26f5..a33659c 100644
+--- a/FlowMDM/runners/eval.py
++++ b/FlowMDM/runners/eval.py
+@@ -1,5 +1,5 @@
+-from utils.parser_util import evaluation_parser
+-from utils.fixseed import fixseed
++from utilss.parser_util import evaluation_parser
++from utilss.fixseed import fixseed
+ from datetime import datetime
+ from data_loaders.model_motion_loaders import get_mdm_loader
+ from data_loaders.humanml.utils.metrics import *
+@@ -7,7 +7,7 @@ from data_loaders.humanml.networks.evaluator_wrapper import EvaluatorMDMWrapper
+ from collections import OrderedDict
+ from data_loaders.humanml.scripts.motion_process import *
+ from data_loaders.humanml.utils.utils import *
+-from utils.model_util import load_model
++from utilss.model_util import load_model
+ 
+ from diffusion import logger
+ from utils import dist_util
+@@ -16,7 +16,7 @@ from diffusion.diffusion_wrappers import DiffusionWrapper_FlowMDM as DiffusionWr
+ 
+ torch.multiprocessing.set_sharing_strategy('file_system')
+ 
+-from utils.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
++from utilss.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
+ 
+ 
+ EVAL_FILES = {
+diff --git a/FlowMDM/runners/eval_load.py b/FlowMDM/runners/eval_load.py
+index 7539520..32a0777 100644
+--- a/FlowMDM/runners/eval_load.py
++++ b/FlowMDM/runners/eval_load.py
+@@ -1,5 +1,5 @@
+-from utils.parser_util import evaluation_parser
+-from utils.fixseed import fixseed
++from utilss.parser_util import evaluation_parser
++from utilss.fixseed import fixseed
+ from datetime import datetime
+ from data_loaders.model_motion_loaders import get_mdm_loader
+ from data_loaders.humanml.utils.metrics import *
+@@ -7,7 +7,7 @@ from data_loaders.humanml.networks.evaluator_wrapper import EvaluatorMDMWrapper
+ from collections import OrderedDict
+ from data_loaders.humanml.scripts.motion_process import *
+ from data_loaders.humanml.utils.utils import *
+-from utils.model_util import load_model
++from utilss.model_util import load_model
+ 
+ from diffusion import logger
+ from utils import dist_util
+@@ -16,7 +16,7 @@ from diffusion.diffusion_wrappers import DiffusionWrapper_FlowMDM as DiffusionWr
+ 
+ torch.multiprocessing.set_sharing_strategy('file_system')
+ 
+-from utils.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
++from utilss.metrics import evaluate_jerk, evaluate_matching_score, evaluate_fid, evaluate_diversity, get_metric_statistics, generate_plot_PJ
+ 
+ from runners.eval import EVAL_FILES, SCENARIOS, SEQ_LENS, BATCH_SIZE
+ 
+diff --git a/FlowMDM/runners/generate.py b/FlowMDM/runners/generate.py
+index 3a2d13e..f865f11 100644
+--- a/FlowMDM/runners/generate.py
++++ b/FlowMDM/runners/generate.py
+@@ -3,12 +3,12 @@
+ Generate a large batch of image samples from a model and save them as a large
+ numpy array. This can be used to produce samples for FID evaluation.
+ """
+-from utils.fixseed import fixseed
++from utilss.fixseed import fixseed
+ import os
+ import numpy as np
+ import torch
+-from utils.parser_util import generate_args
+-from utils.model_util import load_model
++from utilss.parser_util import generate_args
++from utilss.model_util import load_model
+ from utils import dist_util
+ from data_loaders.get_data import get_dataset_loader
+ from data_loaders.humanml.scripts.motion_process import recover_from_ric
+diff --git a/FlowMDM/runners/optim.py b/FlowMDM/runners/optim.py
+index d19db78..3b6e2a3 100644
+--- a/FlowMDM/runners/optim.py
++++ b/FlowMDM/runners/optim.py
+@@ -3,12 +3,12 @@
+ Generate a large batch of image samples from a model and save them as a large
+ numpy array. This can be used to produce samples for FID evaluation.
+ """
+-from utils.fixseed import fixseed
++from utilss.fixseed import fixseed
+ import os
+ import numpy as np
+ import torch
+-from utils.parser_util import generate_args
+-from utils.model_util import load_model
++from utilss.parser_util import generate_args
++from utilss.model_util import load_model
+ from utils import dist_util
+ from data_loaders.get_data import get_dataset_loader
+ from data_loaders.humanml.scripts.motion_process import recover_from_ric
+diff --git a/FlowMDM/runners/render_mesh.py b/FlowMDM/runners/render_mesh.py
+index 0343dd1..c1e02cc 100644
+--- a/FlowMDM/runners/render_mesh.py
++++ b/FlowMDM/runners/render_mesh.py
+@@ -1,6 +1,6 @@
+ import argparse
+ import os
+-from utils.visualize import vis_utils
++from utilss.visualize import vis_utils
+ import shutil
+ from tqdm import tqdm
+ 
+diff --git a/FlowMDM/runners/train.py b/FlowMDM/runners/train.py
+index 5341f7d..926e417 100644
+--- a/FlowMDM/runners/train.py
++++ b/FlowMDM/runners/train.py
+@@ -5,13 +5,13 @@ Train a diffusion model on images.
+ 
+ import os
+ import json
+-from utils.fixseed import fixseed
+-from utils.parser_util import train_args
++from utilss.fixseed import fixseed
++from utilss.parser_util import train_args
+ from utils import dist_util
+-from utils.training_loop import TrainLoop
++from utilss.training_loop import TrainLoop
+ from data_loaders.get_data import get_dataset_loader
+-from utils.model_util import create_model_and_diffusion
+-from utils.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform, WandbPlatform  # required for the eval operation
++from utilss.model_util import create_model_and_diffusion
++from utilss.train_platforms import ClearmlPlatform, TensorboardPlatform, NoPlatform, WandbPlatform  # required for the eval operation
+ os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"  
+ 
+ 
+diff --git a/FlowMDM/utils/model_util.py b/FlowMDM/utils/model_util.py
+index c07a6d5..efd295a 100644
+--- a/FlowMDM/utils/model_util.py
++++ b/FlowMDM/utils/model_util.py
+@@ -1,7 +1,7 @@
+ from model.FlowMDM import FlowMDM
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+-from utils.parser_util import get_cond_mode
++from utilss.parser_util import get_cond_mode
+ from model.cfg_sampler import wrap_model
+ import torch
+ 
+diff --git a/FlowMDM/utils/smpl_standarization.py b/FlowMDM/utils/smpl_standarization.py
+index 9ad49e9..795fdb7 100644
+--- a/FlowMDM/utils/smpl_standarization.py
++++ b/FlowMDM/utils/smpl_standarization.py
+@@ -1,6 +1,6 @@
+ import numpy as np
+ import torch
+-from utils.rotation_conversions import axis_angle_to_matrix, matrix_to_axis_angle, matrix_to_euler_angles
++from utilss.rotation_conversions import axis_angle_to_matrix, matrix_to_axis_angle, matrix_to_euler_angles
+ from scipy.spatial.transform import Rotation as R
+ 
+ 
+@@ -36,7 +36,7 @@ def preprocess_smplh(data, pose_rep):
+     # STEP 5: apply transformation to motion rep
+     for k in toconcat:
+         if pose_rep == "rot6d":
+-            from utils.rotation_conversions import axis_angle_to_rotation_6d
++            from utilss.rotation_conversions import axis_angle_to_rotation_6d
+             if k == "transl":
+                 # pad translation with zeros in 3 channels (no rotational meaning)
+                 data[k] = np.concatenate([data[k], np.zeros((data[k].shape[0], 3))], axis=1)[:, np.newaxis, :] # motion -> (n_frames, 1, 3/6)
+diff --git a/FlowMDM/utils/visualize/joints2smpl/src/customloss.py b/FlowMDM/utils/visualize/joints2smpl/src/customloss.py
+index 9ef3506..e80e155 100644
+--- a/FlowMDM/utils/visualize/joints2smpl/src/customloss.py
++++ b/FlowMDM/utils/visualize/joints2smpl/src/customloss.py
+@@ -1,6 +1,6 @@
+ import torch
+ import torch.nn.functional as F
+-from utils.visualize.joints2smpl.src import config
++from utilss.visualize.joints2smpl.src import config
+ 
+ # Guassian
+ def gmof(x, sigma):
+diff --git a/FlowMDM/utils/visualize/joints2smpl/src/smplify.py b/FlowMDM/utils/visualize/joints2smpl/src/smplify.py
+index 52f96b0..90139bb 100644
+--- a/FlowMDM/utils/visualize/joints2smpl/src/smplify.py
++++ b/FlowMDM/utils/visualize/joints2smpl/src/smplify.py
+@@ -11,7 +11,7 @@ from customloss import (camera_fitting_loss,
+                         body_fitting_loss_3d, 
+                         )
+ from prior import MaxMixturePrior
+-from utils.visualize.joints2smpl.src import config
++from utilss.visualize.joints2smpl.src import config
+ 
+ 
+ 
+diff --git a/FlowMDM/utils/visualize/motions2hik.py b/FlowMDM/utils/visualize/motions2hik.py
+index 6369a3c..8922032 100644
+--- a/FlowMDM/utils/visualize/motions2hik.py
++++ b/FlowMDM/utils/visualize/motions2hik.py
+@@ -1,8 +1,8 @@
+ import numpy as np
+ import torch
+ 
+-from utils.rotation_conversions import rotation_6d_to_matrix, matrix_to_euler_angles
+-from utils.visualize.simplify_loc2rot import joints2smpl
++from utilss.rotation_conversions import rotation_6d_to_matrix, matrix_to_euler_angles
++from utilss.visualize.simplify_loc2rot import joints2smpl
+ 
+ """
+ Utility function to convert model output to a representation used by HumanIK skeletons in Maya and Motion Builder
+diff --git a/FlowMDM/utils/visualize/simplify_loc2rot.py b/FlowMDM/utils/visualize/simplify_loc2rot.py
+index b968e8b..ce83c52 100644
+--- a/FlowMDM/utils/visualize/simplify_loc2rot.py
++++ b/FlowMDM/utils/visualize/simplify_loc2rot.py
+@@ -1,10 +1,10 @@
+ import numpy as np
+ import os
+ import torch
+-from utils.visualize.joints2smpl.src import config
++from utilss.visualize.joints2smpl.src import config
+ import smplx
+ import h5py
+-from utils.visualize.joints2smpl.src.smplify import SMPLify3D
++from utilss.visualize.joints2smpl.src.smplify import SMPLify3D
+ from tqdm import tqdm
+ import utils.rotation_conversions as geometry
+ import argparse
+diff --git a/FlowMDM/utils/visualize/vis_utils.py b/FlowMDM/utils/visualize/vis_utils.py
+index cf6757f..2962b98 100644
+--- a/FlowMDM/utils/visualize/vis_utils.py
++++ b/FlowMDM/utils/visualize/vis_utils.py
+@@ -3,8 +3,8 @@ import numpy as np
+ from trimesh import Trimesh
+ import os
+ import torch
+-from utils.visualize.simplify_loc2rot import joints2smpl
+-from utils.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
++from utilss.visualize.simplify_loc2rot import joints2smpl
++from utilss.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
+ 
+ class npy2obj:
+     def __init__(self, npy_path, sample_idx, rep_idx, device=0, cuda=True):
+diff --git a/VolSMPL/eval.py b/VolSMPL/eval.py
+index 9b320bf..082308f 100644
+--- a/VolSMPL/eval.py
++++ b/VolSMPL/eval.py
+@@ -25,8 +25,8 @@ import trimesh
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/VolSMPL/optim_egobody.py b/VolSMPL/optim_egobody.py
+index 43d21fc..0a70e6f 100644
+--- a/VolSMPL/optim_egobody.py
++++ b/VolSMPL/optim_egobody.py
+@@ -25,8 +25,8 @@ import trimesh
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/control/env/env_reach_location_mld.py b/control/env/env_reach_location_mld.py
+index 3ec63ac..c4d6208 100644
+--- a/control/env/env_reach_location_mld.py
++++ b/control/env/env_reach_location_mld.py
+@@ -7,8 +7,8 @@ import random
+ from pytorch3d import transforms
+ from torch.cuda import amp
+ 
+-from utils.misc_util import encode_text
+-from utils.smpl_utils import *
++from utilss.misc_util import encode_text
++from utilss.smpl_utils import *
+ 
+ class EnvReachLocationMLD:
+     def __init__(self, input_args, denoiser_args, denoiser_model, vae_args, vae_model, diffusion, dataset):
+diff --git a/control/train_reach_location_mld.py b/control/train_reach_location_mld.py
+index 6f81a00..246e8c1 100644
+--- a/control/train_reach_location_mld.py
++++ b/control/train_reach_location_mld.py
+@@ -16,14 +16,14 @@ from torch.distributions.normal import Normal
+ from torch.utils.tensorboard import SummaryWriter
+ from pathlib import Path
+ 
+-from utils.parser_util import load_args_from_model
+-from utils.model_util import create_model_and_diffusion, load_model_wo_clip, load_saved_model
++from utilss.parser_util import load_args_from_model
++from utilss.model_util import create_model_and_diffusion, load_model_wo_clip, load_saved_model
+ from utils import dist_util
+ from torch.utils.data import DataLoader
+ from model.cfg_sampler import ClassifierFreeSampleModel
+ from data_loaders.humanml.data.dataset import SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and, dict_to_args
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and, dict_to_args
+ from pytorch3d import transforms
+ from tqdm import tqdm
+ 
+diff --git a/data_loaders/a2m/dataset.py b/data_loaders/a2m/dataset.py
+index b34ce34..c921837 100644
+--- a/data_loaders/a2m/dataset.py
++++ b/data_loaders/a2m/dataset.py
+@@ -2,9 +2,9 @@ import random
+ 
+ import numpy as np
+ import torch
+-# from utils.action_label_to_idx import action_label_to_idx
++# from utilss.action_label_to_idx import action_label_to_idx
+ from data_loaders.tensors import collate
+-from utils.misc import to_torch
++from utilss.misc import to_torch
+ import utils.rotation_conversions as geometry
+ 
+ class Dataset(torch.utils.data.Dataset):
+diff --git a/data_loaders/humanml/data/dataset.py b/data_loaders/humanml/data/dataset.py
+index ebd3db3..076a6ad 100644
+--- a/data_loaders/humanml/data/dataset.py
++++ b/data_loaders/humanml/data/dataset.py
+@@ -1,10 +1,15 @@
+ import time
++import sys
++import os
++# script_dir = os.path.dirname(os.path.abspath(__file__))
++# sys.path.insert(0, script_dir)
++# project_root = os.path.dirname(script_dir)  # 如果在子目录中
++# sys.path.insert(0, project_root)
+ 
+ import smplx
+ import torch
+ from torch.utils import data
+ import numpy as np
+-import os
+ from os.path import join as pjoin
+ import random
+ import codecs as cs
+@@ -22,8 +27,8 @@ import json
+ import multiprocessing as mp
+ 
+ from config_files.data_paths import *
+-from utils.smpl_utils import *
+-from utils.misc_util import have_overlap, get_overlap, load_and_freeze_clip, encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import have_overlap, get_overlap, load_and_freeze_clip, encode_text, compose_texts_with_and
+ import torch.nn.functional as F
+ 
+ # import spacy
+diff --git a/data_scripts/convert_hml3d.py b/data_scripts/convert_hml3d.py
+index d48be83..276cdcf 100644
+--- a/data_scripts/convert_hml3d.py
++++ b/data_scripts/convert_hml3d.py
+@@ -21,7 +21,7 @@ import pickle
+ import json
+ import copy
+ 
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ from pytorch3d import transforms
+ 
+ from scipy.spatial.transform import Rotation as R
+diff --git a/data_scripts/export_traj.py b/data_scripts/export_traj.py
+index b59aa90..2d5aeae 100644
+--- a/data_scripts/export_traj.py
++++ b/data_scripts/export_traj.py
+@@ -6,7 +6,7 @@ import pickle
+ 
+ from os.path import join as pjoin
+ 
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ from pytorch3d import transforms
+ 
+ device = 'cuda'
+diff --git a/data_scripts/extract_dataset.py b/data_scripts/extract_dataset.py
+index 7d65ca4..122e480 100644
+--- a/data_scripts/extract_dataset.py
++++ b/data_scripts/extract_dataset.py
+@@ -6,8 +6,8 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap
+-from utils.smpl_utils import *
++from utilss.misc_util import have_overlap
++from utilss.smpl_utils import *
+ from tqdm import tqdm
+ import time
+ import smplx
+diff --git a/data_scripts/extract_dataset_hml3d.py b/data_scripts/extract_dataset_hml3d.py
+index 3cdf670..2da5f17 100644
+--- a/data_scripts/extract_dataset_hml3d.py
++++ b/data_scripts/extract_dataset_hml3d.py
+@@ -8,8 +8,8 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap
+-from utils.smpl_utils import *
++from utilss.misc_util import have_overlap
++from utilss.smpl_utils import *
+ from tqdm import tqdm
+ import time
+ import smplx
+diff --git a/data_scripts/extract_dataset_hml3d_smplh.py b/data_scripts/extract_dataset_hml3d_smplh.py
+index 9f61960..862ad22 100644
+--- a/data_scripts/extract_dataset_hml3d_smplh.py
++++ b/data_scripts/extract_dataset_hml3d_smplh.py
+@@ -8,8 +8,8 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap
+-from utils.smpl_utils import *
++from utilss.misc_util import have_overlap
++from utilss.smpl_utils import *
+ from tqdm import tqdm
+ import time
+ import smplx
+diff --git a/data_scripts/extract_pelvis_samp.py b/data_scripts/extract_pelvis_samp.py
+index 17209a3..a31fce8 100644
+--- a/data_scripts/extract_pelvis_samp.py
++++ b/data_scripts/extract_pelvis_samp.py
+@@ -6,8 +6,8 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap
+-from utils.smpl_utils import *
++from utilss.misc_util import have_overlap
++from utilss.smpl_utils import *
+ from tqdm import tqdm
+ import time
+ import smplx
+diff --git a/data_scripts/extract_seq_list.py b/data_scripts/extract_seq_list.py
+index 636ff74..4718289 100644
+--- a/data_scripts/extract_seq_list.py
++++ b/data_scripts/extract_seq_list.py
+@@ -6,7 +6,7 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap
++from utilss.misc_util import have_overlap
+ from tqdm import tqdm
+ 
+ # AMASS dataset names from website are slightly different from what used in BABEL
+diff --git a/data_scripts/process_motion_primitive_babel.py b/data_scripts/process_motion_primitive_babel.py
+index 11a64e6..2b5fad7 100644
+--- a/data_scripts/process_motion_primitive_babel.py
++++ b/data_scripts/process_motion_primitive_babel.py
+@@ -30,7 +30,7 @@ import hydra
+ 
+ 
+ from config_files.data_paths import *
+-from utils.smpl_utils import convert_smpl_aa_to_rotmat
++from utilss.smpl_utils import convert_smpl_aa_to_rotmat
+ 
+ 
+ def calc_calibrate_offset(body_mesh_model, betas, transl, pose):
+diff --git a/data_scripts/process_motion_primitive_babel_new.py b/data_scripts/process_motion_primitive_babel_new.py
+index 5a029e4..8dea05f 100644
+--- a/data_scripts/process_motion_primitive_babel_new.py
++++ b/data_scripts/process_motion_primitive_babel_new.py
+@@ -30,7 +30,7 @@ import hydra
+ from pytorch3d import transforms
+ 
+ from config_files.data_paths import *
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ 
+ 
+ def have_overlap(seg1, seg2):
+diff --git a/data_scripts/unseen_text_retrieval.py b/data_scripts/unseen_text_retrieval.py
+index d0eac8c..0a25279 100644
+--- a/data_scripts/unseen_text_retrieval.py
++++ b/data_scripts/unseen_text_retrieval.py
+@@ -6,7 +6,7 @@ import numpy as np
+ import json
+ from os.path import join as ospj
+ from config_files.data_paths import *
+-from utils.misc_util import have_overlap, encode_text, load_and_freeze_clip
++from utilss.misc_util import have_overlap, encode_text, load_and_freeze_clip
+ from tqdm import tqdm
+ import time
+ import smplx
+diff --git a/data_scripts/vis_primitive.py b/data_scripts/vis_primitive.py
+index 55df983..cccae55 100644
+--- a/data_scripts/vis_primitive.py
++++ b/data_scripts/vis_primitive.py
+@@ -10,7 +10,7 @@ import argparse
+ import os
+ 
+ from config_files.data_paths import *
+-from utils.smpl_utils import convert_smpl_aa_to_rotmat
++from utilss.smpl_utils import convert_smpl_aa_to_rotmat
+ 
+ # https://stackoverflow.com/a/20865751/14532053
+ class _Getch:
+diff --git a/diffusion/gaussian_diffusion.py b/diffusion/gaussian_diffusion.py
+index af6d0c6..f5e52ac 100644
+--- a/diffusion/gaussian_diffusion.py
++++ b/diffusion/gaussian_diffusion.py
+@@ -18,7 +18,7 @@ from copy import deepcopy
+ from diffusion.nn import mean_flat, sum_flat
+ from diffusion.losses import normal_kl, discretized_gaussian_log_likelihood
+ from data_loaders.humanml.scripts import motion_process
+-from utils.smpl_utils import get_smplx_param_from_6d
++from utilss.smpl_utils import get_smplx_param_from_6d
+ from pytorch3d import transforms
+ import torch_dct as dct
+ 
+diff --git a/evaluation/goal_reach.py b/evaluation/goal_reach.py
+index 8fa119c..2e2074c 100644
+--- a/evaluation/goal_reach.py
++++ b/evaluation/goal_reach.py
+@@ -4,7 +4,7 @@ import numpy as np
+ import torch
+ import pickle
+ import json
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ from evaluation.inbetween import get_metric_statistics, calc_skate
+ 
+ debug = 0
+diff --git a/evaluation/inbetween.py b/evaluation/inbetween.py
+index 57dfd50..b73424f 100644
+--- a/evaluation/inbetween.py
++++ b/evaluation/inbetween.py
+@@ -4,7 +4,7 @@ import numpy as np
+ import torch
+ import pickle
+ import json
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ from scipy.spatial.transform import Rotation as R
+ 
+ debug = 0
+diff --git a/misc/get_gt.py b/misc/get_gt.py
+index 2f546a0..ef13778 100644
+--- a/misc/get_gt.py
++++ b/misc/get_gt.py
+@@ -2,7 +2,7 @@ import pickle
+ import json
+ from pathlib import Path
+ import numpy as np
+-from utils.misc_util import *
++from utilss.misc_util import *
+ 
+ dataset_dir = Path('/home/kaizhao/projects/mdm/hml3d_filter')
+ with open(dataset_dir / 'test_dataset.pkl', 'rb') as f:
+diff --git a/mld/optim_mld.py b/mld/optim_mld.py
+index 74d0a49..68dbf2d 100644
+--- a/mld/optim_mld.py
++++ b/mld/optim_mld.py
+@@ -24,8 +24,8 @@ import copy
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/optim_pelvis_global_mld.py b/mld/optim_pelvis_global_mld.py
+index 0d8d958..f74a088 100644
+--- a/mld/optim_pelvis_global_mld.py
++++ b/mld/optim_pelvis_global_mld.py
+@@ -25,8 +25,8 @@ import copy
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/optim_scene_mld.py b/mld/optim_scene_mld.py
+index e7135e9..13071e5 100644
+--- a/mld/optim_scene_mld.py
++++ b/mld/optim_scene_mld.py
+@@ -25,8 +25,8 @@ import trimesh
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/rollout_demo.py b/mld/rollout_demo.py
+index dd80265..c0cfc62 100644
+--- a/mld/rollout_demo.py
++++ b/mld/rollout_demo.py
+@@ -29,8 +29,8 @@ import threading
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/rollout_mld.py b/mld/rollout_mld.py
+index ea47bd6..c527ae7 100644
+--- a/mld/rollout_mld.py
++++ b/mld/rollout_mld.py
+@@ -24,8 +24,8 @@ import copy
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/sample_flowmdm_mld.py b/mld/sample_flowmdm_mld.py
+index 3d975aa..be8a40a 100644
+--- a/mld/sample_flowmdm_mld.py
++++ b/mld/sample_flowmdm_mld.py
+@@ -24,8 +24,8 @@ import copy
+ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+-from utils.smpl_utils import *
+-from utils.misc_util import encode_text, compose_texts_with_and
++from utilss.smpl_utils import *
++from utilss.misc_util import encode_text, compose_texts_with_and
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+diff --git a/mld/test_mvae.py b/mld/test_mvae.py
+index 7cc4f03..31d25a3 100644
+--- a/mld/test_mvae.py
++++ b/mld/test_mvae.py
+@@ -21,10 +21,10 @@ import json
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
+ from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
+-from utils.smpl_utils import get_smplx_param_from_6d
++from utilss.smpl_utils import get_smplx_param_from_6d
+ from pytorch3d import transforms
+ from mld.train_mvae import VAEArgs, DataArgs, TrainArgs, Args
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ 
+ debug = 0
+ 
+diff --git a/mld/train_mld.py b/mld/train_mld.py
+index bf7cbe0..dde2c25 100644
+--- a/mld/train_mld.py
++++ b/mld/train_mld.py
+@@ -1,6 +1,8 @@
+ from __future__ import annotations
+ 
+ import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
++
+ import pdb
+ import random
+ import time
+@@ -28,7 +30,7 @@ from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
+ from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
+-from utils.smpl_utils import get_smplx_param_from_6d
++from utilss.smpl_utils import get_smplx_param_from_6d
+ from pytorch3d import transforms
+ from diffusion import gaussian_diffusion as gd
+ from diffusion.respace import SpacedDiffusion, space_timesteps
+@@ -107,7 +109,7 @@ class MLDArgs:
+ 
+     track: int = 1
+     wandb_project_name: str = "mld_denoiser"
+-    wandb_entity: str = "interaction"
++    wandb_entity: str = "MangoBox"
+ 
+ 
+ def create_gaussian_diffusion(args, enable_ddim=True):
+diff --git a/mld/train_mvae.py b/mld/train_mvae.py
+index 2457392..ae2b2eb 100644
+--- a/mld/train_mvae.py
++++ b/mld/train_mvae.py
+@@ -1,6 +1,11 @@
+ from __future__ import annotations
+ 
+ import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
++
++import sys
++sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
++
+ import random
+ import time
+ from dataclasses import dataclass, asdict, make_dataclass
+@@ -21,12 +26,14 @@ import copy
+ from model.mld_vae import AutoMldVae
+ from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
+ from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
+-from utils.smpl_utils import get_smplx_param_from_6d
++from utilss.smpl_utils import get_smplx_param_from_6d
+ from pytorch3d import transforms
+ from diffusion.nn import mean_flat, sum_flat
+ 
+ debug = 0
+ 
++
++
+ @dataclass
+ class VAEArgs:
+     arch: str = "all_encoder"
+@@ -128,7 +135,7 @@ class Args:
+ 
+     track: int = 1
+     wandb_project_name: str = "mld_vae"
+-    wandb_entity: str = "interaction"
++    wandb_entity: str = "MangoBox"
+ 
+ class Trainer:
+     def __init__(self, args: Args):
+diff --git a/model/smpl.py b/model/smpl.py
+index 587f541..7c1d3c0 100644
+--- a/model/smpl.py
++++ b/model/smpl.py
+@@ -12,7 +12,7 @@ from smplx.lbs import vertices2joints
+ # change 0 and 8
+ action2motion_joints = [8, 1, 2, 3, 4, 5, 6, 7, 0, 9, 10, 11, 12, 13, 14, 21, 24, 38]
+ 
+-from utils.config import SMPL_MODEL_PATH, JOINT_REGRESSOR_TRAIN_EXTRA
++from utilss.config import SMPL_MODEL_PATH, JOINT_REGRESSOR_TRAIN_EXTRA
+ 
+ JOINTSTYPE_ROOT = {"a2m": 0, # action2motion
+                    "smpl": 0,
+diff --git a/utils/PYTORCH3D_LICENSE b/utils/PYTORCH3D_LICENSE
+deleted file mode 100644
+index bed0ceb..0000000
+--- a/utils/PYTORCH3D_LICENSE
++++ /dev/null
+@@ -1,30 +0,0 @@
+-BSD License
+-
+-For PyTorch3D software
+-
+-Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without modification,
+-are permitted provided that the following conditions are met:
+-
+- * Redistributions of source code must retain the above copyright notice, this
+-    list of conditions and the following disclaimer.
+-
+- * Redistributions in binary form must reproduce the above copyright notice,
+-    this list of conditions and the following disclaimer in the documentation
+-       and/or other materials provided with the distribution.
+-
+- * Neither the name Facebook nor the names of its contributors may be used to
+-    endorse or promote products derived from this software without specific
+-       prior written permission.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\ No newline at end of file
+diff --git a/utils/config.py b/utils/config.py
+deleted file mode 100644
+index 091d790..0000000
+--- a/utils/config.py
++++ /dev/null
+@@ -1,17 +0,0 @@
+-import os
+-
+-SMPL_DATA_PATH = "./body_models/smpl"
+-
+-SMPL_KINTREE_PATH = os.path.join(SMPL_DATA_PATH, "kintree_table.pkl")
+-SMPL_MODEL_PATH = os.path.join(SMPL_DATA_PATH, "SMPL_NEUTRAL.pkl")
+-JOINT_REGRESSOR_TRAIN_EXTRA = os.path.join(SMPL_DATA_PATH, 'J_regressor_extra.npy')
+-
+-ROT_CONVENTION_TO_ROT_NUMBER = {
+-    'legacy': 23,
+-    'no_hands': 21,
+-    'full_hands': 51,
+-    'mitten_hands': 33,
+-}
+-
+-GENDERS = ['neutral', 'male', 'female']
+-NUM_BETAS = 10
+\ No newline at end of file
+diff --git a/utils/dist_util.py b/utils/dist_util.py
+deleted file mode 100644
+index 9f5580a..0000000
+--- a/utils/dist_util.py
++++ /dev/null
+@@ -1,77 +0,0 @@
+-"""
+-Helpers for distributed training.
+-"""
+-
+-import socket
+-
+-import torch as th
+-import torch.distributed as dist
+-
+-# Change this to reflect your cluster layout.
+-# The GPU for a given rank is (rank % GPUS_PER_NODE).
+-GPUS_PER_NODE = 8
+-
+-SETUP_RETRY_COUNT = 3
+-
+-used_device = 0
+-
+-def setup_dist(device=0):
+-    """
+-    Setup a distributed process group.
+-    """
+-    global used_device
+-    used_device = device
+-    if dist.is_initialized():
+-        return
+-    # os.environ["CUDA_VISIBLE_DEVICES"] = str(device) # f"{MPI.COMM_WORLD.Get_rank() % GPUS_PER_NODE}"
+-
+-    # comm = MPI.COMM_WORLD
+-    # backend = "gloo" if not th.cuda.is_available() else "nccl"
+-
+-    # if backend == "gloo":
+-    #     hostname = "localhost"
+-    # else:
+-    #     hostname = socket.gethostbyname(socket.getfqdn())
+-    # os.environ["MASTER_ADDR"] = comm.bcast(hostname, root=0)
+-    # os.environ["RANK"] = str(comm.rank)
+-    # os.environ["WORLD_SIZE"] = str(comm.size)
+-
+-    # port = comm.bcast(_find_free_port(), root=used_device)
+-    # os.environ["MASTER_PORT"] = str(port)
+-    # dist.init_process_group(backend=backend, init_method="env://")
+-
+-
+-def dev():
+-    """
+-    Get the device to use for torch.distributed.
+-    """
+-    global used_device
+-    if th.cuda.is_available() and used_device>=0:
+-        return th.device(f"cuda:{used_device}")
+-    return th.device("cpu")
+-
+-
+-def load_state_dict(path, **kwargs):
+-    """
+-    Load a PyTorch file without redundant fetches across MPI ranks.
+-    """
+-    return th.load(path, **kwargs)
+-
+-
+-def sync_params(params):
+-    """
+-    Synchronize a sequence of Tensors across ranks from rank 0.
+-    """
+-    for p in params:
+-        with th.no_grad():
+-            dist.broadcast(p, 0)
+-
+-
+-def _find_free_port():
+-    try:
+-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-        s.bind(("", 0))
+-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+-        return s.getsockname()[1]
+-    finally:
+-        s.close()
+diff --git a/utils/fixseed.py b/utils/fixseed.py
+deleted file mode 100644
+index 6f44f6c..0000000
+--- a/utils/fixseed.py
++++ /dev/null
+@@ -1,18 +0,0 @@
+-import numpy as np
+-import torch
+-import random
+-
+-
+-def fixseed(seed):
+-    torch.backends.cudnn.benchmark = False
+-    random.seed(seed)
+-    np.random.seed(seed)
+-    torch.manual_seed(seed)
+-
+-
+-# SEED = 10
+-# EVALSEED = 0
+-# # Provoc warning: not fully functionnal yet
+-# # torch.set_deterministic(True)
+-# torch.backends.cudnn.benchmark = False
+-# fixseed(SEED)
+diff --git a/utils/misc.py b/utils/misc.py
+deleted file mode 100644
+index abe0cdc..0000000
+--- a/utils/misc.py
++++ /dev/null
+@@ -1,40 +0,0 @@
+-import torch
+-
+-
+-def to_numpy(tensor):
+-    if torch.is_tensor(tensor):
+-        return tensor.cpu().numpy()
+-    elif type(tensor).__module__ != 'numpy':
+-        raise ValueError("Cannot convert {} to numpy array".format(
+-            type(tensor)))
+-    return tensor
+-
+-
+-def to_torch(ndarray):
+-    if type(ndarray).__module__ == 'numpy':
+-        return torch.from_numpy(ndarray)
+-    elif not torch.is_tensor(ndarray):
+-        raise ValueError("Cannot convert {} to torch tensor".format(
+-            type(ndarray)))
+-    return ndarray
+-
+-
+-def cleanexit():
+-    import sys
+-    import os
+-    try:
+-        sys.exit(0)
+-    except SystemExit:
+-        os._exit(0)
+-
+-def load_model_wo_clip(model, state_dict):
+-    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+-    assert len(unexpected_keys) == 0
+-    assert all([k.startswith('clip_model.') for k in missing_keys])
+-
+-def freeze_joints(x, joints_to_freeze):
+-    # Freezes selected joint *rotations* as they appear in the first frame
+-    # x [bs, [root+n_joints], joint_dim(6), seqlen]
+-    frozen = x.detach().clone()
+-    frozen[:, joints_to_freeze, :, :] = frozen[:, joints_to_freeze, :, :1]
+-    return frozen
+diff --git a/utils/misc_util.py b/utils/misc_util.py
+deleted file mode 100644
+index b0c0e8f..0000000
+--- a/utils/misc_util.py
++++ /dev/null
+@@ -1,50 +0,0 @@
+-import clip
+-import torch
+-
+-def have_overlap(seg1, seg2):
+-    if seg1[0] > seg2[1] or seg2[0] > seg1[1]:
+-        return False
+-    else:
+-        return True
+-
+-
+-def get_overlap(seg1, seg2):
+-    overlap_len = max(0, min(seg1[1], seg2[1]) - max(seg1[0], seg2[0]))
+-    return overlap_len
+-
+-
+-def load_and_freeze_clip(clip_version, device='cpu'):
+-    clip_model, clip_preprocess = clip.load(clip_version, device=device,
+-                                            jit=False)  # Must set jit=False for training
+-    clip.model.convert_weights(
+-        clip_model)  # Actually this line is unnecessary since clip by default already on float16
+-
+-    # Freeze CLIP weights
+-    clip_model.eval()
+-    for p in clip_model.parameters():
+-        p.requires_grad = False
+-
+-    return clip_model
+-
+-
+-def encode_text(clip_model, raw_text, force_empty_zero=True):
+-    device = next(clip_model.parameters()).device
+-    # raw_text - list (batch_size length) of strings with input text prompts
+-    texts = clip.tokenize(raw_text, truncate=True).to(device) # [bs, context_length]
+-    text_embedding = clip_model.encode_text(texts).float() # [bs, 512]
+-    if force_empty_zero:  # force empty string to have zero embedding, same as being masked out in original MDM
+-        empty_text = [text == '' for text in raw_text]
+-        text_embedding[empty_text, :] = 0
+-    return text_embedding
+-
+-
+-def compose_texts_with_and(texts):
+-    texts = sorted(texts)
+-    return ' and '.join(texts)
+-
+-def dict_to_args(dict_args):
+-    from dataclasses import make_dataclass, asdict
+-    dynamic_class = make_dataclass('DynamicMotionModelArgs', fields=[(key, type(dict_args[key])) for key in dict_args])
+-    args = dynamic_class(**dict_args)
+-
+-    return args
+diff --git a/utils/model_util.py b/utils/model_util.py
+deleted file mode 100644
+index 55db5e1..0000000
+--- a/utils/model_util.py
++++ /dev/null
+@@ -1,124 +0,0 @@
+-from model.mdm import MDM
+-from diffusion import gaussian_diffusion as gd
+-from diffusion.respace import SpacedDiffusion, space_timesteps
+-from utils.parser_util import get_cond_mode
+-import torch
+-
+-
+-def load_model_wo_clip(model, state_dict):
+-    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+-    print('unexpected_keys:', unexpected_keys)
+-    assert len(unexpected_keys) == 0
+-    assert all([k.startswith('clip_model.') for k in missing_keys])
+-
+-
+-def create_model_and_diffusion(args, data):
+-    model = MDM(**get_model_args(args, data))
+-    diffusion = create_gaussian_diffusion(args)
+-    return model, diffusion
+-
+-def create_model_and_diffusion_ddim(args, data):
+-    model = MDM(**get_model_args(args, data))
+-    diffusion = create_gaussian_diffusion(args, enable_ddim=False)
+-    diffusion_ddim = create_gaussian_diffusion(args, enable_ddim=True)
+-    return model, diffusion, diffusion_ddim
+-
+-def get_model_args(args, data=None):
+-
+-    # default args
+-    clip_version = 'ViT-B/32'
+-    action_emb = 'tensor'
+-    # cond_mode = get_cond_mode(args)
+-    cond_mode = 'text'
+-    # if hasattr(data.dataset, 'num_actions'):
+-    #     num_actions = data.dataset.num_actions
+-    # else:
+-    #     num_actions = 1
+-    num_actions = 1
+-
+-    # SMPL defaults
+-    data_rep = 'loc_rot_delta'
+-    njoints = args.feature_dim  # actually the dimension of the feature for one frame containing all joints
+-    nfeats = 1  # dummy dimension
+-    ff_size = getattr(args, 'ff_size', 1024)  # backward compatibility
+-
+-    return {'modeltype': '', 'njoints': njoints, 'nfeats': nfeats, 'num_actions': num_actions,
+-            'translation': True, 'pose_rep': 'rot6d', 'glob': True, 'glob_rot': True,
+-            'latent_dim': args.latent_dim, 'ff_size': ff_size, 'num_layers': args.layers, 'num_heads': 4,
+-            'dropout': 0.1, 'activation': "gelu", 'data_rep': data_rep, 'cond_mode': cond_mode,
+-            'cond_mask_prob': args.cond_mask_prob, 'action_emb': action_emb, 'arch': args.arch,
+-            'emb_trans_dec': args.emb_trans_dec, 'clip_version': clip_version, 'dataset': args.dataset,
+-            'output_cumsum': args.output_cumsum,
+-            }
+-
+-
+-def create_gaussian_diffusion(args, enable_ddim=True):
+-    # default params
+-    predict_xstart = True  # we always predict x_start (a.k.a. x0), that's our deal!
+-    steps = args.diffusion_steps
+-    scale_beta = 1.  # no scaling
+-    timestep_respacing = args.respacing if enable_ddim else ''  # can be used for ddim sampling, we don't use it.
+-    learn_sigma = False
+-    rescale_timesteps = False
+-
+-    betas = gd.get_named_beta_schedule(args.noise_schedule, steps, scale_beta)
+-    loss_type = gd.LossType.MSE
+-
+-    if not timestep_respacing:
+-        timestep_respacing = [steps]
+-
+-    return SpacedDiffusion(
+-        use_timesteps=space_timesteps(steps, timestep_respacing),
+-        betas=betas,
+-        model_mean_type=(
+-            gd.ModelMeanType.EPSILON if not predict_xstart else gd.ModelMeanType.START_X
+-        ),
+-        model_var_type=(
+-            (
+-                gd.ModelVarType.FIXED_LARGE
+-                if not args.sigma_small
+-                else gd.ModelVarType.FIXED_SMALL
+-            )
+-            if not learn_sigma
+-            else gd.ModelVarType.LEARNED_RANGE
+-        ),
+-        loss_type=loss_type,
+-        rescale_timesteps=rescale_timesteps,
+-        lambda_vel=args.lambda_vel,
+-        lambda_rcxyz=args.lambda_rcxyz,
+-        lambda_fc=args.lambda_fc,
+-        lambda_smpl_joints=args.lambda_smpl_joints,
+-        lambda_smpl_vertices=args.lambda_smpl_vertices,
+-        lambda_joints_consistency=args.lambda_joints_consistency,
+-        lambda_joints_delta=args.lambda_joints_delta,
+-        lambda_transl_delta=args.lambda_transl_delta,
+-        lambda_orient_delta=args.lambda_orient_delta,
+-        lambda_first_joints_delta=args.lambda_first_joints_delta,
+-        lambda_first_transl_delta=args.lambda_first_transl_delta,
+-        lambda_first_orient_delta=args.lambda_first_orient_delta,
+-        lambda_rel_joints_delta=args.lambda_rel_joints_delta,
+-        lambda_rel_transl_delta=args.lambda_rel_transl_delta,
+-        lambda_rel_orient_delta=args.lambda_rel_orient_delta,
+-        lambda_delta_norm=args.lambda_delta_norm,
+-        lambda_smooth=args.lambda_smooth,
+-        lambda_dct=args.lambda_dct,
+-        lambda_jerk=args.lambda_jerk,
+-        ignore_history=args.ignore_history,
+-        mask_thresh_step=args.mask_thresh_step,
+-    )
+-
+-def load_saved_model(model, model_path, use_avg: bool=True):  # use_avg_model
+-    state_dict = torch.load(model_path, map_location='cpu')
+-    # Use average model when possible
+-    if use_avg and 'model_avg' in state_dict.keys():
+-    # if use_avg_model:
+-        print('loading avg model')
+-        state_dict = state_dict['model_avg']
+-    else:
+-        if 'model' in state_dict:
+-            print('loading model without avg')
+-            state_dict = state_dict['model']
+-        else:
+-            print('checkpoint has no avg model')
+-    load_model_wo_clip(model, state_dict)
+-    return model
+\ No newline at end of file
+diff --git a/utils/parser_util.py b/utils/parser_util.py
+deleted file mode 100644
+index 9ba0203..0000000
+--- a/utils/parser_util.py
++++ /dev/null
+@@ -1,389 +0,0 @@
+-from argparse import ArgumentParser
+-import argparse
+-import os
+-import json
+-
+-
+-def parse_and_load_from_model(parser):
+-    # args according to the loaded model
+-    # do not try to specify them from cmd line since they will be overwritten
+-    add_data_options(parser)
+-    add_model_options(parser)
+-    add_diffusion_options(parser)
+-    args = parser.parse_args()
+-    args_to_overwrite = []
+-    for group_name in ['dataset', 'model', 'diffusion']:
+-        args_to_overwrite += get_args_per_group_name(parser, args, group_name)
+-    args_to_overwrite = args_to_overwrite + ['history_length', 'future_length', 'feature_dim']
+-
+-    # load args from model
+-    model_path = get_model_path_from_args()
+-    args_path = os.path.join(os.path.dirname(model_path), 'args.json')
+-    assert os.path.exists(args_path), 'Arguments json file was not found!'
+-    with open(args_path, 'r') as fr:
+-        model_args = json.load(fr)
+-
+-    for a in args_to_overwrite:
+-        if a in ['respacing']:
+-            print(f'skip loading arg:{a} from model')
+-            continue
+-        if a in model_args.keys():
+-            setattr(args, a, model_args[a])
+-
+-        elif 'cond_mode' in model_args: # backward compitability
+-            unconstrained = (model_args['cond_mode'] == 'no_cond')
+-            setattr(args, 'unconstrained', unconstrained)
+-
+-        else:
+-            print('Warning: was not able to load [{}], using default value [{}] instead.'.format(a, args.__dict__[a]))
+-
+-    if args.cond_mask_prob == 0:
+-        args.guidance_param = 1
+-    return args
+-
+-def load_args_from_model(model_path):
+-    args_path = os.path.join(os.path.dirname(model_path), 'args.json')
+-    assert os.path.exists(args_path), 'Arguments json file was not found!'
+-    with open(args_path, 'r') as fr:
+-        model_args = json.load(fr)
+-    if 'output_cumsum' not in model_args:
+-        model_args['output_cumsum'] = 0
+-    if 'lambda_dct' not in model_args:
+-        model_args['lambda_dct'] = 0.0
+-    if 'lambda_jerk' not in model_args:
+-        model_args['lambda_jerk'] = 0.0
+-    if 'lambda_first_joints_delta' not in model_args:
+-        model_args['lambda_first_joints_delta'] = 0.0
+-    if 'lambda_first_transl_delta' not in model_args:
+-        model_args['lambda_first_transl_delta'] = 0.0
+-    if 'lambda_first_orient_delta' not in model_args:
+-        model_args['lambda_first_orient_delta'] = 0.0
+-    if 'lambda_rel_joints_delta' not in model_args:
+-        model_args['lambda_rel_joints_delta'] = 0.0
+-    if 'lambda_rel_transl_delta' not in model_args:
+-        model_args['lambda_rel_transl_delta'] = 0.0
+-    if 'lambda_rel_orient_delta' not in model_args:
+-        model_args['lambda_rel_orient_delta'] = 0.0
+-    if 'mask_thresh_step' not in model_args:
+-        model_args['mask_thresh_step'] = 1.0
+-    model_args['model_path'] = model_path
+-    return model_args
+-
+-def get_args_per_group_name(parser, args, group_name):
+-    for group in parser._action_groups:
+-        if group.title == group_name:
+-            group_dict = {a.dest: getattr(args, a.dest, None) for a in group._group_actions}
+-            return list(argparse.Namespace(**group_dict).__dict__.keys())
+-    return ValueError('group_name was not found.')
+-
+-def get_model_path_from_args():
+-    try:
+-        dummy_parser = ArgumentParser()
+-        dummy_parser.add_argument('model_path')
+-        dummy_args, _ = dummy_parser.parse_known_args()
+-        return dummy_args.model_path
+-    except:
+-        raise ValueError('model_path argument must be specified.')
+-
+-
+-def add_base_options(parser):
+-    group = parser.add_argument_group('base')
+-    group.add_argument("--cuda", default=True, type=bool, help="Use cuda device, otherwise use CPU.")
+-    group.add_argument("--device", default=0, type=int, help="Device id to use.")
+-    group.add_argument("--seed", default=10, type=int, help="For fixing random seed.")
+-    group.add_argument("--batch_size", default=64, type=int, help="Batch size during training.")
+-
+-
+-def add_diffusion_options(parser):
+-    group = parser.add_argument_group('diffusion')
+-    group.add_argument("--noise_schedule", default='cosine', choices=['linear', 'cosine'], type=str,
+-                       help="Noise schedule type")
+-    group.add_argument("--diffusion_steps", default=1000, type=int,
+-                       help="Number of diffusion steps (denoted T in the paper)")
+-    group.add_argument("--respacing", default='', type=str,
+-                       help="empty for no respacing, or ddimN for N steps DDIM solver. ")
+-    group.add_argument("--sigma_small", default=True, type=bool, help="Use smaller sigma values.")
+-    group.add_argument("--ignore_history", default=0, type=int)
+-
+-
+-def add_model_options(parser):
+-    group = parser.add_argument_group('model')
+-    group.add_argument("--arch", default='trans_enc',
+-                       choices=['trans_enc', 'trans_dec', 'gru'], type=str,
+-                       help="Architecture types as reported in the paper.")
+-    group.add_argument("--emb_trans_dec", default=False, type=bool,
+-                       help="For trans_dec architecture only, if true, will inject condition as a class token"
+-                            " (in addition to cross-attention).")
+-    group.add_argument("--layers", default=8, type=int,
+-                       help="Number of layers.")
+-    group.add_argument("--latent_dim", default=512, type=int,
+-                       help="Transformer/GRU width.")
+-    group.add_argument("--ff_size", default=1024, type=int)
+-    group.add_argument("--cond_mask_prob", default=.1, type=float,
+-                       help="The probability of masking the condition during training."
+-                            " For classifier-free guidance learning.")
+-    group.add_argument("--lambda_rcxyz", default=0.0, type=float, help="Joint positions loss.")
+-    group.add_argument("--lambda_vel", default=0.0, type=float, help="Joint velocity loss.")
+-    group.add_argument("--lambda_fc", default=0.0, type=float, help="Foot contact loss.")
+-    group.add_argument("--lambda_smpl_joints", default=0.0, type=float)
+-    group.add_argument("--lambda_smpl_vertices", default=0.0, type=float)
+-    group.add_argument("--lambda_joints_consistency", default=0.0, type=float)
+-    group.add_argument("--lambda_joints_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_transl_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_orient_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_first_joints_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_first_transl_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_first_orient_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_rel_joints_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_rel_transl_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_rel_orient_delta", default=0.0, type=float)
+-    group.add_argument("--lambda_delta_norm", default=0.0, type=float)
+-    group.add_argument("--lambda_smooth", default=0.0, type=float)
+-    group.add_argument("--lambda_dct", default=0.0, type=float)
+-    group.add_argument("--lambda_jerk", default=0.0, type=float)
+-    group.add_argument("--mask_thresh_step", default=1.0, type=float)
+-    group.add_argument("--unconstrained", action='store_true',
+-                       help="Model is trained unconditionally. That is, it is constrained by neither text nor action. "
+-                            "Currently tested on HumanAct12 only.")
+-    group.add_argument("--output_cumsum", default=0, type=int)
+-
+-
+-
+-def add_data_options(parser):
+-    group = parser.add_argument_group('dataset')
+-    group.add_argument("--dataset", default='humanml', type=str,
+-                       help="Dataset name (choose from list).")
+-    group.add_argument("--data_dir", default="", type=str,
+-                       help="If empty, will use defaults according to the specified dataset.")
+-    group.add_argument("--cfg_path", type=str, default='./config_files/config_hydra/motion_primitive/mp_2_8.yaml')
+-    group.add_argument("--enforce_gender", type=str, default=None)
+-    group.add_argument("--enforce_zero_beta", type=int, default=0)
+-    group.add_argument("--body_type", type=str, default='smplx')
+-    group.add_argument("--seed_only", type=int, default=0)
+-
+-
+-def add_training_options(parser):
+-    group = parser.add_argument_group('training')
+-    group.add_argument("--save_dir", required=True, type=str,
+-                       help="Path to save checkpoints and results.")
+-    group.add_argument("--overwrite", action='store_true',
+-                       help="If True, will enable to use an already existing save_dir.")
+-    group.add_argument("--train_platform_type", default='TensorboardPlatform', choices=['NoPlatform', 'ClearmlPlatform', 'TensorboardPlatform'], type=str,
+-                       help="Choose platform to log results. NoPlatform means no logging.")
+-    group.add_argument("--lr", default=1e-4, type=float, help="Learning rate.")
+-    group.add_argument("--weight_decay", default=0.0, type=float, help="Optimizer weight decay.")
+-    group.add_argument("--lr_anneal_steps", default=0, type=int, help="Number of learning rate anneal steps.")
+-    group.add_argument("--eval_batch_size", default=32, type=int,
+-                       help="Batch size during evaluation loop. Do not change this unless you know what you are doing. "
+-                            "T2m precision calculation is based on fixed batch size 32.")
+-    group.add_argument("--eval_split", default='test', choices=['val', 'test'], type=str,
+-                       help="Which split to evaluate on during training.")
+-    group.add_argument("--eval_during_training", action='store_true',
+-                       help="If True, will run evaluation during training.")
+-    group.add_argument("--eval_rep_times", default=3, type=int,
+-                       help="Number of repetitions for evaluation loop during training.")
+-    group.add_argument("--eval_num_samples", default=1_000, type=int,
+-                       help="If -1, will use all samples in the specified split.")
+-    group.add_argument("--log_interval", default=1_000, type=int,
+-                       help="Log losses each N steps")
+-    group.add_argument("--save_interval", default=100_000, type=int,
+-                       help="Save checkpoints and run evaluation each N steps")
+-    group.add_argument("--num_steps", default=600_000, type=int,
+-                       help="Training will stop after the specified number of steps.")
+-    group.add_argument("--stage1_steps", default=100_000, type=int,
+-                       help="train with GT data")
+-    group.add_argument("--stage2_steps", default=100_000, type=int,
+-                       help="schedule train with random mixture of GT data and generated data rollout")
+-    group.add_argument("--stage3_steps", default=300_000, type=int,
+-                       help="train with generated data rollout")
+-    group.add_argument("--num_frames", default=60, type=int,
+-                       help="Limit for the maximal number of frames. In HumanML3D and KIT this field is ignored.")
+-    group.add_argument("--resume_checkpoint", default="", type=str,
+-                       help="If not empty, will start from the specified checkpoint (path to model###.pt file).")
+-    group.add_argument("--load_opt", default=1, type=int)
+-    group.add_argument("--use_fp16", action='store_true', default=False)
+-    group.add_argument("--avg_model_beta", default=0, type=float,
+-                       help="If > 0, will use the moving average model with the specified beta value.")
+-    group.add_argument("--grad_clip", default=0, type=float,
+-                       help="If > 0, clip grad norm.")
+-    group.add_argument("--ddim_rec", default=0, type=int)
+-    group.add_argument("--rollout_type", default='ddpm_rec', type=str)
+-    group.add_argument("--weight_scheme", default='uniform', type=str)
+-    group.add_argument("--text_tolerance", default=0.0, type=float)
+-    group.add_argument("--prob_static", default=0, type=float,
+-                       help="If > 0, randomly train on static sequence.")
+-    group.add_argument("--use_predicted_joints", default=0, type=int)
+-
+-
+-def add_sampling_options(parser):
+-    group = parser.add_argument_group('sampling')
+-    group.add_argument("--model_path", required=True, type=str,
+-                       help="Path to model####.pt file to be sampled.")
+-    group.add_argument("--output_dir", default='', type=str,
+-                       help="Path to results dir (auto created by the script). "
+-                            "If empty, will create dir in parallel to checkpoint.")
+-    group.add_argument("--num_samples", default=1, type=int,
+-                       help="Maximal number of prompts to sample, "
+-                            "if loading dataset from file, this field will be ignored.")
+-    group.add_argument("--num_repetitions", default=3, type=int,
+-                       help="Number of repetitions, per sample (text prompt/action)")
+-    group.add_argument("--guidance_param", default=2.5, type=float,
+-                       help="For classifier-free sampling - specifies the s parameter, as defined in the paper.")
+-    group.add_argument("--export_smpl", default=0, type=int)
+-
+-
+-def add_generate_options(parser):
+-    group = parser.add_argument_group('generate')
+-    group.add_argument("--motion_length", default=6.0, type=float,
+-                       help="The length of the sampled motion [in seconds]. "
+-                            "Maximum is 9.8 for HumanML3D (text-to-motion), and 2.0 for HumanAct12 (action-to-motion)")
+-    group.add_argument("--input_text", default='', type=str,
+-                       help="Path to a text file lists text prompts to be synthesized. If empty, will take text prompts from dataset.")
+-    group.add_argument("--action_file", default='', type=str,
+-                       help="Path to a text file that lists names of actions to be synthesized. Names must be a subset of dataset/uestc/info/action_classes.txt if sampling from uestc, "
+-                            "or a subset of [warm_up,walk,run,jump,drink,lift_dumbbell,sit,eat,turn steering wheel,phone,boxing,throw] if sampling from humanact12. "
+-                            "If no file is specified, will take action names from dataset.")
+-    group.add_argument("--text_prompt", default='', type=str,
+-                       help="A text prompt to be generated. If empty, will take text prompts from dataset.")
+-    group.add_argument("--action_name", default='', type=str,
+-                       help="An action name to be generated. If empty, will take text prompts from dataset.")
+-    group.add_argument("--num_rollout", default=1, type=int,
+-                       help="Number of motion segments. ")
+-    group.add_argument("--smooth", default=0, type=int,
+-                       help="whether smooth generated motion by blending")
+-    group.add_argument("--zero_noise", default=0, type=int)
+-    group.add_argument("--use_predicted_joints", default=0, type=int)
+-
+-def add_optim_options(parser):
+-    group = parser.add_argument_group('optim')
+-    group.add_argument('--optim_lr', type=float, default=0.01)
+-    group.add_argument('--optim_steps', type=int, default=300)
+-    group.add_argument('--optim_unit_grad', type=int, default=0)
+-    group.add_argument('--optim_anneal_lr', type=int, default=0)
+-
+-    group.add_argument('--optim_input', type=str)
+-
+-    group.add_argument('--optim_goal', type=str)
+-    group.add_argument('--optim_mode', type=str)
+-
+-
+-    parser.add_argument('--interaction_cfg', type=str, default=None)
+-    parser.add_argument('--weight_collision', type=float, default=0)
+-    parser.add_argument('--contact_thresh', type=float, default=0.03)
+-    parser.add_argument('--weight_contact', type=float, default=0)
+-    parser.add_argument('--weight_skate', type=float, default=0)
+-    parser.add_argument('--weight_jerk', type=float, default=0)
+-    parser.add_argument('--load_cache', type=int, default=0)
+-
+-def add_edit_options(parser):
+-    group = parser.add_argument_group('edit')
+-    group.add_argument("--edit_mode", default='in_between', choices=['in_between', 'upper_body'], type=str,
+-                       help="Defines which parts of the input motion will be edited.\n"
+-                            "(1) in_between - suffix and prefix motion taken from input motion, "
+-                            "middle motion is generated.\n"
+-                            "(2) upper_body - lower body joints taken from input motion, "
+-                            "upper body is generated.")
+-    group.add_argument("--text_condition", default='', type=str,
+-                       help="Editing will be conditioned on this text prompt. "
+-                            "If empty, will perform unconditioned editing.")
+-    group.add_argument("--num_rollout", default=1, type=int,
+-                       help="Number of motion segments. ")
+-    group.add_argument("--prefix_end", default=0.25, type=float,
+-                       help="For in_between editing - Defines the end of input prefix (ratio from all frames).")
+-    group.add_argument("--suffix_start", default=0.75, type=float,
+-                       help="For in_between editing - Defines the start of input suffix (ratio from all frames).")
+-
+-
+-def add_evaluation_options(parser):
+-    group = parser.add_argument_group('eval')
+-    group.add_argument("--model_path", required=True, type=str,
+-                       help="Path to model####.pt file to be sampled.")
+-    group.add_argument("--eval_mode", default='wo_mm', choices=['wo_mm', 'mm_short', 'debug', 'full'], type=str,
+-                       help="wo_mm (t2m only) - 20 repetitions without multi-modality metric; "
+-                            "mm_short (t2m only) - 5 repetitions with multi-modality metric; "
+-                            "debug - short run, less accurate results."
+-                            "full (a2m only) - 20 repetitions.")
+-    group.add_argument("--guidance_param", default=2.5, type=float,
+-                       help="For classifier-free sampling - specifies the s parameter, as defined in the paper.")
+-
+-
+-def get_cond_mode(args):
+-    if args.unconstrained:
+-        cond_mode = 'no_cond'
+-    elif args.dataset in ['kit', 'humanml']:
+-        cond_mode = 'text'
+-    else:
+-        cond_mode = 'action'
+-    return cond_mode
+-
+-
+-def train_args():
+-    parser = ArgumentParser()
+-    add_base_options(parser)
+-    add_data_options(parser)
+-    add_model_options(parser)
+-    add_diffusion_options(parser)
+-    add_training_options(parser)
+-    return parser.parse_args()
+-
+-
+-def generate_args():
+-    parser = ArgumentParser()
+-    # args specified by the user: (all other will be loaded from the model)
+-    add_base_options(parser)
+-    add_sampling_options(parser)
+-    add_generate_options(parser)
+-    args = parse_and_load_from_model(parser)
+-    # cond_mode = get_cond_mode(args)
+-    #
+-    # if (args.input_text or args.text_prompt) and cond_mode != 'text':
+-    #     raise Exception('Arguments input_text and text_prompt should not be used for an action condition. Please use action_file or action_name.')
+-    # elif (args.action_file or args.action_name) and cond_mode != 'action':
+-    #     raise Exception('Arguments action_file and action_name should not be used for a text condition. Please use input_text or text_prompt.')
+-
+-    return args
+-
+-def optim_args():
+-    parser = ArgumentParser()
+-    # args specified by the user: (all other will be loaded from the model)
+-    add_base_options(parser)
+-    add_sampling_options(parser)
+-    add_generate_options(parser)
+-    add_optim_options(parser)
+-    args = parse_and_load_from_model(parser)
+-
+-    return args
+-
+-def flowmdm_args():
+-    parser = ArgumentParser()
+-    # args specified by the user: (all other will be loaded from the model)
+-    add_base_options(parser)
+-    add_sampling_options(parser)
+-    add_generate_options(parser)
+-    parser.add_argument('--flowmdm_dir', type=str, help='Path to the flowmdm results directory.')
+-    # parser.add_argument('ours_dir', type=str, help='')
+-    args = parse_and_load_from_model(parser)
+-    # cond_mode = get_cond_mode(args)
+-    #
+-    # if (args.input_text or args.text_prompt) and cond_mode != 'text':
+-    #     raise Exception('Arguments input_text and text_prompt should not be used for an action condition. Please use action_file or action_name.')
+-    # elif (args.action_file or args.action_name) and cond_mode != 'action':
+-    #     raise Exception('Arguments action_file and action_name should not be used for a text condition. Please use input_text or text_prompt.')
+-
+-    return args
+-
+-def edit_args():
+-    parser = ArgumentParser()
+-    # args specified by the user: (all other will be loaded from the model)
+-    add_base_options(parser)
+-    add_sampling_options(parser)
+-    add_edit_options(parser)
+-    return parse_and_load_from_model(parser)
+-
+-
+-def evaluation_parser():
+-    parser = ArgumentParser()
+-    # args specified by the user: (all other will be loaded from the model)
+-    add_base_options(parser)
+-    add_evaluation_options(parser)
+-    return parse_and_load_from_model(parser)
+\ No newline at end of file
+diff --git a/utils/point_mesh_dist.py b/utils/point_mesh_dist.py
+deleted file mode 100644
+index 21b86f3..0000000
+--- a/utils/point_mesh_dist.py
++++ /dev/null
+@@ -1,217 +0,0 @@
+-# https://pytorch3d.readthedocs.io/en/latest/_modules/pytorch3d/loss/point_mesh_distance.html#point_mesh_face_distance
+-from pytorch3d import _C
+-from pytorch3d.structures import Meshes, Pointclouds
+-from torch.autograd import Function
+-from torch.autograd.function import once_differentiable
+-
+-_DEFAULT_MIN_TRIANGLE_AREA: float = 5e-3
+-
+-# PointFaceDistance
+-class _PointFaceDistance(Function):
+-    """
+-    Torch autograd Function wrapper PointFaceDistance Cuda implementation
+-    """
+-
+-    @staticmethod
+-    def forward(
+-        ctx,
+-        points,
+-        points_first_idx,
+-        tris,
+-        tris_first_idx,
+-        max_points,
+-        min_triangle_area=_DEFAULT_MIN_TRIANGLE_AREA,
+-    ):
+-        """
+-        Args:
+-            ctx: Context object used to calculate gradients.
+-            points: FloatTensor of shape `(P, 3)`
+-            points_first_idx: LongTensor of shape `(N,)` indicating the first point
+-                index in each example in the batch
+-            tris: FloatTensor of shape `(T, 3, 3)` of triangular faces. The `t`-th
+-                triangular face is spanned by `(tris[t, 0], tris[t, 1], tris[t, 2])`
+-            tris_first_idx: LongTensor of shape `(N,)` indicating the first face
+-                index in each example in the batch
+-            max_points: Scalar equal to maximum number of points in the batch
+-            min_triangle_area: (float, defaulted) Triangles of area less than this
+-                will be treated as points/lines.
+-        Returns:
+-            dists: FloatTensor of shape `(P,)`, where `dists[p]` is the squared
+-                euclidean distance of `p`-th point to the closest triangular face
+-                in the corresponding example in the batch
+-            idxs: LongTensor of shape `(P,)` indicating the closest triangular face
+-                in the corresponding example in the batch.
+-
+-            `dists[p]` is
+-            `d(points[p], tris[idxs[p], 0], tris[idxs[p], 1], tris[idxs[p], 2])`
+-            where `d(u, v0, v1, v2)` is the distance of point `u` from the triangular
+-            face `(v0, v1, v2)`
+-
+-        """
+-        dists, idxs = _C.point_face_dist_forward(
+-            points,
+-            points_first_idx,
+-            tris,
+-            tris_first_idx,
+-            max_points,
+-            min_triangle_area,
+-        )
+-        ctx.save_for_backward(points, tris, idxs)
+-        ctx.min_triangle_area = min_triangle_area
+-        return dists
+-
+-    @staticmethod
+-    @once_differentiable
+-    def backward(ctx, grad_dists):
+-        grad_dists = grad_dists.contiguous()
+-        points, tris, idxs = ctx.saved_tensors
+-        min_triangle_area = ctx.min_triangle_area
+-        grad_points, grad_tris = _C.point_face_dist_backward(
+-            points, tris, idxs, grad_dists,
+-            # min_triangle_area
+-        )
+-        return grad_points, None, grad_tris, None, None, None
+-
+-
+-# pyre-fixme[16]: `_PointFaceDistance` has no attribute `apply`.
+-point_face_distance = _PointFaceDistance.apply
+-
+-
+-# FacePointDistance
+-class _FacePointDistance(Function):
+-    """
+-    Torch autograd Function wrapper FacePointDistance Cuda implementation
+-    """
+-
+-    @staticmethod
+-    def forward(
+-        ctx,
+-        points,
+-        points_first_idx,
+-        tris,
+-        tris_first_idx,
+-        max_tris,
+-        min_triangle_area=_DEFAULT_MIN_TRIANGLE_AREA,
+-    ):
+-        """
+-        Args:
+-            ctx: Context object used to calculate gradients.
+-            points: FloatTensor of shape `(P, 3)`
+-            points_first_idx: LongTensor of shape `(N,)` indicating the first point
+-                index in each example in the batch
+-            tris: FloatTensor of shape `(T, 3, 3)` of triangular faces. The `t`-th
+-                triangular face is spanned by `(tris[t, 0], tris[t, 1], tris[t, 2])`
+-            tris_first_idx: LongTensor of shape `(N,)` indicating the first face
+-                index in each example in the batch
+-            max_tris: Scalar equal to maximum number of faces in the batch
+-            min_triangle_area: (float, defaulted) Triangles of area less than this
+-                will be treated as points/lines.
+-        Returns:
+-            dists: FloatTensor of shape `(T,)`, where `dists[t]` is the squared
+-                euclidean distance of `t`-th triangular face to the closest point in the
+-                corresponding example in the batch
+-            idxs: LongTensor of shape `(T,)` indicating the closest point in the
+-                corresponding example in the batch.
+-
+-            `dists[t] = d(points[idxs[t]], tris[t, 0], tris[t, 1], tris[t, 2])`,
+-            where `d(u, v0, v1, v2)` is the distance of point `u` from the triangular
+-            face `(v0, v1, v2)`.
+-        """
+-        dists, idxs = _C.face_point_dist_forward(
+-            points, points_first_idx, tris, tris_first_idx, max_tris,
+-            # min_triangle_area
+-        )
+-        ctx.save_for_backward(points, tris, idxs)
+-        ctx.min_triangle_area = min_triangle_area
+-        return dists
+-
+-    @staticmethod
+-    @once_differentiable
+-    def backward(ctx, grad_dists):
+-        grad_dists = grad_dists.contiguous()
+-        points, tris, idxs = ctx.saved_tensors
+-        min_triangle_area = ctx.min_triangle_area
+-        grad_points, grad_tris = _C.face_point_dist_backward(
+-            points, tris, idxs, grad_dists,
+-            # min_triangle_area
+-        )
+-        return grad_points, None, grad_tris, None, None, None
+-
+-
+-# pyre-fixme[16]: `_FacePointDistance` has no attribute `apply`.
+-face_point_distance = _FacePointDistance.apply
+-
+-def point_mesh_face_distance(
+-    meshes: Meshes,
+-    pcls: Pointclouds,
+-    min_triangle_area: float = _DEFAULT_MIN_TRIANGLE_AREA,
+-):
+-    """
+-    Computes the distance between a pointcloud and a mesh within a batch.
+-    Given a pair `(mesh, pcl)` in the batch, we define the distance to be the
+-    sum of two distances, namely `point_face(mesh, pcl) + face_point(mesh, pcl)`
+-
+-    `point_face(mesh, pcl)`: Computes the squared distance of each point p in pcl
+-        to the closest triangular face in mesh and averages across all points in pcl
+-    `face_point(mesh, pcl)`: Computes the squared distance of each triangular face in
+-        mesh to the closest point in pcl and averages across all faces in mesh.
+-
+-    The above distance functions are applied for all `(mesh, pcl)` pairs in the batch
+-    and then averaged across the batch.
+-
+-    Args:
+-        meshes: A Meshes data structure containing N meshes
+-        pcls: A Pointclouds data structure containing N pointclouds
+-        min_triangle_area: (float, defaulted) Triangles of area less than this
+-            will be treated as points/lines.
+-
+-    Returns:
+-        loss: The `point_face(mesh, pcl) + face_point(mesh, pcl)` distance
+-            between all `(mesh, pcl)` in a batch averaged across the batch.
+-    """
+-
+-    if len(meshes) != len(pcls):
+-        raise ValueError("meshes and pointclouds must be equal sized batches")
+-    N = len(meshes)
+-
+-    # packed representation for pointclouds
+-    points = pcls.points_packed()  # (P, 3)
+-    points_first_idx = pcls.cloud_to_packed_first_idx()
+-    max_points = pcls.num_points_per_cloud().max().item()
+-
+-    # packed representation for faces
+-    verts_packed = meshes.verts_packed()
+-    faces_packed = meshes.faces_packed()
+-    tris = verts_packed[faces_packed]  # (T, 3, 3)
+-    tris_first_idx = meshes.mesh_to_faces_packed_first_idx()
+-    max_tris = meshes.num_faces_per_mesh().max().item()
+-
+-    # point to face distance: shape (P,)
+-    point_to_face = point_face_distance(
+-        points, points_first_idx, tris, tris_first_idx, max_points, min_triangle_area
+-    )
+-
+-    # weight each example by the inverse of number of points in the example
+-    # point_to_cloud_idx = pcls.packed_to_cloud_idx()  # (sum(P_i),)
+-    # num_points_per_cloud = pcls.num_points_per_cloud()  # (N,)
+-    # weights_p = num_points_per_cloud.gather(0, point_to_cloud_idx)
+-    # weights_p = 1.0 / weights_p.float()
+-    # point_to_face = point_to_face * weights_p
+-    # point_dist = point_to_face.sum() / N
+-    #
+-    # # face to point distance: shape (T,)
+-    # face_to_point = face_point_distance(
+-    #     points, points_first_idx, tris, tris_first_idx, max_tris, min_triangle_area
+-    # )
+-    #
+-    # # weight each example by the inverse of number of faces in the example
+-    # tri_to_mesh_idx = meshes.faces_packed_to_mesh_idx()  # (sum(T_n),)
+-    # num_tris_per_mesh = meshes.num_faces_per_mesh()  # (N, )
+-    # weights_t = num_tris_per_mesh.gather(0, tri_to_mesh_idx)
+-    # weights_t = 1.0 / weights_t.float()
+-    # face_to_point = face_to_point * weights_t
+-    # face_dist = face_to_point.sum() / N
+-
+-    # return point_dist + face_dist
+-    # return point_dist
+-    return point_to_face  # (P,)
+diff --git a/utils/rotation_conversions.py b/utils/rotation_conversions.py
+deleted file mode 100644
+index 210ae1f..0000000
+--- a/utils/rotation_conversions.py
++++ /dev/null
+@@ -1,552 +0,0 @@
+-# This code is based on https://github.com/Mathux/ACTOR.git
+-# Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+-# Check PYTORCH3D_LICENCE before use
+-
+-import functools
+-from typing import Optional
+-
+-import torch
+-import torch.nn.functional as F
+-
+-
+-"""
+-The transformation matrices returned from the functions in this file assume
+-the points on which the transformation will be applied are column vectors.
+-i.e. the R matrix is structured as
+-
+-    R = [
+-            [Rxx, Rxy, Rxz],
+-            [Ryx, Ryy, Ryz],
+-            [Rzx, Rzy, Rzz],
+-        ]  # (3, 3)
+-
+-This matrix can be applied to column vectors by post multiplication
+-by the points e.g.
+-
+-    points = [[0], [1], [2]]  # (3 x 1) xyz coordinates of a point
+-    transformed_points = R * points
+-
+-To apply the same matrix to points which are row vectors, the R matrix
+-can be transposed and pre multiplied by the points:
+-
+-e.g.
+-    points = [[0, 1, 2]]  # (1 x 3) xyz coordinates of a point
+-    transformed_points = points * R.transpose(1, 0)
+-"""
+-
+-
+-def quaternion_to_matrix(quaternions):
+-    """
+-    Convert rotations given as quaternions to rotation matrices.
+-
+-    Args:
+-        quaternions: quaternions with real part first,
+-            as tensor of shape (..., 4).
+-
+-    Returns:
+-        Rotation matrices as tensor of shape (..., 3, 3).
+-    """
+-    r, i, j, k = torch.unbind(quaternions, -1)
+-    two_s = 2.0 / (quaternions * quaternions).sum(-1)
+-
+-    o = torch.stack(
+-        (
+-            1 - two_s * (j * j + k * k),
+-            two_s * (i * j - k * r),
+-            two_s * (i * k + j * r),
+-            two_s * (i * j + k * r),
+-            1 - two_s * (i * i + k * k),
+-            two_s * (j * k - i * r),
+-            two_s * (i * k - j * r),
+-            two_s * (j * k + i * r),
+-            1 - two_s * (i * i + j * j),
+-        ),
+-        -1,
+-    )
+-    return o.reshape(quaternions.shape[:-1] + (3, 3))
+-
+-
+-def _copysign(a, b):
+-    """
+-    Return a tensor where each element has the absolute value taken from the,
+-    corresponding element of a, with sign taken from the corresponding
+-    element of b. This is like the standard copysign floating-point operation,
+-    but is not careful about negative 0 and NaN.
+-
+-    Args:
+-        a: source tensor.
+-        b: tensor whose signs will be used, of the same shape as a.
+-
+-    Returns:
+-        Tensor of the same shape as a with the signs of b.
+-    """
+-    signs_differ = (a < 0) != (b < 0)
+-    return torch.where(signs_differ, -a, a)
+-
+-
+-def _sqrt_positive_part(x):
+-    """
+-    Returns torch.sqrt(torch.max(0, x))
+-    but with a zero subgradient where x is 0.
+-    """
+-    ret = torch.zeros_like(x)
+-    positive_mask = x > 0
+-    ret[positive_mask] = torch.sqrt(x[positive_mask])
+-    return ret
+-
+-
+-def matrix_to_quaternion(matrix):
+-    """
+-    Convert rotations given as rotation matrices to quaternions.
+-
+-    Args:
+-        matrix: Rotation matrices as tensor of shape (..., 3, 3).
+-
+-    Returns:
+-        quaternions with real part first, as tensor of shape (..., 4).
+-    """
+-    if matrix.size(-1) != 3 or matrix.size(-2) != 3:
+-        raise ValueError(f"Invalid rotation matrix  shape f{matrix.shape}.")
+-    m00 = matrix[..., 0, 0]
+-    m11 = matrix[..., 1, 1]
+-    m22 = matrix[..., 2, 2]
+-    o0 = 0.5 * _sqrt_positive_part(1 + m00 + m11 + m22)
+-    x = 0.5 * _sqrt_positive_part(1 + m00 - m11 - m22)
+-    y = 0.5 * _sqrt_positive_part(1 - m00 + m11 - m22)
+-    z = 0.5 * _sqrt_positive_part(1 - m00 - m11 + m22)
+-    o1 = _copysign(x, matrix[..., 2, 1] - matrix[..., 1, 2])
+-    o2 = _copysign(y, matrix[..., 0, 2] - matrix[..., 2, 0])
+-    o3 = _copysign(z, matrix[..., 1, 0] - matrix[..., 0, 1])
+-    return torch.stack((o0, o1, o2, o3), -1)
+-
+-
+-def _axis_angle_rotation(axis: str, angle):
+-    """
+-    Return the rotation matrices for one of the rotations about an axis
+-    of which Euler angles describe, for each value of the angle given.
+-
+-    Args:
+-        axis: Axis label "X" or "Y or "Z".
+-        angle: any shape tensor of Euler angles in radians
+-
+-    Returns:
+-        Rotation matrices as tensor of shape (..., 3, 3).
+-    """
+-
+-    cos = torch.cos(angle)
+-    sin = torch.sin(angle)
+-    one = torch.ones_like(angle)
+-    zero = torch.zeros_like(angle)
+-
+-    if axis == "X":
+-        R_flat = (one, zero, zero, zero, cos, -sin, zero, sin, cos)
+-    if axis == "Y":
+-        R_flat = (cos, zero, sin, zero, one, zero, -sin, zero, cos)
+-    if axis == "Z":
+-        R_flat = (cos, -sin, zero, sin, cos, zero, zero, zero, one)
+-
+-    return torch.stack(R_flat, -1).reshape(angle.shape + (3, 3))
+-
+-
+-def euler_angles_to_matrix(euler_angles, convention: str):
+-    """
+-    Convert rotations given as Euler angles in radians to rotation matrices.
+-
+-    Args:
+-        euler_angles: Euler angles in radians as tensor of shape (..., 3).
+-        convention: Convention string of three uppercase letters from
+-            {"X", "Y", and "Z"}.
+-
+-    Returns:
+-        Rotation matrices as tensor of shape (..., 3, 3).
+-    """
+-    if euler_angles.dim() == 0 or euler_angles.shape[-1] != 3:
+-        raise ValueError("Invalid input euler angles.")
+-    if len(convention) != 3:
+-        raise ValueError("Convention must have 3 letters.")
+-    if convention[1] in (convention[0], convention[2]):
+-        raise ValueError(f"Invalid convention {convention}.")
+-    for letter in convention:
+-        if letter not in ("X", "Y", "Z"):
+-            raise ValueError(f"Invalid letter {letter} in convention string.")
+-    matrices = map(_axis_angle_rotation, convention, torch.unbind(euler_angles, -1))
+-    return functools.reduce(torch.matmul, matrices)
+-
+-
+-def _angle_from_tan(
+-    axis: str, other_axis: str, data, horizontal: bool, tait_bryan: bool
+-):
+-    """
+-    Extract the first or third Euler angle from the two members of
+-    the matrix which are positive constant times its sine and cosine.
+-
+-    Args:
+-        axis: Axis label "X" or "Y or "Z" for the angle we are finding.
+-        other_axis: Axis label "X" or "Y or "Z" for the middle axis in the
+-            convention.
+-        data: Rotation matrices as tensor of shape (..., 3, 3).
+-        horizontal: Whether we are looking for the angle for the third axis,
+-            which means the relevant entries are in the same row of the
+-            rotation matrix. If not, they are in the same column.
+-        tait_bryan: Whether the first and third axes in the convention differ.
+-
+-    Returns:
+-        Euler Angles in radians for each matrix in dataset as a tensor
+-        of shape (...).
+-    """
+-
+-    i1, i2 = {"X": (2, 1), "Y": (0, 2), "Z": (1, 0)}[axis]
+-    if horizontal:
+-        i2, i1 = i1, i2
+-    even = (axis + other_axis) in ["XY", "YZ", "ZX"]
+-    if horizontal == even:
+-        return torch.atan2(data[..., i1], data[..., i2])
+-    if tait_bryan:
+-        return torch.atan2(-data[..., i2], data[..., i1])
+-    return torch.atan2(data[..., i2], -data[..., i1])
+-
+-
+-def _index_from_letter(letter: str):
+-    if letter == "X":
+-        return 0
+-    if letter == "Y":
+-        return 1
+-    if letter == "Z":
+-        return 2
+-
+-
+-def matrix_to_euler_angles(matrix, convention: str):
+-    """
+-    Convert rotations given as rotation matrices to Euler angles in radians.
+-
+-    Args:
+-        matrix: Rotation matrices as tensor of shape (..., 3, 3).
+-        convention: Convention string of three uppercase letters.
+-
+-    Returns:
+-        Euler angles in radians as tensor of shape (..., 3).
+-    """
+-    if len(convention) != 3:
+-        raise ValueError("Convention must have 3 letters.")
+-    if convention[1] in (convention[0], convention[2]):
+-        raise ValueError(f"Invalid convention {convention}.")
+-    for letter in convention:
+-        if letter not in ("X", "Y", "Z"):
+-            raise ValueError(f"Invalid letter {letter} in convention string.")
+-    if matrix.size(-1) != 3 or matrix.size(-2) != 3:
+-        raise ValueError(f"Invalid rotation matrix  shape f{matrix.shape}.")
+-    i0 = _index_from_letter(convention[0])
+-    i2 = _index_from_letter(convention[2])
+-    tait_bryan = i0 != i2
+-    if tait_bryan:
+-        central_angle = torch.asin(
+-            matrix[..., i0, i2] * (-1.0 if i0 - i2 in [-1, 2] else 1.0)
+-        )
+-    else:
+-        central_angle = torch.acos(matrix[..., i0, i0])
+-
+-    o = (
+-        _angle_from_tan(
+-            convention[0], convention[1], matrix[..., i2], False, tait_bryan
+-        ),
+-        central_angle,
+-        _angle_from_tan(
+-            convention[2], convention[1], matrix[..., i0, :], True, tait_bryan
+-        ),
+-    )
+-    return torch.stack(o, -1)
+-
+-
+-def random_quaternions(
+-    n: int, dtype: Optional[torch.dtype] = None, device=None, requires_grad=False
+-):
+-    """
+-    Generate random quaternions representing rotations,
+-    i.e. versors with nonnegative real part.
+-
+-    Args:
+-        n: Number of quaternions in a batch to return.
+-        dtype: Type to return.
+-        device: Desired device of returned tensor. Default:
+-            uses the current device for the default tensor type.
+-        requires_grad: Whether the resulting tensor should have the gradient
+-            flag set.
+-
+-    Returns:
+-        Quaternions as tensor of shape (N, 4).
+-    """
+-    o = torch.randn((n, 4), dtype=dtype, device=device, requires_grad=requires_grad)
+-    s = (o * o).sum(1)
+-    o = o / _copysign(torch.sqrt(s), o[:, 0])[:, None]
+-    return o
+-
+-
+-def random_rotations(
+-    n: int, dtype: Optional[torch.dtype] = None, device=None, requires_grad=False
+-):
+-    """
+-    Generate random rotations as 3x3 rotation matrices.
+-
+-    Args:
+-        n: Number of rotation matrices in a batch to return.
+-        dtype: Type to return.
+-        device: Device of returned tensor. Default: if None,
+-            uses the current device for the default tensor type.
+-        requires_grad: Whether the resulting tensor should have the gradient
+-            flag set.
+-
+-    Returns:
+-        Rotation matrices as tensor of shape (n, 3, 3).
+-    """
+-    quaternions = random_quaternions(
+-        n, dtype=dtype, device=device, requires_grad=requires_grad
+-    )
+-    return quaternion_to_matrix(quaternions)
+-
+-
+-def random_rotation(
+-    dtype: Optional[torch.dtype] = None, device=None, requires_grad=False
+-):
+-    """
+-    Generate a single random 3x3 rotation matrix.
+-
+-    Args:
+-        dtype: Type to return
+-        device: Device of returned tensor. Default: if None,
+-            uses the current device for the default tensor type
+-        requires_grad: Whether the resulting tensor should have the gradient
+-            flag set
+-
+-    Returns:
+-        Rotation matrix as tensor of shape (3, 3).
+-    """
+-    return random_rotations(1, dtype, device, requires_grad)[0]
+-
+-
+-def standardize_quaternion(quaternions):
+-    """
+-    Convert a unit quaternion to a standard form: one in which the real
+-    part is non negative.
+-
+-    Args:
+-        quaternions: Quaternions with real part first,
+-            as tensor of shape (..., 4).
+-
+-    Returns:
+-        Standardized quaternions as tensor of shape (..., 4).
+-    """
+-    return torch.where(quaternions[..., 0:1] < 0, -quaternions, quaternions)
+-
+-
+-def quaternion_raw_multiply(a, b):
+-    """
+-    Multiply two quaternions.
+-    Usual torch rules for broadcasting apply.
+-
+-    Args:
+-        a: Quaternions as tensor of shape (..., 4), real part first.
+-        b: Quaternions as tensor of shape (..., 4), real part first.
+-
+-    Returns:
+-        The product of a and b, a tensor of quaternions shape (..., 4).
+-    """
+-    aw, ax, ay, az = torch.unbind(a, -1)
+-    bw, bx, by, bz = torch.unbind(b, -1)
+-    ow = aw * bw - ax * bx - ay * by - az * bz
+-    ox = aw * bx + ax * bw + ay * bz - az * by
+-    oy = aw * by - ax * bz + ay * bw + az * bx
+-    oz = aw * bz + ax * by - ay * bx + az * bw
+-    return torch.stack((ow, ox, oy, oz), -1)
+-
+-
+-def quaternion_multiply(a, b):
+-    """
+-    Multiply two quaternions representing rotations, returning the quaternion
+-    representing their composition, i.e. the versor with nonnegative real part.
+-    Usual torch rules for broadcasting apply.
+-
+-    Args:
+-        a: Quaternions as tensor of shape (..., 4), real part first.
+-        b: Quaternions as tensor of shape (..., 4), real part first.
+-
+-    Returns:
+-        The product of a and b, a tensor of quaternions of shape (..., 4).
+-    """
+-    ab = quaternion_raw_multiply(a, b)
+-    return standardize_quaternion(ab)
+-
+-
+-def quaternion_invert(quaternion):
+-    """
+-    Given a quaternion representing rotation, get the quaternion representing
+-    its inverse.
+-
+-    Args:
+-        quaternion: Quaternions as tensor of shape (..., 4), with real part
+-            first, which must be versors (unit quaternions).
+-
+-    Returns:
+-        The inverse, a tensor of quaternions of shape (..., 4).
+-    """
+-
+-    return quaternion * quaternion.new_tensor([1, -1, -1, -1])
+-
+-
+-def quaternion_apply(quaternion, point):
+-    """
+-    Apply the rotation given by a quaternion to a 3D point.
+-    Usual torch rules for broadcasting apply.
+-
+-    Args:
+-        quaternion: Tensor of quaternions, real part first, of shape (..., 4).
+-        point: Tensor of 3D points of shape (..., 3).
+-
+-    Returns:
+-        Tensor of rotated points of shape (..., 3).
+-    """
+-    if point.size(-1) != 3:
+-        raise ValueError(f"Points are not in 3D, f{point.shape}.")
+-    real_parts = point.new_zeros(point.shape[:-1] + (1,))
+-    point_as_quaternion = torch.cat((real_parts, point), -1)
+-    out = quaternion_raw_multiply(
+-        quaternion_raw_multiply(quaternion, point_as_quaternion),
+-        quaternion_invert(quaternion),
+-    )
+-    return out[..., 1:]
+-
+-
+-def axis_angle_to_matrix(axis_angle):
+-    """
+-    Convert rotations given as axis/angle to rotation matrices.
+-
+-    Args:
+-        axis_angle: Rotations given as a vector in axis angle form,
+-            as a tensor of shape (..., 3), where the magnitude is
+-            the angle turned anticlockwise in radians around the
+-            vector's direction.
+-
+-    Returns:
+-        Rotation matrices as tensor of shape (..., 3, 3).
+-    """
+-    return quaternion_to_matrix(axis_angle_to_quaternion(axis_angle))
+-
+-
+-def matrix_to_axis_angle(matrix):
+-    """
+-    Convert rotations given as rotation matrices to axis/angle.
+-
+-    Args:
+-        matrix: Rotation matrices as tensor of shape (..., 3, 3).
+-
+-    Returns:
+-        Rotations given as a vector in axis angle form, as a tensor
+-            of shape (..., 3), where the magnitude is the angle
+-            turned anticlockwise in radians around the vector's
+-            direction.
+-    """
+-    return quaternion_to_axis_angle(matrix_to_quaternion(matrix))
+-
+-
+-def axis_angle_to_quaternion(axis_angle):
+-    """
+-    Convert rotations given as axis/angle to quaternions.
+-
+-    Args:
+-        axis_angle: Rotations given as a vector in axis angle form,
+-            as a tensor of shape (..., 3), where the magnitude is
+-            the angle turned anticlockwise in radians around the
+-            vector's direction.
+-
+-    Returns:
+-        quaternions with real part first, as tensor of shape (..., 4).
+-    """
+-    angles = torch.norm(axis_angle, p=2, dim=-1, keepdim=True)
+-    half_angles = 0.5 * angles
+-    eps = 1e-6
+-    small_angles = angles.abs() < eps
+-    sin_half_angles_over_angles = torch.empty_like(angles)
+-    sin_half_angles_over_angles[~small_angles] = (
+-        torch.sin(half_angles[~small_angles]) / angles[~small_angles]
+-    )
+-    # for x small, sin(x/2) is about x/2 - (x/2)^3/6
+-    # so sin(x/2)/x is about 1/2 - (x*x)/48
+-    sin_half_angles_over_angles[small_angles] = (
+-        0.5 - (angles[small_angles] * angles[small_angles]) / 48
+-    )
+-    quaternions = torch.cat(
+-        [torch.cos(half_angles), axis_angle * sin_half_angles_over_angles], dim=-1
+-    )
+-    return quaternions
+-
+-
+-def quaternion_to_axis_angle(quaternions):
+-    """
+-    Convert rotations given as quaternions to axis/angle.
+-
+-    Args:
+-        quaternions: quaternions with real part first,
+-            as tensor of shape (..., 4).
+-
+-    Returns:
+-        Rotations given as a vector in axis angle form, as a tensor
+-            of shape (..., 3), where the magnitude is the angle
+-            turned anticlockwise in radians around the vector's
+-            direction.
+-    """
+-    norms = torch.norm(quaternions[..., 1:], p=2, dim=-1, keepdim=True)
+-    half_angles = torch.atan2(norms, quaternions[..., :1])
+-    angles = 2 * half_angles
+-    eps = 1e-6
+-    small_angles = angles.abs() < eps
+-    sin_half_angles_over_angles = torch.empty_like(angles)
+-    sin_half_angles_over_angles[~small_angles] = (
+-        torch.sin(half_angles[~small_angles]) / angles[~small_angles]
+-    )
+-    # for x small, sin(x/2) is about x/2 - (x/2)^3/6
+-    # so sin(x/2)/x is about 1/2 - (x*x)/48
+-    sin_half_angles_over_angles[small_angles] = (
+-        0.5 - (angles[small_angles] * angles[small_angles]) / 48
+-    )
+-    return quaternions[..., 1:] / sin_half_angles_over_angles
+-
+-
+-def rotation_6d_to_matrix(d6: torch.Tensor) -> torch.Tensor:
+-    """
+-    Converts 6D rotation representation by Zhou et al. [1] to rotation matrix
+-    using Gram--Schmidt orthogonalisation per Section B of [1].
+-    Args:
+-        d6: 6D rotation representation, of size (*, 6)
+-
+-    Returns:
+-        batch of rotation matrices of size (*, 3, 3)
+-
+-    [1] Zhou, Y., Barnes, C., Lu, J., Yang, J., & Li, H.
+-    On the Continuity of Rotation Representations in Neural Networks.
+-    IEEE Conference on Computer Vision and Pattern Recognition, 2019.
+-    Retrieved from http://arxiv.org/abs/1812.07035
+-    """
+-
+-    a1, a2 = d6[..., :3], d6[..., 3:]
+-    b1 = F.normalize(a1, dim=-1)
+-    b2 = a2 - (b1 * a2).sum(-1, keepdim=True) * b1
+-    b2 = F.normalize(b2, dim=-1)
+-    b3 = torch.cross(b1, b2, dim=-1)
+-    return torch.stack((b1, b2, b3), dim=-2)
+-
+-
+-def matrix_to_rotation_6d(matrix: torch.Tensor) -> torch.Tensor:
+-    """
+-    Converts rotation matrices to 6D rotation representation by Zhou et al. [1]
+-    by dropping the last row. Note that 6D representation is not unique.
+-    Args:
+-        matrix: batch of rotation matrices of size (*, 3, 3)
+-
+-    Returns:
+-        6D rotation representation, of size (*, 6)
+-
+-    [1] Zhou, Y., Barnes, C., Lu, J., Yang, J., & Li, H.
+-    On the Continuity of Rotation Representations in Neural Networks.
+-    IEEE Conference on Computer Vision and Pattern Recognition, 2019.
+-    Retrieved from http://arxiv.org/abs/1812.07035
+-    """
+-    return matrix[..., :2, :].clone().reshape(*matrix.size()[:-2], 6)
+diff --git a/utils/scene_util.py b/utils/scene_util.py
+deleted file mode 100644
+index f1bea69..0000000
+--- a/utils/scene_util.py
++++ /dev/null
+@@ -1,26 +0,0 @@
+-import trimesh
+-import mesh2sdf
+-import numpy as np
+-import json
+-from pathfinder import navmesh_baker as nmb
+-import pathfinder as pf
+-
+-zup_to_shapenet = np.array(
+-    [[1, 0, 0, 0],
+-     [0, 0, 1, 0],
+-     [0, -1, 0, 0],
+-     [0, 0, 0, 1]]
+-)
+-shapenet_to_zup = np.array(
+-    [[1, 0, 0, 0],
+-     [0, 0, -1, 0],
+-     [0, 1, 0, 0],
+-     [0, 0, 0, 1]]
+-)
+-
+-unity_to_zup = np.array(
+-            [[-1, 0, 0, 0],
+-             [0, 0, -1, 0],
+-             [0, 1, 0, 0],
+-             [0, 0, 0, 1]]
+-        )
+\ No newline at end of file
+diff --git a/utils/smpl_utils.py b/utils/smpl_utils.py
+deleted file mode 100644
+index 54dcbdc..0000000
+--- a/utils/smpl_utils.py
++++ /dev/null
+@@ -1,607 +0,0 @@
+-from pytorch3d import transforms
+-from copy import deepcopy
+-import torch
+-import smplx
+-from typing import Tuple
+-from typing import Union
+-
+-from config_files.data_paths import *
+-
+-body_model_dict = {
+-    'male': smplx.build_layer(body_model_dir, model_type='smplx',
+-                              gender='male', ext='npz',
+-                              num_pca_comps=12),
+-    'female': smplx.build_layer(body_model_dir, model_type='smplx',
+-                                gender='female', ext='npz',
+-                                num_pca_comps=12
+-                                )
+-}
+-
+-def tensor_dict_to_device(tensor_dict, device, dtype=torch.float32):
+-    for k in tensor_dict:
+-        if isinstance(tensor_dict[k], torch.Tensor):
+-            tensor_dict[k] = tensor_dict[k].to(device=device)
+-    return tensor_dict
+-
+-
+-def convert_smpl_aa_to_rotmat(smplx_param):
+-    smplx_param = deepcopy(smplx_param)
+-    smplx_param['global_orient'] = transforms.axis_angle_to_matrix(smplx_param['global_orient'])
+-    smplx_param['body_pose'] = transforms.axis_angle_to_matrix(smplx_param['body_pose'].reshape(-1, 3)).reshape(-1, 21,
+-                                                                                                                3, 3)
+-    return smplx_param
+-
+-
+-def get_smplx_param_from_6d(primitive_data):
+-    body_param = {}
+-    if 'gender' in primitive_data:
+-        body_param['gender'] = primitive_data['gender']
+-    batch_size = primitive_data['transl'].shape[0]
+-    body_param['transl'] = primitive_data['transl']
+-    if len(primitive_data['betas'].shape) == 1:
+-        body_param['betas'] = primitive_data['betas'][:10].unsqueeze(0).repeat(batch_size, 1)
+-    else:
+-        body_param['betas'] = primitive_data['betas'][:, :10]
+-    global_orient = primitive_data['poses_6d'][:, :6]
+-    global_orient = transforms.rotation_6d_to_matrix(global_orient).reshape(-1, 3, 3)
+-    body_pose = primitive_data['poses_6d'][:, 6:132]
+-    body_pose = transforms.rotation_6d_to_matrix(body_pose.reshape(-1, 6)).reshape(-1, 21, 3, 3)
+-    body_param['global_orient'] = global_orient
+-    body_param['body_pose'] = body_pose
+-    return body_param
+-
+-
+-def get_new_coordinate(jts: torch.Tensor):
+-    x_axis = jts[:, 2, :] - jts[:, 1, :]  # [b,3]
+-    x_axis[:, -1] = 0
+-    x_axis = x_axis / torch.norm(x_axis, dim=-1, keepdim=True)
+-    z_axis = torch.FloatTensor([[0, 0, 1]]).to(jts.device).repeat(x_axis.shape[0], 1)
+-    y_axis = torch.cross(z_axis, x_axis, dim=-1)
+-    y_axis = y_axis / torch.norm(y_axis, dim=-1, keepdim=True)
+-    new_rotmat = torch.stack([x_axis, y_axis, z_axis], dim=-1)  # [b,3,3]
+-    new_transl = jts[:, :1]  # [b,1,3]
+-    return new_rotmat, new_transl
+-
+-
+-def update_global_transform(body_param_dict, new_rotmat, new_transl):
+-    """update the global human to world transform using the transformation from new coord axis to old coord axis"""
+-    old_rotmat = body_param_dict['transf_rotmat']
+-    old_transl = body_param_dict['transf_transl']
+-    body_param_dict['transf_rotmat'] = torch.einsum('bij,bjk->bik', old_rotmat, new_rotmat)  # [b,3,3]
+-    body_param_dict['transf_transl'] = torch.einsum('bij,btj->bti', old_rotmat, new_transl) + old_transl  # [b,1,3]
+-    return body_param_dict
+-
+-
+-def transform_local_points_to_global(local_points, transf_rotmat, transf_transl):
+-    """
+-    :param local_points: [B, N, 3]
+-    :param transf_rotmat: [B, 3, 3]
+-    :param transf_transl: [B, 1, 3]
+-    :return:
+-    """
+-    global_points = torch.einsum('bij,bkj->bki', transf_rotmat, local_points) + transf_transl
+-    return global_points
+-
+-
+-def transform_global_points_to_local(global_points, transf_rotmat, transf_transl):
+-    """
+-    :param global_points: [B, N, 3]
+-    :param transf_rotmat: [B, 3, 3]
+-    :param transf_transl: [B, 1, 3]
+-    :return:
+-    """
+-    local_points = torch.einsum('bij,bki->bkj', transf_rotmat, global_points - transf_transl)
+-    # local_points = torch.einsum('bij,bkj->bki', transf_rotmat.permute(0, 2, 1), global_points - transf_transl)
+-    return local_points
+-
+-
+-def get_dict_subset_by_batch(dict_data, batch_idx):
+-    new_dict = {}
+-    for key in dict_data:
+-        if key == 'gender':
+-            new_dict[key] = dict_data[key]
+-        else:
+-            new_dict[key] = dict_data[key][batch_idx]
+-    return new_dict
+-
+-class PrimitiveUtility:
+-    def __init__(self, device='cpu', dtype=torch.float32, motion_repr=None, body_type='smplx'):
+-        self.device = device
+-        self.dtype = dtype
+-        self.motion_repr = {
+-            'transl': 3,
+-            'poses_6d': 22 * 6,
+-            'transl_delta': 3,
+-            'global_orient_delta_6d': 6,
+-            'joints': 22 * 3,
+-            'joints_delta': 22 * 3,
+-        }
+-        feature_dim = 0
+-        for k in self.motion_repr:
+-            feature_dim += self.motion_repr[k]
+-        self.feature_dim = feature_dim
+-        self.body_type = body_type
+-        if body_type == 'smplx':
+-            self.bm_male = body_model_dict['male'].to(self.device).eval()
+-            self.bm_female = body_model_dict['female'].to(self.device).eval()
+-        else:
+-            smplh_body_model_dict = {
+-                'male': smplx.build_layer(body_model_dir, model_type='smplh',
+-                                          gender='male', ext='pkl',
+-                                          num_pca_comps=12),
+-                'female': smplx.build_layer(body_model_dir, model_type='smplh',
+-                                            gender='female', ext='pkl',
+-                                            num_pca_comps=12
+-                                            )
+-            }
+-            self.bm_male = smplh_body_model_dict['male'].to(self.device).eval()
+-            self.bm_female = smplh_body_model_dict['female'].to(self.device).eval()
+-
+-    def get_smpl_model(self, gender):
+-        return self.bm_male if gender == 'male' else self.bm_female
+-
+-    def dict_to_tensor(self, data_dict):
+-        tensors = [data_dict[key] for key in self.motion_repr]
+-        merged_tensor = torch.cat(tensors, dim=-1)  # (B, [T], 22*3+22*3+3+3+6+22*6)
+-        return merged_tensor
+-
+-    def tensor_to_dict(self, tensor):
+-        data_dict = {}
+-        start = 0
+-        for key in self.motion_repr:
+-            end = start + self.motion_repr[key]
+-            data_dict[key] = tensor[..., start:end]
+-            start = end
+-        return data_dict
+-
+-    def feature_dict_to_smpl_dict(self, feature_dict):
+-        body_param = {
+-            'gender': feature_dict['gender'],
+-            'betas': feature_dict['betas'],
+-            'transf_rotmat': feature_dict['transf_rotmat'],
+-            'transf_transl': feature_dict['transf_transl'],
+-            'transl': feature_dict['transl'],
+-            'joints': feature_dict['joints'],  # network predicted joints
+-        }
+-        if 'pelvis_delta' in feature_dict:
+-            body_param['pelvis_delta'] = feature_dict['pelvis_delta']
+-
+-        # print(feature_dict['poses_6d'].shape, feature_dict['transl'].shape)
+-        prefix_shape = feature_dict['poses_6d'].shape[:-1]
+-        global_orient = feature_dict['poses_6d'][..., :6]
+-        global_orient = transforms.rotation_6d_to_matrix(global_orient)
+-        body_pose = feature_dict['poses_6d'][..., 6:132].reshape(*prefix_shape, 21, 6)
+-        body_pose = transforms.rotation_6d_to_matrix(body_pose).reshape(*prefix_shape, 21, 3, 3)
+-        body_param['global_orient'] = global_orient
+-        body_param['body_pose'] = body_pose
+-        return body_param
+-
+-    def smpl_dict_to_vertices(self, body_param):
+-        gender = body_param['gender']
+-        body_model = self.bm_male if gender == 'male' else self.bm_female
+-        assert len(body_param['transl'].shape) == 3  # [B, T, 3]
+-        B, T, _ = body_param['transl'].shape
+-        vertices = body_model(betas=body_param['betas'].reshape(B * T, 10),
+-                              global_orient=body_param['global_orient'].reshape(B * T, 3, 3),
+-                              body_pose=body_param['body_pose'].reshape(B * T, 21, 3, 3),
+-                              transl=body_param['transl'].reshape(B * T, 3)
+-                              ).vertices
+-        vertices = vertices.reshape(B, T, -1, 3)
+-        return vertices
+-
+-    def smpl_dict_inference(self, body_param, return_vertices=False, batch_size=512):
+-        # input body_param: T x D, no batch dimension
+-        body_model = self.bm_male if body_param['gender'] == 'male' else self.bm_female
+-        T, _ = body_param['transl'].shape
+-        vertices = []
+-        joints = []
+-        batch_start_idx = 0
+-        while batch_start_idx < T:
+-            batch_end_idx = min(batch_start_idx + batch_size, T)
+-            smplx_out = body_model(betas=body_param['betas'][batch_start_idx:batch_end_idx],
+-                                   global_orient=body_param['global_orient'][batch_start_idx:batch_end_idx],
+-                                   body_pose=body_param['body_pose'][batch_start_idx:batch_end_idx],
+-                                   transl=body_param['transl'][batch_start_idx:batch_end_idx],
+-                                   return_vertices=return_vertices
+-                                   )
+-            joints.append(smplx_out.joints[:, :22])
+-            if return_vertices:
+-                vertices.append(smplx_out.vertices)
+-            batch_start_idx = batch_end_idx
+-
+-        joints = torch.cat(joints, dim=0)
+-        if return_vertices:
+-            vertices = torch.cat(vertices, dim=0)
+-            return joints, vertices
+-        else:
+-            return joints
+-
+-
+-    def get_new_coordinate(self, body_param_dict, use_predicted_joints=False, pred_joints=None):
+-        if use_predicted_joints:
+-            joints = pred_joints
+-        else:
+-            body_model = self.bm_male if body_param_dict['gender'] == 'male' else self.bm_female
+-            joints = body_model(**body_param_dict).joints  # [b,J,3]
+-
+-        new_rotmat, new_transl = get_new_coordinate(joints)  # transformation from new coord axis to old coord axis
+-
+-        return new_rotmat, new_transl
+-
+-    def calc_calibrate_offset(self, body_param_dict):
+-        body_model = self.bm_male if body_param_dict['gender'] == 'male' else self.bm_female
+-        smplx_out = body_model(betas=body_param_dict['betas'],
+-                               # body_pose=body_param_dict['body_pose'],
+-                               )
+-        delta_T = smplx_out.joints[:, 0, :]  # [b, 3], we output all pelvis locations
+-
+-        return delta_T
+-
+-    def canonicalize(self, primitive_dict, use_predicted_joints=False):
+-        """inplace canonicalize
+-        primitive_dict:{
+-        'transf_rotmat', 'transf_transl': [B, 3, 3], [B, 1, 3]
+-        'gender': 'male' or 'female',
+-        'betas': [B, T, 10],
+-        'transl', 'global_orient', 'body_pose': [B, T, 3], [B, T, 3, 3], [B, T, 21, 3, 3]
+-        'joints': optional, [B, T, 22*3],
+-        }
+-        """
+-        body_param_dict = {
+-            'gender': primitive_dict['gender'],
+-            'betas': primitive_dict['betas'][:, 0, :],
+-            'transl': primitive_dict['transl'][:, 0, :],
+-            'body_pose': primitive_dict['body_pose'][:, 0, :, :, :],
+-            'global_orient': primitive_dict['global_orient'][:, 0, :, :],
+-        }   # first frame bodies
+-        # delta_T = self.calc_calibrate_offset(body_param_dict)  # [b,3]
+-        delta_T = primitive_dict['pelvis_delta'] if 'pelvis_delta' in primitive_dict else self.calc_calibrate_offset(body_param_dict)  # [b,3]
+-        transf_rotmat, transf_transl = self.get_new_coordinate(body_param_dict,
+-                                                               use_predicted_joints=use_predicted_joints,
+-                                                               pred_joints=primitive_dict['joints'][:, 0, :].reshape(-1, 22, 3) if 'joints' in primitive_dict else None
+-                                                               )  # [b,3,3], [b,1,3]
+-
+-        transl = primitive_dict['transl']  # [b, T, 3]
+-        global_ori = primitive_dict['global_orient']  # [b, T, 3, 3]
+-        global_ori_new = torch.einsum('bij,btjk->btik', transf_rotmat.permute(0, 2, 1), global_ori)
+-        transl = torch.einsum('bij,btj->bti', transf_rotmat.permute(0, 2, 1),
+-                              transl + delta_T.unsqueeze(1) - transf_transl) - delta_T.unsqueeze(1)
+-        primitive_dict['global_orient'] = global_ori_new
+-        primitive_dict['transl'] = transl
+-
+-        if 'joints' in primitive_dict:
+-            B, T, _ = primitive_dict['transl'].shape
+-            joints = primitive_dict['joints'].reshape(B, T, 22, 3)  # [b, T, 22*3] -> [b, T, 22, 3]
+-            joints = torch.einsum('bij,btkj->btki', transf_rotmat.permute(0, 2, 1), joints - transf_transl.unsqueeze(1))
+-            primitive_dict['joints'] = joints.reshape(B, T, 22 * 3)  # [b, T, 22*3]
+-
+-        update_global_transform(primitive_dict, transf_rotmat, transf_transl)
+-        return transf_rotmat, transf_transl, primitive_dict
+-
+-    def calc_features(self, primitive_dict, use_predicted_joints=False):
+-        """calculate the redundant features from the smplx sequences"""
+-        motion_features = {
+-            # 'gender': primitive_dict['gender'],
+-            # 'betas': primitive_dict['betas'],
+-            # 'transf_rotmat': primitive_dict['transf_rotmat'],
+-            # 'transf_transl': primitive_dict['transf_transl'],
+-        }
+-        B, T, _ = primitive_dict['transl'].shape
+-        if use_predicted_joints:
+-            output_joints = primitive_dict['joints'].reshape(B, T, 22, 3)
+-        else:
+-            body_model = self.bm_male if primitive_dict['gender'] == 'male' else self.bm_female
+-            smplx_out = body_model(betas=primitive_dict['betas'].reshape(B * T, 10),
+-                                   global_orient=primitive_dict['global_orient'].reshape(B * T, 3, 3),
+-                                   body_pose=primitive_dict['body_pose'].reshape(B * T, 21, 3, 3),
+-                                   transl=primitive_dict['transl'].reshape(B * T, 3)
+-                                   )
+-            output_joints = smplx_out.joints[:, :22].reshape(B, T, 22, 3)
+-        motion_features['transl'] = primitive_dict['transl']  # [b, t,3]
+-        motion_features['transl_delta'] = primitive_dict['transl'][:, 1:, :] - primitive_dict['transl'][:, :-1, :]  # [b, t-1,3]
+-        motion_features['joints'] = output_joints[:, :, :22].reshape(B, T, 22 * 3)
+-        motion_features['joints_delta'] = (output_joints[:, 1:, :22, :] - output_joints[:, :-1, :22, :]).reshape(B, T - 1, 22 * 3)
+-        global_orient_delta_rotmat = torch.matmul(primitive_dict['global_orient'][:, 1:],
+-                                                  primitive_dict['global_orient'][:, :-1].permute(0, 1, 3, 2))
+-        motion_features['global_orient_delta_6d'] = transforms.matrix_to_rotation_6d(global_orient_delta_rotmat)  # [B, t-1, 6]
+-        motion_features['poses_6d'] = transforms.matrix_to_rotation_6d(
+-            torch.cat([primitive_dict['global_orient'].unsqueeze(2), primitive_dict['body_pose']], dim=2)
+-            # [B, t, 22, 3, 3]
+-        ).reshape(B, T, 22 * 6)  # [B, t, 22 * 6]
+-
+-        return motion_features
+-
+-    def get_blended_feature(self, feature_dict, use_predicted_joints=False):
+-        primitive_dict = self.feature_dict_to_smpl_dict(feature_dict)
+-        transf_rotmat, transf_transl, primitive_dict = self.canonicalize(primitive_dict,
+-                                                                         use_predicted_joints=use_predicted_joints)
+-        # print('relative transform:', transf_rotmat, transf_transl)
+-        if use_predicted_joints:  #  directly use the predicted joints, no blending
+-            # transf_rotmat, transf_transl: [b,3,3], [b,1,3], transformation from new coord axis to old coord axis
+-            B, T, _ = feature_dict['transl'].shape
+-            poses_6d = feature_dict['poses_6d']  # [b, T, 22*6], not change
+-            global_orient_6d = poses_6d[:, :, :6]  # [b, T, 6]
+-            global_orient_rotmat = transforms.rotation_6d_to_matrix(global_orient_6d)  # [b, T, 3, 3]
+-            global_orient_rotmat = torch.matmul(transf_rotmat.permute(0, 2, 1).unsqueeze(1), global_orient_rotmat)
+-            global_orient_6d = transforms.matrix_to_rotation_6d(global_orient_rotmat)  # [b, T, 6]
+-            new_poses_6d = torch.cat([global_orient_6d, poses_6d[:, :, 6:]], dim=-1)  # [b, T, 22*6]
+-            global_orient_delta_6d = feature_dict['global_orient_delta_6d']  # [b, T, 6], not change
+-            global_orient_delta_rotmat = transforms.rotation_6d_to_matrix(global_orient_delta_6d)  # [b, T, 3, 3]
+-            global_orient_delta_rotmat = torch.matmul(
+-                torch.matmul(transf_rotmat.permute(0, 2, 1).unsqueeze(1), global_orient_delta_rotmat),
+-                transf_rotmat.unsqueeze(1)
+-            )
+-            global_orient_delta_6d = transforms.matrix_to_rotation_6d(global_orient_delta_rotmat)  # [b, T, 6]
+-            transl = primitive_dict['transl']  # [b, T, 3], from canonicalized primitive dict
+-            joints = primitive_dict['joints']  # [b, T, 22*3], from canonicalized primitive dict
+-            transl_delta = feature_dict['transl_delta']  # [b, T, 3]
+-            joints_delta = feature_dict['joints_delta'].reshape(B, T, 22, 3)  # [b, T, 22*3]
+-            transl_delta = torch.einsum('bij,btj->bti', transf_rotmat.permute(0, 2, 1), transl_delta)  # [b,3]
+-            joints_delta = torch.einsum('bij,btkj->btki', transf_rotmat.permute(0, 2, 1), joints_delta).reshape(B, T, 22 * 3)
+-            smpl_features = {
+-                'transl': transl,
+-                'transl_delta': transl_delta,
+-                'joints': joints,
+-                'joints_delta': joints_delta,
+-                'global_orient_delta_6d': global_orient_delta_6d,
+-                'poses_6d': new_poses_6d,
+-            }
+-        else:  # use smplx to infer joint location from rotation, and blend with last frame
+-
+-            smpl_features = self.calc_features(primitive_dict)
+-            last_transl_delta = feature_dict['transl_delta'][:, -1, :]  # [b,3]
+-            last_joints_delta = feature_dict['joints_delta'][:, -1, :]  # [b,22*3]
+-            last_global_orient_delta_6d = feature_dict['global_orient_delta_6d'][:, -1, :]  # [b,6], not change
+-            last_global_orient_delta_rotmat = transforms.rotation_6d_to_matrix(last_global_orient_delta_6d)  # [b,3,3]
+-            last_global_orient_delta_rotmat = torch.matmul(torch.matmul(transf_rotmat.permute(0, 2, 1), last_global_orient_delta_rotmat), transf_rotmat)  # [b,3,3]
+-            last_global_orient_delta_6d = transforms.matrix_to_rotation_6d(last_global_orient_delta_rotmat)  # [b,6]
+-            # transform the last frame delta features
+-            last_transl_delta = torch.einsum('bij,bj->bi', transf_rotmat.permute(0, 2, 1), last_transl_delta) # [b,3]
+-            last_joints_delta = torch.einsum('bij,bkj->bki', transf_rotmat.permute(0, 2, 1),
+-                                             last_joints_delta.reshape(-1, 22, 3)
+-                                             ).reshape(-1, 22 * 3) # [b,22*3]
+-
+-            smpl_features['transl_delta'] = torch.cat([smpl_features['transl_delta'], last_transl_delta.unsqueeze(1)], dim=1)
+-            smpl_features['joints_delta'] = torch.cat([smpl_features['joints_delta'], last_joints_delta.unsqueeze(1)], dim=1)
+-            smpl_features['global_orient_delta_6d'] = torch.cat([smpl_features['global_orient_delta_6d'],
+-                                                                last_global_orient_delta_6d.unsqueeze(1)], dim=1)
+-
+-        smpl_features['transf_rotmat'] = primitive_dict['transf_rotmat']
+-        smpl_features['transf_transl'] = primitive_dict['transf_transl']
+-        smpl_features['gender'] = primitive_dict['gender']
+-        smpl_features['betas'] = primitive_dict['betas']
+-        if 'pelvis_delta' in primitive_dict:
+-            smpl_features['pelvis_delta'] = primitive_dict['pelvis_delta']
+-        new_feature_dict = smpl_features
+-        return primitive_dict, new_feature_dict
+-
+-    def transform_feature_to_world(self, feature_dict, use_predicted_joints=True):
+-        transf_rotmat, transf_transl = feature_dict['transf_rotmat'], feature_dict['transf_transl']
+-        device = transf_rotmat.device
+-        batch_size = transf_rotmat.shape[0]
+-        dtype = transf_rotmat.dtype
+-        delta_T = feature_dict['pelvis_delta']
+-
+-        B, T, _ = feature_dict['transl'].shape
+-        poses_6d = feature_dict['poses_6d']  # [b, T, 22*6], not change
+-        global_orient_6d = poses_6d[:, :, :6]  # [b, T, 6]
+-        global_orient_rotmat = transforms.rotation_6d_to_matrix(global_orient_6d)  # [b, T, 3, 3]
+-        global_orient_rotmat = torch.matmul(transf_rotmat.unsqueeze(1), global_orient_rotmat)
+-        global_orient_6d = transforms.matrix_to_rotation_6d(global_orient_rotmat)  # [b, T, 6]
+-        new_poses_6d = torch.cat([global_orient_6d, poses_6d[:, :, 6:]], dim=-1)  # [b, T, 22*6]
+-        global_orient_delta_6d = feature_dict['global_orient_delta_6d']  # [b, T, 6], not change
+-        global_orient_delta_rotmat = transforms.rotation_6d_to_matrix(global_orient_delta_6d)  # [b, T, 3, 3]
+-        global_orient_delta_rotmat = torch.matmul(
+-            torch.matmul(transf_rotmat.unsqueeze(1), global_orient_delta_rotmat),
+-            transf_rotmat.permute(0, 2, 1).unsqueeze(1)
+-        )
+-        global_orient_delta_6d = transforms.matrix_to_rotation_6d(global_orient_delta_rotmat)  # [b, T, 6]
+-        transl = feature_dict['transl']  # [b, T, 3]
+-        joints = feature_dict['joints'].reshape(B, T, 22, 3)  # [b, T, 22*3]
+-        transl = torch.einsum('bij,btj->bti', transf_rotmat,
+-                              transl + delta_T.unsqueeze(1)) - delta_T.unsqueeze(1) + transf_transl
+-        joints = torch.einsum('bij,btkj->btki', transf_rotmat, joints) + transf_transl.unsqueeze(1)
+-        joints = joints.reshape(B, T, 22 * 3)
+-        transl_delta = feature_dict['transl_delta']  # [b, T, 3]
+-        joints_delta = feature_dict['joints_delta'].reshape(B, T, 22, 3)  # [b, T, 22*3]
+-        transl_delta = torch.einsum('bij,btj->bti', transf_rotmat, transl_delta)  # [b,3]
+-        joints_delta = torch.einsum('bij,btkj->btki', transf_rotmat, joints_delta).reshape(B, T,
+-                                                                                                            22 * 3)
+-
+-        world_feature_dict = {
+-            'transf_rotmat': torch.eye(3, device=device, dtype=dtype).unsqueeze(0).repeat(batch_size, 1, 1),
+-            'transf_transl': torch.zeros(3, device=device, dtype=dtype).reshape(1, 1, 3).repeat(batch_size, 1, 1),
+-            'gender': feature_dict['gender'],
+-            'betas': feature_dict['betas'],
+-            'pelvis_delta': feature_dict['pelvis_delta'],
+-            'transl': transl,
+-            'transl_delta': transl_delta,
+-            'joints': joints,
+-            'joints_delta': joints_delta,
+-            'global_orient_delta_6d': global_orient_delta_6d,
+-            'poses_6d': new_poses_6d,
+-        }
+-        return world_feature_dict
+-
+-    def transform_primitive_to_world(self, primitive_dict):
+-        # body_param_dict = {
+-        #     'gender': primitive_dict['gender'],
+-        #     'betas': primitive_dict['betas'][:, 0, :],
+-        #     'transl': primitive_dict['transl'][:, 0, :],
+-        #     'body_pose': primitive_dict['body_pose'][:, 0, :, :, :],
+-        #     'global_orient': primitive_dict['global_orient'][:, 0, :, :],
+-        # }  # first frame bodies
+-        # delta_T = self.calc_calibrate_offset(body_param_dict)  # [b,3]
+-        delta_T = primitive_dict['pelvis_delta'] if 'pelvis_delta' in primitive_dict else self.calc_calibrate_offset({
+-            'gender': primitive_dict['gender'],
+-            'betas': primitive_dict['betas'][:, 0, :],
+-        })  # [b,3]
+-        transf_rotmat, transf_transl = primitive_dict['transf_rotmat'], primitive_dict['transf_transl']
+-
+-        B, T, _ = primitive_dict['transl'].shape
+-        transl = primitive_dict['transl']  # [b, T, 3]
+-        joints = primitive_dict['joints'].reshape(B, T, 22, 3)  # [b, T, 22*3] -> [b, T, 22, 3]
+-        global_ori = primitive_dict['global_orient']  # [b, T, 3, 3]
+-        global_ori_new = torch.einsum('bij,btjk->btik', transf_rotmat, global_ori)
+-        transl = torch.einsum('bij,btj->bti', transf_rotmat,
+-                              transl + delta_T.unsqueeze(1)) - delta_T.unsqueeze(1) + transf_transl
+-        joints = torch.einsum('bij,btkj->btki', transf_rotmat, joints) + transf_transl.unsqueeze(1)
+-
+-        primitive_dict['global_orient'] = global_ori_new
+-        primitive_dict['transl'] = transl
+-        primitive_dict['joints'] = joints
+-        primitive_dict['transf_rotmat'] = torch.eye(3).unsqueeze(0).repeat(transf_rotmat.shape[0], 1, 1).to(
+-            device=self.device, dtype=self.dtype)
+-        primitive_dict['transf_transl'] = torch.zeros(transf_transl.shape).to(device=self.device, dtype=self.dtype)
+-
+-        return primitive_dict
+-
+-
+-JOINT_NAMES = [
+-    "pelvis",
+-    "left_hip",
+-    "right_hip",
+-    "spine1",
+-    "left_knee",
+-    "right_knee",
+-    "spine2",
+-    "left_ankle",
+-    "right_ankle",
+-    "spine3",
+-    "left_foot",
+-    "right_foot",
+-    "neck",
+-    "left_collar",
+-    "right_collar",
+-    "head",
+-    "left_shoulder",
+-    "right_shoulder",
+-    "left_elbow",
+-    "right_elbow",
+-    "left_wrist",
+-    "right_wrist",
+-    "jaw",
+-    "left_eye_smplhf",
+-    "right_eye_smplhf",
+-    "left_index1",
+-    "left_index2",
+-    "left_index3",
+-    "left_middle1",
+-    "left_middle2",
+-    "left_middle3",
+-    "left_pinky1",
+-    "left_pinky2",
+-    "left_pinky3",
+-    "left_ring1",
+-    "left_ring2",
+-    "left_ring3",
+-    "left_thumb1",
+-    "left_thumb2",
+-    "left_thumb3",
+-    "right_index1",
+-    "right_index2",
+-    "right_index3",
+-    "right_middle1",
+-    "right_middle2",
+-    "right_middle3",
+-    "right_pinky1",
+-    "right_pinky2",
+-    "right_pinky3",
+-    "right_ring1",
+-    "right_ring2",
+-    "right_ring3",
+-    "right_thumb1",
+-    "right_thumb2",
+-    "right_thumb3",
+-    "nose",
+-    "right_eye",
+-    "left_eye",
+-    "right_ear",
+-    "left_ear",
+-    "left_big_toe",
+-    "left_small_toe",
+-    "left_heel",
+-    "right_big_toe",
+-    "right_small_toe",
+-    "right_heel",
+-    "left_thumb",
+-    "left_index",
+-    "left_middle",
+-    "left_ring",
+-    "left_pinky",
+-    "right_thumb",
+-    "right_index",
+-    "right_middle",
+-    "right_ring",
+-    "right_pinky",
+-    "right_eye_brow1",
+-    "right_eye_brow2",
+-    "right_eye_brow3",
+-    "right_eye_brow4",
+-    "right_eye_brow5",
+-    "left_eye_brow5",
+-    "left_eye_brow4",
+-    "left_eye_brow3",
+-    "left_eye_brow2",
+-    "left_eye_brow1",
+-    "nose1",
+-    "nose2",
+-    "nose3",
+-    "nose4",
+-    "right_nose_2",
+-    "right_nose_1",
+-    "nose_middle",
+-    "left_nose_1",
+-    "left_nose_2",
+-    "right_eye1",
+-    "right_eye2",
+-    "right_eye3",
+-    "right_eye4",
+-    "right_eye5",
+-    "right_eye6",
+-    "left_eye4",
+-    "left_eye3",
+-    "left_eye2",
+-    "left_eye1",
+-    "left_eye6",
+-    "left_eye5",
+-    "right_mouth_1",
+-    "right_mouth_2",
+-    "right_mouth_3",
+-    "mouth_top",
+-    "left_mouth_3",
+-    "left_mouth_2",
+-    "left_mouth_1",
+-    "left_mouth_5",  # 59 in OpenPose output
+-    "left_mouth_4",  # 58 in OpenPose output
+-    "mouth_bottom",
+-    "right_mouth_4",
+-    "right_mouth_5",
+-    "right_lip_1",
+-    "right_lip_2",
+-    "lip_top",
+-    "left_lip_2",
+-    "left_lip_1",
+-    "left_lip_3",
+-    "lip_bottom",
+-    "right_lip_3",
+-    # Face contour
+-    "right_contour_1",
+-    "right_contour_2",
+-    "right_contour_3",
+-    "right_contour_4",
+-    "right_contour_5",
+-    "right_contour_6",
+-    "right_contour_7",
+-    "right_contour_8",
+-    "contour_middle",
+-    "left_contour_8",
+-    "left_contour_7",
+-    "left_contour_6",
+-    "left_contour_5",
+-    "left_contour_4",
+-    "left_contour_3",
+-    "left_contour_2",
+-    "left_contour_1",
+-]
+-FOOT_JOINTS_IDX = [JOINT_NAMES.index(joint_name) for joint_name in ['left_foot', 'right_foot']]
+diff --git a/visualize/motions2hik.py b/visualize/motions2hik.py
+index 0533974..4c0bb53 100644
+--- a/visualize/motions2hik.py
++++ b/visualize/motions2hik.py
+@@ -1,7 +1,7 @@
+ import numpy as np
+ import torch
+ 
+-from utils.rotation_conversions import rotation_6d_to_matrix, matrix_to_euler_angles
++from utilss.rotation_conversions import rotation_6d_to_matrix, matrix_to_euler_angles
+ from visualize.simplify_loc2rot import joints2smpl
+ 
+ """
+diff --git a/visualize/vis_joints.py b/visualize/vis_joints.py
+index bfc7e77..2db2509 100644
+--- a/visualize/vis_joints.py
++++ b/visualize/vis_joints.py
+@@ -18,7 +18,7 @@ cNorm = colors.Normalize(vmin=0, vmax=1)
+ scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
+ 
+ from config_files.data_paths import *
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ 
+ 
+ # https://stackoverflow.com/a/20865751/14532053
+diff --git a/visualize/vis_seq.py b/visualize/vis_seq.py
+index 0eecb59..3133ff0 100644
+--- a/visualize/vis_seq.py
++++ b/visualize/vis_seq.py
+@@ -19,7 +19,7 @@ scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
+ 
+ from pyrender.trackball import Trackball
+ from config_files.data_paths import *
+-from utils.smpl_utils import *
++from utilss.smpl_utils import *
+ 
+ 
+ # https://stackoverflow.com/a/20865751/14532053
+diff --git a/visualize/vis_utils.py b/visualize/vis_utils.py
+index 54f4c9b..58833f5 100644
+--- a/visualize/vis_utils.py
++++ b/visualize/vis_utils.py
+@@ -6,7 +6,7 @@ from trimesh import Trimesh
+ import os
+ import torch
+ from visualize.simplify_loc2rot import joints2smpl
+-from utils.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
++from utilss.rotation_conversions import rotation_6d_to_matrix, matrix_to_axis_angle
+ 
+ class npy2obj:
+     def __init__(self, npy_path, sample_idx, rep_idx, device=0, cuda=True):

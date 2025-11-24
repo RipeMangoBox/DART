@@ -1,6 +1,6 @@
 import argparse
 import os
-from utils.visualize import vis_utils
+from utilss.visualize import vis_utils
 import shutil
 from tqdm import tqdm
 

@@ -1,0 +1,126 @@
+wandb_version: 1
+
+train_args:
+  desc: null
+  value:
+    learning_rate: 0.0001
+    anneal_lr: 1
+    batch_size: 1024
+    grad_clip: 1.0
+    ema_decay: 0.999
+    use_amp: 1
+    stage1_steps: 100000
+    stage2_steps: 100000
+    stage3_steps: 100000
+    weight_rec: 1.0
+    weight_kl: 0.0001
+    weight_smpl_joints_rec: 0.0
+    weight_joints_consistency: 0.0
+    weight_transl_delta: 10000.0
+    weight_orient_delta: 10000.0
+    weight_joints_delta: 10000.0
+    weight_latent_rec: 1.0
+    weight_feature_rec: 1.0
+    resume_checkpoint: null
+    log_interval: 1000
+    val_interval: 10000
+    save_interval: 100000
+    use_predicted_joints: 0
+data_args:
+  desc: null
+  value:
+    cfg_path: ./config_files/config_hydra/motion_primitive/mp_h2_f8_r4.yaml
+    data_dir: ./data/seq_data_zero_male
+    dataset: mp_seq_v2
+    prob_static: 0.0
+    enforce_gender: male
+    enforce_zero_beta: 1
+    weight_scheme: text_samp:0.
+    text_tolerance: 0.0
+    history_length: 2
+    future_length: 8
+    num_primitive: 4
+    feature_dim: 276
+    body_type: smplx
+denoiser_args:
+  desc: null
+  value:
+    mvae_path: ./mvae/mvae_babel_smplx/checkpoint_200000.pt
+    rescale_latent: 1
+    train_rollout_type: full
+    train_rollout_history: rollout
+    model_type: mlp
+    model_args:
+      h_dim: 512
+      ff_size: 1024
+      num_layers: 8
+      num_heads: 4
+      dropout: 0.1
+      activation: gelu
+      cond_mask_prob: 0.1
+      clip_dim: 512
+      history_shape:
+      - 2
+      - 276
+      noise_shape:
+      - 1
+      - 256
+    diffusion_args:
+      diffusion_steps: 10
+      respacing: ''
+      noise_schedule: cosine
+      sigma_small: true
+exp_name:
+  desc: null
+  value: mld_babel_smplx
+seed:
+  desc: null
+  value: 0
+torch_deterministic:
+  desc: null
+  value: true
+device:
+  desc: null
+  value: cuda
+save_dir:
+  desc: null
+  value: mld_denoiser/mld_babel_smplx
+track:
+  desc: null
+  value: 1
+wandb_project_name:
+  desc: null
+  value: mld_denoiser
+wandb_entity:
+  desc: null
+  value: MangoBox
+_wandb:
+  desc: null
+  value:
+    python_version: 3.8.18
+    cli_version: 0.16.6
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1762852816.0
+    t:
+      1:
+      - 1
+      - 33
+      - 41
+      - 55
+      2:
+      - 1
+      - 33
+      - 41
+      - 55
+      3:
+      - 13
+      - 16
+      - 23
+      - 35
+      4: 3.8.18
+      5: 0.16.6
+      8:
+      - 5
+      13: linux-x86_64

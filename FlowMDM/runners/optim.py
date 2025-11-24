@@ -3,12 +3,12 @@
 Generate a large batch of image samples from a model and save them as a large
 numpy array. This can be used to produce samples for FID evaluation.
 """
-from utils.fixseed import fixseed
+from utilss.fixseed import fixseed
 import os
 import numpy as np
 import torch
-from utils.parser_util import generate_args
-from utils.model_util import load_model
+from utilss.parser_util import generate_args
+from utilss.model_util import load_model
 from utils import dist_util
 from data_loaders.get_data import get_dataset_loader
 from data_loaders.humanml.scripts.motion_process import recover_from_ric

@@ -1,0 +1,23 @@
+"# tyro YAML.\n!dataclass:MLDArgs\ndata_args: !dataclass:DataArgs\n  body_type: smplh\n\
+  \  cfg_path: ./config_files/config_hydra/motion_primitive/hml_mp_h2_f8_r4.yaml\n\
+  \  data_dir: ./data/hml3d_smplh/seq_data_zero_male/\n  dataset: hml3d\n  enforce_gender:\
+  \ male\n  enforce_zero_beta: 1\n  feature_dim: 276\n  future_length: 8\n  history_length:\
+  \ 2\n  num_primitive: 4\n  prob_static: 0.0\n  text_tolerance: 0.0\n  weight_scheme:\
+  \ uniform\ndenoiser_args: !dataclass:DenoiserArgs\n  diffusion_args: !dataclass:DiffusionArgs\n\
+  \    diffusion_steps: 10\n    noise_schedule: cosine\n    respacing: ''\n    sigma_small:\
+  \ true\n  model_args: !dataclass:DenoiserTransformerArgs\n    activation: gelu\n\
+  \    clip_dim: 512\n    cond_mask_prob: 0.1\n    dropout: 0.1\n    ff_size: 1024\n\
+  \    h_dim: 512\n    history_shape: !!python/tuple\n    - 2\n    - 276\n    noise_shape:\
+  \ !!python/tuple\n    - 1\n    - 256\n    num_heads: 4\n    num_layers: 8\n  model_type:\
+  \ transformer\n  mvae_path: ./mvae/mvae_smplh_hml3d_2_8_4/checkpoint_200000.pt\n\
+  \  rescale_latent: 1\n  train_rollout_history: rollout\n  train_rollout_type: full\n\
+  device: cuda\nexp_name: smplh_hml3d_2_8_4\nsave_dir: !!python/object/apply:pathlib.PosixPath\n\
+  - mld_denoiser\n- smplh_hml3d_2_8_4\nseed: 0\ntorch_deterministic: true\ntrack:\
+  \ 1\ntrain_args: !dataclass:TrainArgs\n  anneal_lr: 1\n  batch_size: 1024\n  ema_decay:\
+  \ 0.999\n  grad_clip: 1.0\n  learning_rate: 0.0001\n  log_interval: 1000\n  resume_checkpoint:\
+  \ null\n  save_interval: 100000\n  stage1_steps: 100000\n  stage2_steps: 100000\n\
+  \  stage3_steps: 100000\n  use_amp: 1\n  use_predicted_joints: 0\n  val_interval:\
+  \ 10000\n  weight_feature_rec: 1.0\n  weight_joints_consistency: 0.0\n  weight_joints_delta:\
+  \ 10000.0\n  weight_kl: 0.0001\n  weight_latent_rec: 1.0\n  weight_orient_delta:\
+  \ 10000.0\n  weight_rec: 1.0\n  weight_smpl_joints_rec: 0.0\n  weight_transl_delta:\
+  \ 10000.0\nwandb_entity: interaction\nwandb_project_name: mld_denoiser\n"
