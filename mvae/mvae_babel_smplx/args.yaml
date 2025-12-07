@@ -15,4 +15,4 @@
   \ 10000\n  weight_feature_rec: 0.0\n  weight_joints_consistency: 10.0\n  weight_joints_delta:\
   \ 100.0\n  weight_kl: 1.0e-06\n  weight_latent_rec: 1.0\n  weight_orient_delta:\
   \ 100.0\n  weight_rec: 1.0\n  weight_smpl_joints_rec: 10.0\n  weight_transl_delta:\
-  \ 100.0\nwandb_entity: MangoBox\nwandb_project_name: mld_vae\n"
+  \ 100.0\nwandb_entity: interaction\nwandb_project_name: mld_vae\n"

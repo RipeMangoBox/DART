@@ -177,3 +177,8 @@ cython_debug/
 /data
 *.pt
 *.pth
+*.pkl
+*.npz
+
+
+smplx/

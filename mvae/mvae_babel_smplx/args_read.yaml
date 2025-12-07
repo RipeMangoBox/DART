@@ -58,5 +58,5 @@ train_args:
   weight_rec: 1.0
   weight_smpl_joints_rec: 10.0
   weight_transl_delta: 100.0
-wandb_entity: MangoBox
+wandb_entity: interaction
 wandb_project_name: mld_vae
