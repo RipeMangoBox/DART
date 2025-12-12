@@ -108,7 +108,7 @@ class HumanML3D_Text2MotionDatasetV2(data.Dataset):
                             text_dict['caption'] = caption
                             text_dict['tokens'] = tokens
                             if self.split == 'train':
-                                text_dict['text_embedding'] = encode_text(clip_model, [caption], device).cpu().numpy()
+                                text_dict['music'] = encode_text(clip_model, [caption], device).cpu().numpy()
                             if f_tag == 0.0 and to_tag == 0.0:
                                 flag = True
                                 text_data.append(text_dict)
@@ -215,7 +215,7 @@ class HumanML3D_Text2MotionDatasetV2(data.Dataset):
         # Randomly select a caption
         text_data = random.choice(text_list)
         caption, tokens = text_data['caption'], text_data['tokens']
-        text_embedding = text_data['text_embedding'].squeeze() if self.split == "train" else []
+        text_embedding = text_data['music'].squeeze() if self.split == "train" else []
 
         word_embeddings, pos_one_hots, sent_len, tokens = self.process_tokens(tokens)
 

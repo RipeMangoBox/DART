@@ -493,7 +493,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 gender_batch.append(
                     {
                         'texts': primitive_texts,
-                        'text_embedding': text_embedding,
+                        'music': text_embedding,
                         'gender': [gender_seq_dict['gender']] * gender_batch_size,
                         'betas': gender_seq_dict['betas'][start_idx:end_idx, :-1, :10],
                         'motion_tensor_normalized': motion_tensor_normalized[start_idx:end_idx, ...], # [B, D, 1, T]
@@ -510,7 +510,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 for primitive_idx in range(self.num_primitive):
                     for key in ['texts', 'gender']:
                         batch[primitive_idx][key] = batch[primitive_idx][key] + gender_batch[primitive_idx][key]
-                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'text_embedding']:
+                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'music']:
                         batch[primitive_idx][key] = torch.cat([batch[primitive_idx][key], gender_batch[primitive_idx][key]], dim=0)
             # print(f'{gender} batch time: ', time.time() - self.time)
 

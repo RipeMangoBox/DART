@@ -146,7 +146,7 @@ def optimize(text_prompt, canonicalized_primitive_dict, goal_joints, joints_mask
             text_embedding = all_text_embedding[segment_id].expand(batch_size, -1)  # [B, 512]
             guidance_param = torch.ones(batch_size, *denoiser_args.model_args.noise_shape).to(device=device) * optim_args.guidance_param
             y = {
-                'text_embedding': text_embedding,
+                'music': text_embedding,
                 'history_motion_normalized': history_motion,
                 'scale': guidance_param,
             }

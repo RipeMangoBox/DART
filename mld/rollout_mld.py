@@ -220,7 +220,7 @@ def rollout(text_prompt, denoiser_args, denoiser_model, vae_args, vae_model, dif
         text_embedding = all_text_embedding[segment_id].expand(batch_size, -1)  # [B, 512]
         guidance_param = torch.ones(batch_size, *denoiser_args.model_args.noise_shape).to(device=device) * rollout_args.guidance_param
         y = {
-            'text_embedding': text_embedding,
+            'music': text_embedding,
             'history_motion_normalized': history_motion,
             'scale': guidance_param,
         }

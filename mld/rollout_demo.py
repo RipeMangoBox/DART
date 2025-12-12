@@ -167,7 +167,7 @@ def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, datas
     history_motion_normalized = dataset.normalize(primitive_utility.dict_to_tensor(blended_feature_dict))
 
     y = {
-        'text_embedding': text_embedding,
+        'music': text_embedding,
         'history_motion_normalized': history_motion_normalized,
         'scale': guidance_param,
     }

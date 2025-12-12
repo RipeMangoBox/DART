@@ -154,7 +154,7 @@ class DenoiserTransformer(nn.Module):
             # # if text not provided, force mask to be zero
             # empty_text = [text == '' for text in y['text']]
             # enc_text[empty_text, :] = 0
-            enc_text = y['text_embedding']
+            enc_text = y['music']
             emb += self.embed_text(self.mask_cond(enc_text, force_mask=force_mask))
         if 'action' in self.cond_mode:
             action_emb = self.embed_action(y['action'])

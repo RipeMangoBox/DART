@@ -429,7 +429,7 @@ class Trainer:
     def get_primitive_batch(self, batch, primitive_idx):
         motion = batch[primitive_idx]['motion_tensor_normalized']  # [bs, D, 1, T]
         cond = {'y': {'text': batch[primitive_idx]['texts'],
-                      'text_embedding': batch[primitive_idx]['text_embedding'],  # [bs, 512]
+                      'music': batch[primitive_idx]['music'],  # [bs, 512]
                       'gender': batch[primitive_idx]['gender'],
                       'betas': batch[primitive_idx]['betas'],  # [bs, T, 10]
                       'history_motion': batch[primitive_idx]['history_motion'],  # [bs, D, 1, T]

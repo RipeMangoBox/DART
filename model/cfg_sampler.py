@@ -55,7 +55,7 @@ class EBMSampleModel(nn.Module):
         num_text_conditions = y['multi_text_embedding'].shape[0]
         out_list = []
         for cond_idx in range(num_text_conditions):
-            y['text_embedding'] = y['multi_text_embedding'][cond_idx]
+            y['music'] = y['multi_text_embedding'][cond_idx]
             y['uncond'] = False
             out = self.model(x, timesteps, y)
             out_list.append(out)

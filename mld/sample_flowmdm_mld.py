@@ -103,7 +103,7 @@ def rollout(config, denoiser_args, denoiser_model, vae_args, vae_model, diffusio
         for primitive_id in range(num_primitives):
             valid_length = min(future_length, segment_length - primitive_id * future_length)
             y = {
-                'text_embedding': text_embedding,
+                'music': text_embedding,
                 'history_motion_normalized': history_motion,
                 'scale': guidance_param,
             }

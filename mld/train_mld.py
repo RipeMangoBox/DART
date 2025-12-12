@@ -434,7 +434,7 @@ class Trainer:
         x_t = self.diffusion.q_sample(x_start=x_start, t=t, noise=torch.randn_like(x_start))
         # denoise
         y = {
-            'text_embedding': cond['y']['text_embedding'],
+            'music': cond['y']['music'],
             'history_motion_normalized': history_motion,
         }
         x_start_pred = self.denoiser_model(x_t=x_t, timesteps=self.diffusion._scale_timesteps(t), y=y)  # [B, T=1, D]
@@ -545,7 +545,7 @@ class Trainer:
     def get_primitive_batch(self, batch, primitive_idx):
         motion = batch[primitive_idx]['motion_tensor_normalized']  # [bs, D, 1, T]
         cond = {'y': {'text': batch[primitive_idx]['texts'],
-                      'text_embedding': batch[primitive_idx]['text_embedding'],  # [bs, 512]
+                      'music': batch[primitive_idx]['music'],  # [bs, 512]
                       'gender': batch[primitive_idx]['gender'],
                       'betas': batch[primitive_idx]['betas'],  # [bs, T, 10]
                       'history_motion': batch[primitive_idx]['history_motion'],  # [bs, D, 1, T]

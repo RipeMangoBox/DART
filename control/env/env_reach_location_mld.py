@@ -271,7 +271,7 @@ class EnvReachLocationMLD:
         guidance_param = torch.ones(batch_size, *denoiser_args.model_args.noise_shape).to(
             device=device) * self.input_args.guidance_param
         y = {
-            'text_embedding': text_embedding,
+            'music': text_embedding,
             'history_motion_normalized': history_motion_tensor,
             'scale': guidance_param,
         }

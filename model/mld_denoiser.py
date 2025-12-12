@@ -57,7 +57,7 @@ class DenoiserMLP(nn.Module):
         emb_time = self.embed_timestep(timesteps).squeeze(0)  # [bs, h_dim]
         emb_history = y['history_motion_normalized'].reshape(batch_size, np.prod(self.history_shape))  # [bs, History * nfeats]
         force_mask = y.get('uncond', False)
-        emb_text = self.mask_cond(y['text_embedding'], force_mask=force_mask)  # [bs, clip_dim]
+        emb_text = self.mask_cond(y['music'], force_mask=force_mask)  # [bs, clip_dim]
         emb_noise = x_t.reshape(batch_size, np.prod(self.noise_shape))  # [bs, noise_dim]
         # print('emb_time shape:', emb_time.shape, 'emb_text shape:', emb_text.shape, 'emb_history shape:', emb_history.shape, 'emb_noise shape:', emb_noise.shape)
 
@@ -129,7 +129,7 @@ class DenoiserTransformer(nn.Module):
         emb_time = self.embed_timestep(timesteps)  # [1, bs, d]
         emb_history = self.embed_history(y['history_motion_normalized']).permute(1, 0, 2)  # [History, bs, d]
         force_mask = y.get('uncond', False)
-        emb_text = self.embed_text(self.mask_cond(y['text_embedding'], force_mask=force_mask)).unsqueeze(0)  # [1, bs, d]
+        emb_text = self.embed_text(self.mask_cond(y['music'], force_mask=force_mask)).unsqueeze(0)  # [1, bs, d]
         emb_noise = self.embed_noise(x_t).permute(1, 0, 2)  # [1, bs, d]
         # print('emb_time shape:', emb_time.shape, 'emb_text shape:', emb_text.shape, 'emb_history shape:', emb_history.shape, 'emb_noise shape:', emb_noise.shape)
 

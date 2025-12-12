@@ -1614,7 +1614,7 @@ class WeightedPrimitiveSequenceDataset:
 
     def normalize(self, tensor):
         tensor_mean, tensor_std = self.get_mean_std_by_device(tensor.device)
-        return (tensor - tensor_mean) / tensor_std  # [B, T, D]
+        return (tensor - tensor_mean) / (tensor_std + 1e-8)  # [B, T, D]
 
     def denormalize(self, tensor):
         tensor_mean, tensor_std = self.get_mean_std_by_device(tensor.device)
@@ -1766,7 +1766,7 @@ class WeightedPrimitiveSequenceDataset:
                 gender_batch.append(
                     {
                         'texts': primitive_texts,
-                        'text_embedding': music,
+                        'music': music,
                         'gender': [gender_seq_dict['gender']] * gender_batch_size,
                         'betas': gender_seq_dict['betas'][start_idx:end_idx, :-1, :10],
                         'motion_tensor_normalized': motion_tensor_normalized[start_idx:end_idx, ...], # [B, D, 1, T]
@@ -1807,7 +1807,7 @@ class WeightedPrimitiveSequenceDataset:
             #     gender_batch.append(
             #         {
             #             'texts': primitive_texts,
-            #             'text_embedding': music,
+            #             'music': music,
             #             'gender': [primitive_dict['gender']] * len(gender_seq_list),
             #             'betas': primitive_dict['betas'][:, :-1, :10],
             #             'motion_tensor_normalized': motion_tensor_normalized, # [B, D, 1, T]
@@ -1825,7 +1825,7 @@ class WeightedPrimitiveSequenceDataset:
                 for primitive_idx in range(self.num_primitive):
                     for key in ['texts', 'gender']:
                         batch[primitive_idx][key] = batch[primitive_idx][key] + gender_batch[primitive_idx][key]
-                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'text_embedding', 'transf_rotmat', 'transf_transl']:
+                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'music', 'transf_rotmat', 'transf_transl']:
                         batch[primitive_idx][key] = torch.cat([batch[primitive_idx][key], gender_batch[primitive_idx][key]], dim=0)
             # print(f'{gender} batch time: ', time.time() - self.time)
 
@@ -1902,7 +1902,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                         'poses': data['poses'],
                         'pelvis_delta': data['pelvis_delta'],
                         'joints': data['joints'],
-                        'text_embedding': data['text_embedding'] # Load Music
+                        'music': data['music'] # Load Music
                     }
                     data['motion'] = motion_data
 
@@ -1915,7 +1915,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 
                 # Load Music Feature
                 # Assuming music shape is [T, 35]
-                music = torch.from_numpy(data['text_embedding'].astype(np.float32))
+                music = torch.from_numpy(data['music'].astype(np.float32))
 
                 global_orient = transforms.axis_angle_to_matrix(poses[:, :3])  # [T, 3, 3]
                 body_pose = transforms.axis_angle_to_matrix(poses[:, 3:66].reshape(-1, 21, 3))  # [T, 21, 3, 3]
@@ -1930,7 +1930,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                     'body_pose': body_pose,
                     'pelvis_delta': pelvis_delta,
                     'joints': joints,
-                    'text_embedding': music, # Store tensor
+                    'music': music, # Store tensor
                 }
             print('num of sequences: ', len(dataset))
             
@@ -2030,7 +2030,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
             # Music data: extract T frames (matches final feature length)
             # end_frame is (start + primitive_length). 
             # slice [start:end] gives primitive_length frames.
-            'text_embedding': motion_data['text_embedding'][start_frame:end_frame].unsqueeze(0), # [1, T, 35]
+            'music': motion_data['music'][start_frame:end_frame].unsqueeze(0), # [1, T, 35]
         }
 
         # Removed text overlap logic
@@ -2075,20 +2075,20 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
             for primitive_idx in range(self.num_primitive):
                 primitive_dict = {'gender': gender}
                 # Concatenate motion and music
-                for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'text_embedding']:
+                for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']:
                     primitive_dict[key] = torch.cat([mp_seq[primitive_idx]['primitive_dict'][key] for mp_seq in gender_seq_list], dim=0)
                 
                 if gender_seq_dict is None:
                     gender_seq_dict = primitive_dict
                 else:
-                    for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'text_embedding']:
+                    for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']:
                         gender_seq_dict[key] = torch.cat([gender_seq_dict[key], primitive_dict[key]], dim=0)
 
             # Move to device and Canonicalize Motion (Music is separate)
             gender_seq_dict = tensor_dict_to_device(gender_seq_dict, self.device)
             
             # Separate music before canonicalization (which only handles motion keys)
-            raw_music = gender_seq_dict['text_embedding'] # [B*num_mp, T, 35]
+            raw_music = gender_seq_dict['music'] # [B*num_mp, T, 35]
 
             _, _, canonicalized_primitive_dict = self.primitive_utility.canonicalize(gender_seq_dict, use_predicted_joints=True)
             feature_dict = self.primitive_utility.calc_features(canonicalized_primitive_dict, use_predicted_joints=True)
@@ -2116,7 +2116,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 gender_batch.append(
                     {
                         'texts': [''] * gender_batch_size, # Empty texts
-                        'text_embedding': batch_music, # Added Music Condition
+                        'music': batch_music, # Added Music Condition
                         'gender': [gender_seq_dict['gender']] * gender_batch_size,
                         'betas': gender_seq_dict['betas'][start_idx:end_idx, :-1, :10],
                         'motion_tensor_normalized': motion_tensor_normalized[start_idx:end_idx, ...],
@@ -2133,7 +2133,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 for primitive_idx in range(self.num_primitive):
                     for key in ['texts', 'gender']:
                         batch[primitive_idx][key] = batch[primitive_idx][key] + gender_batch[primitive_idx][key]
-                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'text_embedding']:
+                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'music']:
                         batch[primitive_idx][key] = torch.cat([batch[primitive_idx][key], gender_batch[primitive_idx][key]], dim=0)
 
         return batch
