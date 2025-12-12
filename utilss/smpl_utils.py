@@ -52,6 +52,20 @@ def get_smplx_param_from_6d(primitive_data):
 
 
 def get_new_coordinate(jts: torch.Tensor):
+    '''
+    含义：从“规范坐标系”到“世界坐标系”的旋转矩阵, 或者说 De-Canonical 矩阵
+
+    计算逻辑（在 get_new_coordinate 函数中）：
+
+        它根据第一帧的左右髋关节连线确定 X 轴（左右方向）。
+
+        强制 Z 轴竖直向上（保留重力方向）。
+
+        通过叉乘计算 Y 轴（前后方向）。
+
+    作用：在归一化时，我们会用到它的转置（逆矩阵），把所有帧的朝向旋转回标准朝向（比如强制第一帧面朝前方）。
+
+    '''
     x_axis = jts[:, 2, :] - jts[:, 1, :]  # [b,3]
     x_axis[:, -1] = 0
     x_axis = x_axis / torch.norm(x_axis, dim=-1, keepdim=True)
@@ -64,7 +78,11 @@ def get_new_coordinate(jts: torch.Tensor):
 
 
 def update_global_transform(body_param_dict, new_rotmat, new_transl):
-    """update the global human to world transform using the transformation from new coord axis to old coord axis"""
+    """
+    update the global human to world transform using the transformation from new coord axis (canonical) to old coord axis (world)
+    这个函数把本次计算出的位移和旋转，累加到 primitive_dict 里的 transf_transl/rotmat 中。
+    目的：如果之后我们要把网络生成的动作还原回原始的世界坐标系（De-canonicalize），就需要用到这里记录的累积变换矩阵。
+    """
     old_rotmat = body_param_dict['transf_rotmat']
     old_transl = body_param_dict['transf_transl']
     body_param_dict['transf_rotmat'] = torch.einsum('bij,bjk->bik', old_rotmat, new_rotmat)  # [b,3,3]
@@ -109,12 +127,12 @@ class PrimitiveUtility:
         self.device = device
         self.dtype = dtype
         self.motion_repr = {
-            'transl': 3,
-            'poses_6d': 22 * 6,
-            'transl_delta': 3,
-            'global_orient_delta_6d': 6,
-            'joints': 22 * 3,
-            'joints_delta': 22 * 3,
+            'transl': 3,    # [0:3]
+            'poses_6d': 22 * 6,    # [3:135]
+            'transl_delta': 3,    # [135:138]
+            'global_orient_delta_6d': 6,    # [138:144]
+            'joints': 22 * 3,    # [144:210]
+            'joints_delta': 22 * 3,    # [210:276]
         }
         feature_dim = 0
         for k in self.motion_repr:
@@ -218,17 +236,23 @@ class PrimitiveUtility:
 
 
     def get_new_coordinate(self, body_param_dict, use_predicted_joints=False, pred_joints=None):
+        '''
+        两个 get_new_coordinate 是通过参数区分的同名函数，整体作用都是得到 从“规范坐标系”到“世界坐标系”的旋转矩阵 (即canonical的逆矩阵)
+        '''
         if use_predicted_joints:
             joints = pred_joints
         else:
             body_model = self.bm_male if body_param_dict['gender'] == 'male' else self.bm_female
             joints = body_model(**body_param_dict).joints  # [b,J,3]
 
-        new_rotmat, new_transl = get_new_coordinate(joints)  # transformation from new coord axis to old coord axis
+        new_rotmat, new_transl = get_new_coordinate(joints)  # transformation from new coord axis (canonical) to old coord axis (world)
 
         return new_rotmat, new_transl
 
     def calc_calibrate_offset(self, body_param_dict):
+        '''
+        计算T pose的pelvis joint相对于smpl模型的原点的偏移量, 注意传入body_model的参数仅有betas，没有任何与当前动作相关的帧，所以计算的是默认偏移量！
+        '''
         body_model = self.bm_male if body_param_dict['gender'] == 'male' else self.bm_female
         smplx_out = body_model(betas=body_param_dict['betas'],
                                # body_pose=body_param_dict['body_pose'],
@@ -255,7 +279,9 @@ class PrimitiveUtility:
             'global_orient': primitive_dict['global_orient'][:, 0, :, :],
         }   # first frame bodies
         # delta_T = self.calc_calibrate_offset(body_param_dict)  # [b,3]
+        # delta_T 是指 smpl模型的原点到pelvis joint的偏移量，因此是
         delta_T = primitive_dict['pelvis_delta'] if 'pelvis_delta' in primitive_dict else self.calc_calibrate_offset(body_param_dict)  # [b,3]
+        
         transf_rotmat, transf_transl = self.get_new_coordinate(body_param_dict,
                                                                use_predicted_joints=use_predicted_joints,
                                                                pred_joints=primitive_dict['joints'][:, 0, :].reshape(-1, 22, 3) if 'joints' in primitive_dict else None
@@ -263,7 +289,14 @@ class PrimitiveUtility:
 
         transl = primitive_dict['transl']  # [b, T, 3]
         global_ori = primitive_dict['global_orient']  # [b, T, 3, 3]
-        global_ori_new = torch.einsum('bij,btjk->btik', transf_rotmat.permute(0, 2, 1), global_ori)
+        '''
+        这是一个复合操作，我们可以分三步看：
+            1. transl + delta_T: 把 SMPL 的模型坐标转成真实的骨盆关节世界坐标。
+            2. - transf_transl: 去中心化。减去第一帧的骨盆位置。此时，第 0 帧的骨盆位于 $(0,0,0)$。
+            3. einsum(...): 旋转修正。因为坐标系旋转了，位移向量也必须跟着旋转。比如原来是“向东北走”，现在人被转回正北了，位移向量也得变成“向正北走”。
+            4. - delta_T: 还原模型参数定义。因为 SMPL 要求的输入是 transl (模型原点)，不是骨盆坐标，所以要把刚才加上的偏移量减回去。
+        '''
+        global_ori_new = torch.einsum('bij,btjk->btik', transf_rotmat.permute(0, 2, 1), global_ori) # transf_rotmat是正交矩阵，所以permute(0, 2, 1)等价于逆矩阵
         transl = torch.einsum('bij,btj->bti', transf_rotmat.permute(0, 2, 1),
                               transl + delta_T.unsqueeze(1) - transf_transl) - delta_T.unsqueeze(1)
         primitive_dict['global_orient'] = global_ori_new

@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'    
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pdb
 import random
 import time
@@ -100,10 +104,11 @@ def load_mld(denoiser_checkpoint, device):
     denoiser_model = denoiser_class(
         **asdict(denoiser_args.model_args),
     ).to(device)
-    checkpoint = torch.load(denoiser_checkpoint)
+    checkpoint = torch.load(denoiser_checkpoint, map_location='cpu')
     model_state_dict = checkpoint['model_state_dict']
     print(f"Loading denoiser checkpoint from {denoiser_checkpoint}")
     denoiser_model.load_state_dict(model_state_dict)
+    denoiser_model.to(device)
     for param in denoiser_model.parameters():
         param.requires_grad = False
     denoiser_model.eval()
@@ -119,13 +124,14 @@ def load_mld(denoiser_checkpoint, device):
     vae_model = AutoMldVae(
         **asdict(vae_args.model_args),
     ).to(device)
-    checkpoint = torch.load(denoiser_args.mvae_path)
+    checkpoint = torch.load(denoiser_args.mvae_path, map_location='cpu')
     model_state_dict = checkpoint['model_state_dict']
     if 'latent_mean' not in model_state_dict:
         model_state_dict['latent_mean'] = torch.tensor(0)
     if 'latent_std' not in model_state_dict:
         model_state_dict['latent_std'] = torch.tensor(1)
     vae_model.load_state_dict(model_state_dict)
+    vae_model.to(device)
     vae_model.latent_mean = model_state_dict[
         'latent_mean']  # register buffer seems to be not loaded by load_state_dict
     vae_model.latent_std = model_state_dict['latent_std']
@@ -280,13 +286,13 @@ def start():
     sleep_time = 1 / 30.0
     global frame_idx
     while True:
-        vertices, joints, faces = get_body()
+        vertices, joints, faces = get_body()    # joints: (55+21+51, 3), the front 55 is smplx joints, the others are extra landmarks
         body_mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
         viewer.render_lock.acquire()
-        scene.remove_node(body_node)
+        scene.remove_node(body_node)    # remove the old body mesh
         body_node = pyrender.Node(mesh=pyrender.Mesh.from_trimesh(body_mesh, smooth=False), name='body')
-        scene.add_node(body_node)
-        camera_pose = makeLookAt(position=camera_position, target=joints[0], up=up)
+        scene.add_node(body_node)       # add the new body mesh
+        camera_pose = makeLookAt(position=camera_position, target=joints[0], up=up) # joints[0] is transl
         camera_pose_current = viewer._camera_node.matrix
         camera_pose_current[:, :] = camera_pose
         viewer._trackball = Trackball(camera_pose_current, viewer.viewport_size, 1.0)
@@ -363,6 +369,3 @@ if __name__ == '__main__':
                                                                                               device=device)  # [1, 512]
 
     start()
-
-
-

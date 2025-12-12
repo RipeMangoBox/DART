@@ -1,7 +1,7 @@
 data_args:
   body_type: smplx
   cfg_path: ./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml
-  data_dir: ./data/seq_data_zero_male
+  data_dir: ./data/seq_data_zero_male_fd
   dataset: mp_seq_v2
   enforce_gender: male
   enforce_zero_beta: 1
@@ -11,7 +11,7 @@ data_args:
   num_primitive: 8
   prob_static: 0.0
   text_tolerance: 0.0
-  weight_scheme: text_samp:0.
+  weight_scheme: uniform
 device: cuda
 exp_name: mvae_babel_smplx
 model_args:
@@ -58,5 +58,5 @@ train_args:
   weight_rec: 1.0
   weight_smpl_joints_rec: 10.0
   weight_transl_delta: 100.0
-wandb_entity: interaction
+wandb_entity: MangoBox
 wandb_project_name: mld_vae
