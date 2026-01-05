@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import clip
 import loralib as lora
-
+from .PerceiverResampler import MusicToGlobalCondAdapter
 
 class DenoiserMLP(nn.Module):
     def __init__(self,
@@ -12,6 +12,10 @@ class DenoiserMLP(nn.Module):
                  clip_dim=512, history_shape=(2, 276), noise_shape=(1, 128),
                  **kargs):
         super().__init__()
+        '''
+        clip_dim: music(text) embedding dim
+        '''
+        print('DenoiserMLP init')
         self.h_dim = h_dim
         self.dropout = dropout
         self.n_blocks = n_blocks
@@ -29,6 +33,7 @@ class DenoiserMLP(nn.Module):
         self.embed_timestep = TimestepEmbedder(self.h_dim, self.sequence_pos_encoder)
         input_dim = self.h_dim + self.clip_dim + np.prod(history_shape) + np.prod(noise_shape)
         self.input_project = nn.Linear(input_dim, self.h_dim)
+        self.music_encoder = MusicToGlobalCondAdapter(music_input_dim=35, global_cond_output_dim=self.clip_dim)
 
         self.mlp = MLPBlock(h_dim=h_dim,
                             out_dim=np.prod(noise_shape),
@@ -57,11 +62,12 @@ class DenoiserMLP(nn.Module):
         emb_time = self.embed_timestep(timesteps).squeeze(0)  # [bs, h_dim]
         emb_history = y['history_motion_normalized'].reshape(batch_size, np.prod(self.history_shape))  # [bs, History * nfeats]
         force_mask = y.get('uncond', False)
-        emb_text = self.mask_cond(y['music'], force_mask=force_mask)  # [bs, clip_dim]
+        emb_music = self.music_encoder(y['music'])
+        emb_music = self.mask_cond(emb_music, force_mask=force_mask)  # [bs, global_cond_output_dim]
         emb_noise = x_t.reshape(batch_size, np.prod(self.noise_shape))  # [bs, noise_dim]
         # print('emb_time shape:', emb_time.shape, 'emb_text shape:', emb_text.shape, 'emb_history shape:', emb_history.shape, 'emb_noise shape:', emb_noise.shape)
 
-        input_embed = torch.cat((emb_time, emb_text, emb_history, emb_noise), dim=1)  # [bs, input_dim]
+        input_embed = torch.cat((emb_time, emb_music, emb_history, emb_noise), dim=1)  # [bs, input_dim]
         output = self.mlp(self.input_project(input_embed))  # [bs, noise_dim]
         output = output.reshape(batch_size, *self.noise_shape)  # [B, noise_shape[0], noise_shape[1]]
         # print('output shape:', output.shape)
@@ -74,6 +80,8 @@ class DenoiserTransformer(nn.Module):
                  clip_dim=512, history_shape=(2, 276), noise_shape=(1, 128),
                  **kargs):
         super().__init__()
+        
+        print('DenoiserTransformer init')
         self.h_dim = h_dim
         self.ff_size = ff_size
         self.num_layers = num_layers
@@ -90,7 +98,8 @@ class DenoiserTransformer(nn.Module):
         # input embeddings
         self.sequence_pos_encoder = PositionalEncoding(self.h_dim, self.dropout)
         self.embed_timestep = TimestepEmbedder(self.h_dim, self.sequence_pos_encoder)
-        self.embed_text = nn.Linear(self.clip_dim, self.h_dim)
+        self.music_encoder = MusicToGlobalCondAdapter(music_input_dim=35, global_cond_output_dim=self.clip_dim)
+        # self.embed_text = nn.Linear(self.clip_dim, self.h_dim)
         self.embed_history = nn.Linear(self.history_shape[-1], self.h_dim)
         self.embed_noise = nn.Linear(self.noise_shape[-1], self.h_dim)
 
@@ -129,11 +138,14 @@ class DenoiserTransformer(nn.Module):
         emb_time = self.embed_timestep(timesteps)  # [1, bs, d]
         emb_history = self.embed_history(y['history_motion_normalized']).permute(1, 0, 2)  # [History, bs, d]
         force_mask = y.get('uncond', False)
-        emb_text = self.embed_text(self.mask_cond(y['music'], force_mask=force_mask)).unsqueeze(0)  # [1, bs, d]
+        emb_music = self.music_encoder(y['music'])
+        emb_music = self.mask_cond(emb_music, force_mask=force_mask).unsqueeze(0)  # [1, bs, d]
+        # emb_text = self.embed_text(self.mask_cond(y['music'], force_mask=force_mask)).unsqueeze(0)  # [1, bs, d]
+        
         emb_noise = self.embed_noise(x_t).permute(1, 0, 2)  # [1, bs, d]
         # print('emb_time shape:', emb_time.shape, 'emb_text shape:', emb_text.shape, 'emb_history shape:', emb_history.shape, 'emb_noise shape:', emb_noise.shape)
 
-        xseq = torch.cat((emb_time, emb_text, emb_history, emb_noise), dim=0)
+        xseq = torch.cat((emb_time, emb_music, emb_history, emb_noise), dim=0)
         # print('xseq shape:', xseq.shape)
         xseq = self.sequence_pos_encoder(xseq)
         output = self.seqTransEncoder(xseq)[-self.noise_shape[0]:]  # [1, bs, h_dim]

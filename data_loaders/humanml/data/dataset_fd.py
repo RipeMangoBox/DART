@@ -30,6 +30,7 @@ from config_files.data_paths import *
 from utilss.smpl_utils import *
 from utilss.misc_util import have_overlap, get_overlap, load_and_freeze_clip, encode_text, compose_texts_with_and
 import torch.nn.functional as F
+import laion_clap
 
 # import spacy
 
@@ -1343,7 +1344,7 @@ class WeightedPrimitiveSequenceDataset:
             print('num of sequences: ', len(dataset))
             # assign sampling weights to each sequence
 
-            with open('./data/action_statistics.json', 'r') as f:
+            with open('./data/seq_data_zero_male_fd/action_statistics.json', 'r') as f:
                 action_statistics = json.load(f)
 
             for data in dataset:
@@ -1505,6 +1506,7 @@ class WeightedPrimitiveSequenceDataset:
 
         # load or calc mean and std
         self.tensor_mean_device_dict = {}
+        self.music_tensor_mean_device_dict = {}
         file_name = f'mean_std_h{self.history_length}_f{self.future_length}'
         # TODO: use different mean and std when enforce gender and beta
         # if self.enforce_gender is not None:
@@ -1515,13 +1517,13 @@ class WeightedPrimitiveSequenceDataset:
         if mean_std_path.exists():
             print(f'loading mean and std from {mean_std_path}')
             with open(mean_std_path, 'rb') as f:
-                self.tensor_mean, self.tensor_std = pickle.load(f)  # [1, 1, D]
+                self.tensor_mean, self.tensor_std, self.music_tensor_mean, self.music_tensor_std = pickle.load(f)  # [1, 1, D]
         else:
             assert self.split == 'train'
             print('calculating mean and std using train split')
-            self.tensor_mean, self.tensor_std = self.calc_mean_std()
+            self.tensor_mean, self.tensor_std, self.music_tensor_mean, self.music_tensor_std = self.calc_mean_std()
             with open(mean_std_path, 'wb') as f:
-                pickle.dump((self.tensor_mean.detach().cpu(), self.tensor_std.detach().cpu()), f)
+                pickle.dump((self.tensor_mean.detach().cpu(), self.tensor_std.detach().cpu(), self.music_tensor_mean.detach().cpu(), self.music_tensor_std.detach().cpu()), f)
 
         # load clip model, get train text embeddings
         self.clip_model = load_and_freeze_clip(clip_version='ViT-B/32', device=self.device)
@@ -1620,6 +1622,15 @@ class WeightedPrimitiveSequenceDataset:
         tensor_mean, tensor_std = self.get_mean_std_by_device(tensor.device)
         return tensor * tensor_std + tensor_mean  # [B, T, D]
 
+    def get_music_mean_std_by_device(self, device):
+        if device not in self.music_tensor_mean_device_dict:
+            self.music_tensor_mean_device_dict[device] = (self.music_tensor_mean.to(device=device), self.music_tensor_std.to(device=device))
+        return self.music_tensor_mean_device_dict[device]
+
+    def normalize_music(self, tensor):
+        music_tensor_mean, music_tensor_std = self.get_music_mean_std_by_device(tensor.device)
+        return (tensor - music_tensor_mean) / (music_tensor_std + 1e-8)  # [B, T, D]
+    
     def get_primitive(self, seq_data, start_frame, end_frame, skip_text=False):
         """end_frame included"""
         motion_data = seq_data['motion']
@@ -1847,7 +1858,10 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                  load_data=True,
                  # text_tolerance=0.0, # Removed text tolerance
                  use_frame_weights=True,
+                 use_music_normalization=True,
                  body_type='smplx',
+                 inference_mode=False,
+                 seq_name=None,
                  **kwargs):
         self.dataset_name = dataset_name
         self.dataset_path = dataset_path
@@ -1874,11 +1888,20 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
         self.primitive_length = self.history_length + self.future_length
         self.num_primitive = self.cfg.num_primitive
         self.seq_length = self.history_length + self.future_length * self.num_primitive + 1
+        
+        self.FPS = 30
+        self.HOP_LENGTH = 512
+        # SR 设置为 30 * 512 = 15360 Hz，确保 512 个采样点正好对应 1/30 秒
+        self.SR = self.FPS * self.HOP_LENGTH
+        self.use_music_normalization = use_music_normalization
 
         if load_data:
             with open(pjoin(dataset_path, f'{split}.pkl'), 'rb') as f:
                 raw_dataset = pickle.load(f)
             
+            with open('./data/seq_data_zero_male_fd/action_statistics.json', 'r') as f:
+                action_statistics = json.load(f)
+                
             # Handle dictionary vs list format from pickle
             if isinstance(raw_dataset, dict):
                 raw_dataset = list(raw_dataset.values())
@@ -1944,8 +1967,38 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 elif 'length' in weight_scheme:
                     data['weight'] = len(data['motion']['transl'])
                 else:
-                    # Default fallback
-                    data['weight'] = 1.0
+                    if data['data_source'] == 'samp':  # ignore samp in text weight scheme
+                        data['weight'] = 0
+                        continue
+
+                    seq_weight = 0
+                    for seg in data['frame_labels']:
+                        # print('act_cat:', seg['act_cat'])
+                        # if int(seg['end_t'] * self.target_fps) > len(data['motion']['transl']) + 1:
+                        #     print('error seq:', data['seq_name'], int(seg['end_t'] * self.target_fps), len(data['motion']['transl']))
+                        #     error_seq = 1
+                        #     break
+                        act_weights = sum([action_statistics[act_cat]['weight'] for act_cat in seg['act_cat']])  # sum of unit weights of all action categories
+                        seq_weight += (seg['end_t'] - seg['start_t']) * act_weights
+                    data['weight'] = seq_weight
+                    # print('calc frame segment weights:', data['seq_name'])
+                    num_frames = len(data['motion']['transl'])
+                    if use_frame_weights:
+                        frame_weights = []  # [num_frames - self.seq_length + 1]
+                        for frame_idx in range(0, num_frames - self.seq_length + 1):
+                            start_t = frame_idx / self.target_fps
+                            end_t = (frame_idx + self.seq_length - 1) / self.target_fps
+                            frame_weight = 0  # at least weight one even if no text
+                            for seg in data['frame_labels']:
+                                overlap_len = get_overlap([seg['start_t'], seg['end_t']], [start_t, end_t])
+                                if overlap_len > 0:
+                                    act_weights = sum([action_statistics[act_cat]['weight'] for act_cat in
+                                                       seg['act_cat']])  # sum of unit weights of all action categories
+                                    frame_weight += overlap_len * act_weights
+                            frame_weights.append(frame_weight)
+                            # print(f'start frame{frame_idx} weight: {weight}')
+                        data['frame_weights'] = frame_weights
+            print('finish first assigning seq weights')
 
             # Normalize weights
             seq_weights = np.array([data['weight'] for data in dataset])
@@ -1954,22 +2007,34 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
             
             self.dataset = dataset
             self.seq_weights = seq_weights
+            
+            self.inference_mode = inference_mode
+            self.seq_name = seq_name
+            if self.inference_mode and self.seq_name:
+                self.dataset = [data for data in self.dataset if data['seq_name'] == self.seq_name]
+                if len(self.dataset) == 0:
+                    raise ValueError(f"No sequence found with seq_name: {self.seq_name}")
 
         # load or calc mean and std for MOTION features
         self.tensor_mean_device_dict = {}
+        self.music_tensor_mean_device_dict = {}
         file_name = f'mean_std_h{self.history_length}_f{self.future_length}'
         mean_std_path = Path(dataset_path, f'{file_name}.pkl')
         if mean_std_path.exists():
             print(f'loading mean and std from {mean_std_path}')
             with open(mean_std_path, 'rb') as f:
-                self.tensor_mean, self.tensor_std = pickle.load(f)  # [1, 1, D]
+                self.tensor_mean, self.tensor_std, self.music_tensor_mean, self.music_tensor_std = pickle.load(f)  # [1, 1, D]
         else:
             assert self.split == 'train'
             print('calculating mean and std using train split')
-            self.tensor_mean, self.tensor_std = self.calc_mean_std()
+            self.tensor_mean, self.tensor_std, self.music_tensor_mean, self.music_tensor_std = self.calc_mean_std()
             with open(mean_std_path, 'wb') as f:
-                pickle.dump((self.tensor_mean.detach().cpu(), self.tensor_std.detach().cpu()), f)
+                pickle.dump((self.tensor_mean.detach().cpu(), self.tensor_std.detach().cpu(), self.music_tensor_mean.detach().cpu(), self.music_tensor_std.detach().cpu()), f)
 
+        # load CLAP model
+        # self.clap_model = laion_clap.CLAP_Module(enable_fusion=False, amodel='HTSAT-base', device=self.device)
+        # self.clap_model.load_ckpt('CLAP/checkpoints/music_audioset_epoch_15_esc_90.14.pt')
+        
         # Removed CLIP model loading and text embedding calculation
         print('Music features enabled. Text processing disabled.')
 
@@ -1978,6 +2043,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
         # Music normalization is usually not done here or handled separately if needed.
         # This function calculates mean/std for the OUTPUT motion representation.
         all_mp_data = []
+        all_music_data = []
         for seq_data in self.dataset:
             motion_data = seq_data['motion']
             num_frames = motion_data['transl'].shape[0]
@@ -1987,14 +2053,14 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 primitive_data_list.append(self.get_primitive(seq_data, start_frame, end_frame))
 
             primitive_dict = {'gender': primitive_data_list[0]['primitive_dict']['gender']}
-            for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints']:
+            for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']:
                 primitive_dict[key] = torch.cat([data['primitive_dict'][key] for data in primitive_data_list], dim=0)
             primitive_dict = tensor_dict_to_device(primitive_dict, self.device)
 
             batch_start_idx = 0
             while batch_start_idx < len(primitive_dict['transl']):
                 batch_end_idx = min(batch_start_idx + batch_size, len(primitive_dict['transl']))
-                batch_primitive_dict = {key: primitive_dict[key][batch_start_idx:batch_end_idx] for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints']}
+                batch_primitive_dict = {key: primitive_dict[key][batch_start_idx:batch_end_idx] for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']}
                 batch_primitive_dict['gender'] = primitive_dict['gender']
                 _, _, canonicalized_primitive_dict = self.primitive_utility.canonicalize(batch_primitive_dict, use_predicted_joints=True)
                 feature_dict = self.primitive_utility.calc_features(canonicalized_primitive_dict, use_predicted_joints=True)
@@ -2004,14 +2070,18 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 feature_dict['joints'] = feature_dict['joints'][:, :-1, :] 
                 motion_tensor = self.dict_to_tensor(feature_dict)  # [num_primitive, T, D]
                 all_mp_data.append(motion_tensor)
-
+                all_music_data.append(primitive_dict['music'][batch_start_idx:batch_end_idx])
                 batch_start_idx = batch_end_idx
 
         all_mp_data = torch.cat(all_mp_data, dim=0)  # [N, T, D]
         tensor_mean = all_mp_data.mean(dim=[0, 1], keepdim=True)  # [1, 1, D]
         tensor_std = all_mp_data.std(dim=[0, 1], keepdim=True)  # [1, 1, D]
-        return tensor_mean, tensor_std
-
+        
+        all_music_data = torch.cat(all_music_data, dim=0)  # [N, T, 35]
+        music_tensor_mean = all_music_data.mean(dim=[0, 1], keepdim=True)  # [1, 1, 35]
+        music_tensor_std = all_music_data.std(dim=[0, 1], keepdim=True)  # [1, 1, 35]   
+        return tensor_mean, tensor_std, music_tensor_mean, music_tensor_std
+     
     def get_primitive(self, seq_data, start_frame, end_frame, skip_text=True):
         """end_frame included for motion slice logic"""
         motion_data = seq_data['motion']
@@ -2044,8 +2114,8 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
     def get_batch(self, batch_size=8):
         self.time = time.time()
         seq_list = []
-        batch_idx = self.get_batch_idx(batch_size)
 
+        batch_idx = self.get_batch_idx(batch_size)
         for seq_idx in batch_idx:
             seq_data = self.dataset[seq_idx]
             num_frames = len(seq_data['motion']['transl'])
@@ -2058,7 +2128,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 primitive_data = self.get_primitive(seq_data, frame_idx, frame_idx + self.primitive_length)
                 primitive_data_list.append(primitive_data)
             seq_list.append(primitive_data_list)
-
+                
         # sort batch by gender
         batch = None
         for gender in ['female', 'male']:
@@ -2088,8 +2158,11 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
             gender_seq_dict = tensor_dict_to_device(gender_seq_dict, self.device)
             
             # Separate music before canonicalization (which only handles motion keys)
-            raw_music = gender_seq_dict['music'] # [B*num_mp, T, 35]
-
+            raw_music = gender_seq_dict['music'] # [B, 1, waveform_length]
+            
+            if self.use_music_normalization:
+                raw_music = self.normalize_music(raw_music)
+            
             _, _, canonicalized_primitive_dict = self.primitive_utility.canonicalize(gender_seq_dict, use_predicted_joints=True)
             feature_dict = self.primitive_utility.calc_features(canonicalized_primitive_dict, use_predicted_joints=True)
             
@@ -2112,6 +2185,7 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                 
                 # Get Music slice for this batch part
                 batch_music = raw_music[start_idx:end_idx] # [B, T, 35]
+                # batch_music = self.clap_model.get_audio_embedding_from_data(x=raw_music[start_idx:end_idx].reshape(gender_batch_size, -1), use_tensor=True)
                 
                 gender_batch.append(
                     {
@@ -2137,31 +2211,141 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
                         batch[primitive_idx][key] = torch.cat([batch[primitive_idx][key], gender_batch[primitive_idx][key]], dim=0)
 
         return batch
+    
+    
+    def get_batch_infer(self):
+        self.time = time.time()
+        seq_list = []
+        seq_data = self.dataset[0]
+        num_frames = len(seq_data['motion']['transl'])
+        primitive_data_list = []
+        for frame_idx in range(0, num_frames - self.primitive_length, self.future_length):
+            primitive_data = self.get_primitive(seq_data, frame_idx, frame_idx + self.primitive_length)
+            primitive_data_list.append(primitive_data)
+        seq_list.append(primitive_data_list)
+                
+        # sort batch by gender
+        batch = None
+        for gender in ['female', 'male']:
+            gender_idx = [idx for idx in range(len(seq_list)) if seq_list[idx][0]['primitive_dict']['gender'] == gender]
+            if len(gender_idx) == 0:
+                continue
+            gender_seq_list = [seq_list[i] for i in gender_idx]
+            gender_batch_size = len(gender_idx)
+            gender_batch = []
 
-class SinglePrimitiveDataset(WeightedPrimitiveSequenceDataset):
+            # Removed gender_seq_texts logic
+            
+            gender_seq_dict = None
+            for primitive_idx in range(len(gender_seq_list[0])):
+                primitive_dict = {'gender': gender}
+                # Concatenate motion and music
+                for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']:
+                    primitive_dict[key] = torch.cat([mp_seq[primitive_idx]['primitive_dict'][key] for mp_seq in gender_seq_list], dim=0)
+                
+                if gender_seq_dict is None:
+                    gender_seq_dict = primitive_dict
+                else:
+                    for key in ['betas', 'transl', 'global_orient', 'body_pose', 'transf_rotmat', 'transf_transl', 'pelvis_delta', 'joints', 'music']:
+                        gender_seq_dict[key] = torch.cat([gender_seq_dict[key], primitive_dict[key]], dim=0)
+
+            # Move to device and Canonicalize Motion (Music is separate)
+            gender_seq_dict = tensor_dict_to_device(gender_seq_dict, self.device)
+            
+            # Separate music before canonicalization (which only handles motion keys)
+            raw_music = gender_seq_dict['music'] # [B, 1, waveform_length]
+            
+            if self.use_music_normalization:
+                raw_music = self.normalize_music(raw_music)
+            
+            _, _, canonicalized_primitive_dict = self.primitive_utility.canonicalize(gender_seq_dict, use_predicted_joints=True)
+            feature_dict = self.primitive_utility.calc_features(canonicalized_primitive_dict, use_predicted_joints=True)
+            
+            # Trim motion features to match T (remove last frame delta)
+            feature_dict['transl'] = feature_dict['transl'][:, :-1, :]  # [B*num_mp, T, 3]
+            feature_dict['poses_6d'] = feature_dict['poses_6d'][:, :-1, :]  # [B*num_mp, T, 66]
+            feature_dict['joints'] = feature_dict['joints'][:, :-1, :]  # [B*num_mp, T, 22 * 3]
+            
+            motion_tensor_normalized = self.normalize(self.dict_to_tensor(feature_dict))  # [B*num_mp, T, D]
+            motion_tensor_normalized = motion_tensor_normalized.permute(0, 2, 1).unsqueeze(2)  # [B*num_mp, D, 1, T]
+            
+            history_mask = torch.zeros_like(motion_tensor_normalized, dtype=torch.bool, device=self.device)
+            history_mask[..., :self.cfg.history_length] = True
+            history_motion = torch.zeros_like(motion_tensor_normalized, dtype=torch.float32, device=self.device)
+            history_motion[..., :self.cfg.history_length] = motion_tensor_normalized[..., :self.cfg.history_length]
+
+            for primitive_idx in range(len(gender_seq_list[0])):
+                start_idx = primitive_idx * gender_batch_size
+                end_idx = (primitive_idx + 1) * gender_batch_size
+                
+                # Get Music slice for this batch part
+                batch_music = raw_music[start_idx:end_idx] # [B, T, 35]
+                # batch_music = self.clap_model.get_audio_embedding_from_data(x=raw_music[start_idx:end_idx].reshape(gender_batch_size, -1), use_tensor=True)
+                
+                gender_batch.append(
+                    {
+                        'texts': [''] * gender_batch_size, # Empty texts
+                        'music': batch_music, # Added Music Condition
+                        'gender': [gender_seq_dict['gender']] * gender_batch_size,
+                        'betas': gender_seq_dict['betas'][start_idx:end_idx, :-1, :10],
+                        'motion_tensor_normalized': motion_tensor_normalized[start_idx:end_idx, ...],
+                        'history_motion': history_motion[start_idx:end_idx, ...],
+                        'history_mask': history_mask[start_idx:end_idx, ...],
+                        'history_length': self.cfg.history_length,
+                        'future_length': self.cfg.future_length,
+                    }
+                )
+
+            if batch is None:
+                batch = gender_batch
+            else:  # concatenate different gender batch
+                for primitive_idx in range(len(gender_seq_list[0])):
+                    for key in ['texts', 'gender']:
+                        batch[primitive_idx][key] = batch[primitive_idx][key] + gender_batch[primitive_idx][key]
+                    for key in ['betas', 'motion_tensor_normalized', 'history_motion', 'history_mask', 'music']:
+                        batch[primitive_idx][key] = torch.cat([batch[primitive_idx][key], gender_batch[primitive_idx][key]], dim=0)
+
+        return batch
+
+    def get_full_music_sequence(self, seq_name):
+        # 找到对应的数据
+        seq_data = next((data for data in self.dataset if data['seq_name'] == seq_name), None)
+        if seq_data is None:
+            raise ValueError(f"No sequence found with seq_name: {seq_name}")
+        
+        # 转 Tensor
+        raw_music = torch.from_numpy(seq_data['music'].astype(np.float32)).to(self.device) # [T, D]
+        
+        # 增加 Batch 维度以便进行归一化 [1, T, D]
+        raw_music = raw_music.unsqueeze(0)
+        
+        # 归一化
+        if self.use_music_normalization:
+            norm_music = self.normalize_music(raw_music)
+        else:
+            norm_music = raw_music
+            
+        # 去掉 Batch 维度返回 [T, D]
+        return norm_music.squeeze(0)
+
+class SinglePrimitiveDataset:
     def __init__(self, cfg_path=None, sequence_path=None,
                  dataset_path=None,
                  device='cuda',
-                 batch_size=16, texts=None,  #text: list of str lists
+                 batch_size=16,
                  enforce_gender=None,
                  enforce_zero_beta=None,
                  clip_to_seq_length=True,
                  body_type='smplx',
+                 use_music_normalization=True,
                  **kwargs):
         self.batch_size = batch_size
         self.device = device
-        self.prob_static = 0.0
-        self.enforce_gender = enforce_gender
-        self.enforce_zero_beta = enforce_zero_beta
-        self.weight_scheme = 'uniform'
         self.enforce_gender = enforce_gender
         self.enforce_zero_beta = enforce_zero_beta
         self.clip_to_seq_length = clip_to_seq_length
-
         self.primitive_utility = PrimitiveUtility(device=self.device, body_type=body_type)
         self.motion_repr = self.primitive_utility.motion_repr
-
-        # cfg_path = Path(dataset_path, 'config.yaml')
         with open(cfg_path, 'r') as f:
             self.cfg = OmegaConf.load(f)
         self.target_fps = self.cfg.fps
@@ -2170,38 +2354,22 @@ class SinglePrimitiveDataset(WeightedPrimitiveSequenceDataset):
         self.primitive_length = self.history_length + self.future_length
         self.num_primitive = 1
         self.seq_length = self.history_length + self.future_length * self.num_primitive + 1
-
         self.tensor_mean_device_dict = {}
-        if cfg_path == './config_files/config_hydra/motion_primitive/mp_2_8.yaml':  # backward compatibility
-            mean_std_path = pjoin(dataset_path, 'mean_std.pkl')
+        self.music_tensor_mean_device_dict = {}
+        self.use_music_normalization = use_music_normalization
+        mean_std_path = Path(dataset_path, f'mean_std_h{self.history_length}_f{self.future_length}.pkl')
+        if mean_std_path.exists():
+            print(f'loading mean and std from {mean_std_path}')
             with open(mean_std_path, 'rb') as f:
-                self.mean_std = pickle.load(f)
-            mean_dict = {}
-            std_dict = {}
-            for key in self.mean_std:
-                mean_dict[key] = self.mean_std[key]['mean']
-                std_dict[key] = self.mean_std[key]['std']
-            self.tensor_mean = self.dict_to_tensor(mean_dict).reshape(1, 1, -1)
-            self.tensor_std = self.dict_to_tensor(std_dict).reshape(1, 1, -1)
+                self.tensor_mean, self.tensor_std, self.music_tensor_mean, self.music_tensor_std = pickle.load(f)
         else:
-            mean_std_path = Path(dataset_path, f'mean_std_h{self.history_length}_f{self.future_length}.pkl')
-            if mean_std_path.exists():
-                print(f'loading mean and std from {mean_std_path}')
-                with open(mean_std_path, 'rb') as f:
-                    self.tensor_mean, self.tensor_std = pickle.load(f)  # [1, 1, D]
-            else:
-                print('no mean std found, exit')
-                exit()
-        # load clip model
-        self.clip_model = load_and_freeze_clip(clip_version='ViT-B/32', device=self.device)
+            print('no mean std found, exit')
+            exit()
         self.update_seq(sequence_path)
-
-
-
+    
     def update_seq(self, sequence_path):
         with open(sequence_path, 'rb') as f:
             self.sequence = pickle.load(f)
-        text_prompt = self.sequence['texts'][0] if 'texts' in self.sequence else ''
         clip_length = self.seq_length if self.clip_to_seq_length else len(self.sequence['transl'])
         body_pose = torch.tensor(self.sequence['body_pose'][:clip_length], dtype=torch.float32)
         if len(body_pose.shape) > 2 and body_pose.shape[-2:] == (3, 3):
@@ -2222,9 +2390,75 @@ class SinglePrimitiveDataset(WeightedPrimitiveSequenceDataset):
                     'trans': transl,
                     'poses': poses,
                 },
-            'text': text_prompt,
         }]
         self.seq_weights = np.array([1.0])
-
-        music = encode_text(self.clip_model, [text_prompt])
-        self.music_dict = {text_prompt: music[0]}
+    
+    def normalize(self, tensor):
+        return (tensor - self.tensor_mean.to(tensor.device)) / self.tensor_std.to(tensor.device)
+    
+    def denormalize(self, tensor):
+        return tensor * self.tensor_std.to(tensor.device) + self.tensor_mean.to(tensor.device)
+    
+    def normalize_music(self, music):
+        return (music - self.music_tensor_mean.to(music.device)) / self.music_tensor_std.to(music.device)
+    
+    def denormalize_music(self, music):
+        return music * self.music_tensor_std.to(music.device) + self.music_tensor_mean.to(music.device)
+    
+    def get_batch(self, batch_size=1):
+        seq_data = self.dataset[0]
+        primitive_data = self.get_primitive(seq_data, 0, self.primitive_length)
+        primitive_dict = primitive_data['primitive_dict']
+        primitive_dict = tensor_dict_to_device(primitive_dict, self.device)
+        
+        raw_music = primitive_dict['music']
+        if self.use_music_normalization:
+            raw_music = self.normalize_music(raw_music)
+        
+        del primitive_dict['music']
+        
+        _, _, canonicalized_primitive_dict = self.primitive_utility.canonicalize(primitive_dict, use_predicted_joints=True)
+        feature_dict = self.primitive_utility.calc_features(canonicalized_primitive_dict, use_predicted_joints=True)
+        
+        feature_dict['transl'] = feature_dict['transl'][:, :-1, :]
+        feature_dict['poses_6d'] = feature_dict['poses_6d'][:, :-1, :]
+        feature_dict['joints'] = feature_dict['joints'][:, :-1, :]
+        
+        motion_tensor_normalized = self.normalize(self.primitive_utility.dict_to_tensor(feature_dict))
+        motion_tensor_normalized = motion_tensor_normalized.permute(0, 2, 1).unsqueeze(2)
+        
+        history_mask = torch.zeros_like(motion_tensor_normalized, dtype=torch.bool, device=self.device)
+        history_mask[..., :self.history_length] = True
+        history_motion = torch.zeros_like(motion_tensor_normalized, dtype=torch.float32, device=self.device)
+        history_motion[..., :self.history_length] = motion_tensor_normalized[..., :self.history_length]
+        
+        batch = [{
+            'music': raw_music.expand(batch_size, -1, -1),
+            'gender': primitive_dict['gender'],
+            'betas': primitive_dict['betas'][:, :-1, :10].expand(batch_size, -1, -1),
+            'motion_tensor_normalized': motion_tensor_normalized.expand(batch_size, -1, -1, -1),
+            'history_motion': history_motion.expand(batch_size, -1, -1, -1),
+            'history_mask': history_mask.expand(batch_size, -1, -1, -1),
+            'history_length': self.history_length,
+            'future_length': self.future_length,
+        }]
+        return batch
+    
+    def get_primitive(self, seq_data, start_frame, end_frame):
+        motion_data = seq_data['motion']
+        
+        primitive_dict = {
+            'gender': motion_data['gender'],
+            'betas': motion_data['betas'].expand(1, self.primitive_length + 1, 10),
+            'transl': motion_data['trans'][:end_frame + 1].unsqueeze(0),
+            'global_orient': transforms.axis_angle_to_matrix(motion_data['poses'][:end_frame + 1, :3]).unsqueeze(0),
+            'body_pose': transforms.axis_angle_to_matrix(motion_data['poses'][:end_frame + 1, 3:].reshape(-1, 21, 3)).unsqueeze(0),
+            'pelvis_delta': torch.zeros(3).unsqueeze(0),
+            'transf_rotmat': torch.eye(3).unsqueeze(0),
+            'transf_transl': torch.zeros(1, 1, 3),
+            'music': torch.zeros(1, self.primitive_length, 35),  # Placeholder, will be overridden in rollout
+        }
+        output = {
+            'primitive_dict': primitive_dict,
+        }
+        return output

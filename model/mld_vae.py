@@ -109,7 +109,10 @@ class AutoMldVae(nn.Module):
             self,
             future_motion, history_motion,
             scale_latent: bool = False,
-    ) -> Union[Tensor, Distribution]:
+        ) -> Union[Tensor, Distribution]:
+        # 引入 autocast
+        from torch.cuda.amp import autocast
+
         device = future_motion.device
         bs, nfuture, nfeats = future_motion.shape
         nhistory = history_motion.shape[1]
@@ -123,28 +126,48 @@ class AutoMldVae(nn.Module):
         x = x.permute(1, 0, 2)  # now it is [nframes, bs, h_dim]
 
         # Each batch has its own set of tokens
-        dist = torch.tile(self.global_motion_token[:, None, :], (1, bs, 1))
+        dist_token = torch.tile(self.global_motion_token[:, None, :], (1, bs, 1))
 
         # adding the embedding token for all sequences
-        xseq = torch.cat((dist, x), 0)
+        xseq = torch.cat((dist_token, x), 0)
 
         xseq = self.query_pos_encoder(xseq)
-        dist = self.encoder(xseq)[:dist.shape[0]]  # [2*latent_size, bs, h_dim]
-        dist = self.encoder_latent_proj(dist)  # [2*latent_size, bs, latent_dim]
+        
+        # 获取 Encoder 输出的特征
+        dist_features = self.encoder(xseq)[:dist_token.shape[0]]  # [2*latent_size, bs, h_dim]
+        dist_features = self.encoder_latent_proj(dist_features)  # [2*latent_size, bs, latent_dim]
 
-        # content distribution
-        mu = dist[0:self.latent_size, ...]
-        logvar = dist[self.latent_size:, ...]
-        logvar = torch.clamp(logvar, min=-10, max=10)  # avoid numerical issues, otherwise denoiser rollout can break
-        # if torch.isnan(mu).any() or torch.isinf(mu).any() or torch.isnan(logvar).any() or torch.isinf(logvar).any():
-        #     pdb.set_trace()
+        # ==================== 关键修改开始 ====================
+        # 强制关闭自动混合精度，确保概率分布计算在 float32 下进行
+        with autocast(enabled=False):
+            # 1. 显式转换为 float32
+            # autocast(enabled=False) 只是不再自动转 FP16，但输入的 Tensor 如果已经是 FP16，
+            # 必须手动 .float() 转回 FP32，否则后续计算仍在 FP16 上进行。
+            dist_features = dist_features.float()
 
-        # resampling
-        std = logvar.exp().pow(0.5)
-        dist = torch.distributions.Normal(mu, std)
-        latent = dist.rsample()
+            # 2. 在 float32 精度下切分 mu 和 logvar
+            mu = dist_features[0:self.latent_size, ...]
+            logvar = dist_features[self.latent_size:, ...]
+            
+            # 3. 在 float32 下进行 Clamp，防止 logvar 过大导致 exp 后溢出
+            logvar = torch.clamp(logvar, min=-10, max=10) 
+
+            # 4. 计算 std
+            std = logvar.exp().pow(0.5)
+            
+            # (可选) 额外的保护：给 std 加上极小值防止除零，但在 float32 下通常不需要
+            # std = std + 1e-6
+
+            # 5. 构建分布 (此时 mu 和 std 都是 float32，安全)
+            dist = torch.distributions.Normal(mu, std)
+            
+            # 6. 采样 (得到的 latent 也是 float32)
+            latent = dist.rsample()
+        # ==================== 关键修改结束 ====================
+
         if scale_latent:  # only used during denoiser training
             latent = latent / self.latent_std
+            
         return latent, dist
 
     def decode(self, z: Tensor, history_motion, nfuture,

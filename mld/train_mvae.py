@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -82,6 +82,8 @@ class DataArgs:
 
     body_type: str = 'smplx'
     """body type, 'smplx' or 'smplh'"""
+    
+    use_music_normalization: bool = True
 
 @dataclass
 class TrainArgs:
@@ -366,7 +368,10 @@ class Trainer:
         total_steps = train_args.stage1_steps + train_args.stage2_steps + train_args.stage3_steps
         rest_steps = (total_steps - self.start_step) // self.train_dataset.num_primitive + 1
         rest_steps = rest_steps * self.train_dataset.num_primitive
-        progress_bar = iter(tqdm(range(rest_steps)))
+        # progress_bar = iter(tqdm(range(rest_steps)))
+        # 修改1: 将 tqdm 实例化为对象 pbar，以便后续调用 set_postfix
+        
+        pbar = tqdm(range(rest_steps))
         self.step = self.start_step
         while self.step <= total_steps:
             # Annealing the rate if instructed to do so.
@@ -424,12 +429,16 @@ class Trainer:
                     self.validate()
 
                 self.step += 1
-                next(progress_bar)
+                # next(progress_bar)
+
+                # 修改2: 设置进度条后缀显示 loss，并手动更新进度条
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+                pbar.update(1)
 
     def get_primitive_batch(self, batch, primitive_idx):
         motion = batch[primitive_idx]['motion_tensor_normalized']  # [bs, D, 1, T]
         cond = {'y': {'text': batch[primitive_idx]['texts'],
-                      'music': batch[primitive_idx]['music'],  # [bs, 512]
+                      'text_embedding': batch[primitive_idx]['text_embedding'],  # [bs, 512]
                       'gender': batch[primitive_idx]['gender'],
                       'betas': batch[primitive_idx]['betas'],  # [bs, T, 10]
                       'history_motion': batch[primitive_idx]['history_motion'],  # [bs, D, 1, T]

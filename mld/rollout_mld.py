@@ -98,10 +98,11 @@ def load_mld(denoiser_checkpoint, device):
     denoiser_model = denoiser_class(
         **asdict(denoiser_args.model_args),
     ).to(device)
-    checkpoint = torch.load(denoiser_checkpoint)
+    checkpoint = torch.load(denoiser_checkpoint, map_location='cpu')
     model_state_dict = checkpoint['model_state_dict']
     print(f"Loading denoiser checkpoint from {denoiser_checkpoint}")
     denoiser_model.load_state_dict(model_state_dict)
+    denoiser_model.to(device)
     for param in denoiser_model.parameters():
         param.requires_grad = False
     denoiser_model.eval()

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -82,6 +82,8 @@ class DataArgs:
 
     body_type: str = 'smplx'
     """body type, 'smplx' or 'smplh'"""
+    
+    use_music_normalization: bool = True
 
 @dataclass
 class TrainArgs:
@@ -169,6 +171,7 @@ class Trainer:
                                       body_type=data_args.body_type,
                                       split='train', device=device,
                                       weight_scheme=data_args.weight_scheme,
+                                      use_music_normalization=data_args.use_music_normalization,
                                       )
 
         val_dataset = train_dataset

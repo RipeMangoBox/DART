@@ -1,0 +1,718 @@
+12月 01 14:31:40 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 01 14:31:40 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 01 14:31:47 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 14:31:47 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 14:31:48 user-SY8108G-D12R-G4 networkd-dispatcher[1290]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:31:48 user-SY8108G-D12R-G4 networkd-dispatcher[1290]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:31:48 user-SY8108G-D12R-G4 networkd-dispatcher[1290]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enxee5131a551ed', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:31:58 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1694]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 14:31:59 user-SY8108G-D12R-G4 gnome-session[1820]: gnome-session-binary[1820]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:31:59 user-SY8108G-D12R-G4 gnome-session[1820]: gnome-session-binary[1820]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:31:59 user-SY8108G-D12R-G4 gnome-session-binary[1820]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:31:59 user-SY8108G-D12R-G4 gnome-session-binary[1820]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:32:00 user-SY8108G-D12R-G4 gnome-shell[1984]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 14:32:00 user-SY8108G-D12R-G4 gsd-sharing[2128]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 14:32:00 user-SY8108G-D12R-G4 gsd-sharing[2128]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 14:32:01 user-SY8108G-D12R-G4 gnome-shell[1984]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 14:32:15 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2380]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2838: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2838 does not exist.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2838: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2838 does not exist.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2843: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2843 does not exist.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2843: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2843 does not exist.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2844: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2844 does not exist.
+12月 01 14:32:15 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 2844: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2844 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3060: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3060 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3060: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3060 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3108: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3108 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3108: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3108 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session[2830]: gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3110: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3110 does not exist.
+12月 01 14:32:16 user-SY8108G-D12R-G4 gnome-session-binary[2830]: GnomeDesktop-WARNING: Could not create transient scope for PID 3110: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3110 does not exist.
+12月 01 14:32:17 user-SY8108G-D12R-G4 gnome-shell[2852]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-rfkill[2139]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-print-notif[2138]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-smartcard[2140]: Error releasing name org.gnome.SettingsDaemon.Smartcard: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-screensaver[2151]: Error releasing name org.freedesktop.ScreenSaver: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-sound[2155]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-a11y-settin[2156]: Error releasing name org.gnome.SettingsDaemon.A11ySettings: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-housekeepin[2160]: Error releasing name org.gnome.SettingsDaemon.Housekeeping: The connection is closed
+12月 01 14:32:18 user-SY8108G-D12R-G4 gsd-datetime[2146]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 01 14:32:21 user-SY8108G-D12R-G4 ubuntu-report[3884]: level=error msg="data were not delivered successfully to metrics server, retrying in 30s"
+12月 01 14:32:23 user-SY8108G-D12R-G4 pulseaudio[2322]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 01 14:32:31 user-SY8108G-D12R-G4 snapd[1300]: stateengine.go:149: state ensure error: persistent network error: Get "https://api.snapcraft.io/api/v1/snaps/sections": dial tcp: lookup api.snapcraft.io: Temporary failure in name resolution
+12月 01 14:32:51 user-SY8108G-D12R-G4 ubuntu-report[3884]: level=error msg="data were not delivered successfully to metrics server, retrying in 60s"
+12月 01 14:36:23 user-SY8108G-D12R-G4 tracker-extract[5751]: Could not get mimetype, Error when getting information for file “/usr/share/applications/vim.desktop.dpkg-new”: No such file or directory
+12月 01 14:36:23 user-SY8108G-D12R-G4 tracker-extract[5751]: Task for 'file:///usr/share/applications/vim.desktop.dpkg-new' finished with error: Error when getting information for file “/usr/share/applications/vim.desktop.dpkg-new”: No such file or directory
+12月 01 14:36:23 user-SY8108G-D12R-G4 tracker-extract[5751]: Could not get mimetype, Error when getting information for file “/usr/share/applications/vim.desktop.dpkg-tmp”: No such file or directory
+12月 01 14:36:23 user-SY8108G-D12R-G4 tracker-extract[5751]: Task for 'file:///usr/share/applications/vim.desktop.dpkg-tmp' finished with error: Error when getting information for file “/usr/share/applications/vim.desktop.dpkg-tmp”: No such file or directory
+12月 01 14:39:28 user-SY8108G-D12R-G4 update-notifier.desktop[6306]: WARNING:root:Error loading .desktop file /usr/share/applications/evolution-calendar.desktop: constructor returned NULL
+12月 01 14:43:58 user-SY8108G-D12R-G4 gnome-shell[2852]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 14:52:20 user-SY8108G-D12R-G4 gdm3[1666]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (time-set.target has 'stop' job queued, but 'start' is included in transaction).
+12月 01 14:52:20 user-SY8108G-D12R-G4 evolution-calen[2961]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 01 14:52:20 user-SY8108G-D12R-G4 evolution-addre[2999]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 01 14:52:20 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2380]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 01 14:52:20 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2380]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 01 14:53:22 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 01 14:53:22 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 01 14:53:23 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 14:53:23 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 14:53:23 user-SY8108G-D12R-G4 networkd-dispatcher[1243]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:53:23 user-SY8108G-D12R-G4 networkd-dispatcher[1243]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:53:23 user-SY8108G-D12R-G4 networkd-dispatcher[1243]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enxee5131a551ed', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 14:53:33 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1571]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 14:53:34 user-SY8108G-D12R-G4 gnome-session[1691]: gnome-session-binary[1691]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:53:34 user-SY8108G-D12R-G4 gnome-session[1691]: gnome-session-binary[1691]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:53:34 user-SY8108G-D12R-G4 gnome-session-binary[1691]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:53:34 user-SY8108G-D12R-G4 gnome-session-binary[1691]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 14:53:35 user-SY8108G-D12R-G4 gsd-sharing[2098]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 14:53:35 user-SY8108G-D12R-G4 gsd-sharing[2098]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 14:53:35 user-SY8108G-D12R-G4 gnome-shell[1838]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 14:53:36 user-SY8108G-D12R-G4 gnome-shell[1838]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 14:58:08 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 14:58:08 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-sharing[2098]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-print-notif[2107]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-rfkill[2109]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-smartcard[2110]: Error releasing name org.gnome.SettingsDaemon.Smartcard: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-sound[2120]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-screensaver[2119]: Error releasing name org.gnome.SettingsDaemon.ScreensaverProxy: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-a11y-settin[2124]: Error releasing name org.gnome.SettingsDaemon.A11ySettings: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-datetime[2115]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 01 14:58:08 user-SY8108G-D12R-G4 gsd-housekeepin[2127]: Error releasing name org.gnome.SettingsDaemon.Housekeeping: The connection is closed
+12月 01 15:02:04 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 15:02:04 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 15:02:04 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[21712]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 15:02:11 user-SY8108G-D12R-G4 gnome-session[21886]: gnome-session-binary[21886]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 15:02:11 user-SY8108G-D12R-G4 gnome-session[21886]: gnome-session-binary[21886]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 15:02:11 user-SY8108G-D12R-G4 gnome-session-binary[21886]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 15:02:11 user-SY8108G-D12R-G4 gnome-session-binary[21886]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 15:02:12 user-SY8108G-D12R-G4 gsd-sharing[22159]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 15:02:12 user-SY8108G-D12R-G4 gsd-sharing[22159]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 15:02:12 user-SY8108G-D12R-G4 gnome-shell[22032]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 15:02:12 user-SY8108G-D12R-G4 gnome-shell[22032]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 15:05:17 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[22483]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22922: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22922 does not exist.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22922: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22922 does not exist.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22935: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22935 does not exist.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22935: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22935 does not exist.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22936: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22936 does not exist.
+12月 01 15:05:19 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 22936: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 22936 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23162: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23162 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23162: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23162 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23206: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23206 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23206: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23206 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session[22842]: gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23212: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23212 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-session-binary[22842]: GnomeDesktop-WARNING: Could not create transient scope for PID 23212: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 23212 does not exist.
+12月 01 15:05:20 user-SY8108G-D12R-G4 gnome-shell[22948]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 15:05:21 user-SY8108G-D12R-G4 gsd-sharing[22159]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 01 15:05:21 user-SY8108G-D12R-G4 gsd-print-notif[22169]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 01 15:05:21 user-SY8108G-D12R-G4 gsd-rfkill[22170]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 01 15:05:21 user-SY8108G-D12R-G4 unknown[22183]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 01 15:05:21 user-SY8108G-D12R-G4 gsd-datetime[22173]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 01 15:05:41 user-SY8108G-D12R-G4 pulseaudio[22400]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 01 15:39:15 user-SY8108G-D12R-G4 gdm3[21680]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (systemd-fsck@dev-disk-by\x2duuid-4F67\x2d7124.service has 'stop' job queued, but 'start' is included in transaction).
+12月 01 15:39:15 user-SY8108G-D12R-G4 evolution-calen[23061]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 01 15:39:15 user-SY8108G-D12R-G4 evolution-addre[23096]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 01 15:39:18 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[22483]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 01 15:39:18 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[22483]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 01 16:40:36 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 01 16:40:36 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 01 16:40:37 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 16:40:37 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 16:40:37 user-SY8108G-D12R-G4 networkd-dispatcher[1318]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:40:37 user-SY8108G-D12R-G4 networkd-dispatcher[1318]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:40:37 user-SY8108G-D12R-G4 networkd-dispatcher[1318]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enxb6cb0fb1f7e2', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:40:37 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1595]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 16:40:45 user-SY8108G-D12R-G4 gnome-session[1841]: gnome-session-binary[1841]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:40:45 user-SY8108G-D12R-G4 gnome-session[1841]: gnome-session-binary[1841]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:40:45 user-SY8108G-D12R-G4 gnome-session-binary[1841]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:40:45 user-SY8108G-D12R-G4 gnome-session-binary[1841]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:40:46 user-SY8108G-D12R-G4 gsd-sharing[2131]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 16:40:46 user-SY8108G-D12R-G4 gsd-sharing[2131]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 16:40:46 user-SY8108G-D12R-G4 gnome-shell[1987]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 16:40:47 user-SY8108G-D12R-G4 gnome-shell[1987]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 16:59:14 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 01 16:59:14 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 01 16:59:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 01 16:59:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 01 16:59:16 user-SY8108G-D12R-G4 networkd-dispatcher[1401]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:59:16 user-SY8108G-D12R-G4 networkd-dispatcher[1401]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:59:16 user-SY8108G-D12R-G4 networkd-dispatcher[1401]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enxc249a264cf24', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 01 16:59:16 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1625]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 01 16:59:23 user-SY8108G-D12R-G4 gnome-session[1892]: gnome-session-binary[1892]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:59:23 user-SY8108G-D12R-G4 gnome-session[1892]: gnome-session-binary[1892]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:59:23 user-SY8108G-D12R-G4 gnome-session-binary[1892]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:59:23 user-SY8108G-D12R-G4 gnome-session-binary[1892]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 01 16:59:24 user-SY8108G-D12R-G4 gsd-sharing[2167]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 16:59:24 user-SY8108G-D12R-G4 gsd-sharing[2167]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 01 16:59:24 user-SY8108G-D12R-G4 gnome-shell[2038]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 01 16:59:25 user-SY8108G-D12R-G4 gnome-shell[2038]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 01 18:33:11 user-SY8108G-D12R-G4 gdm3[1530]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (systemd-timesyncd.service has 'stop' job queued, but 'start' is included in transaction).
+12月 01 18:33:13 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1625]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 01 18:33:13 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1625]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 02 09:30:02 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 02 09:30:02 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 02 09:30:04 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 02 09:30:04 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 02 09:30:04 user-SY8108G-D12R-G4 networkd-dispatcher[1382]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 02 09:30:04 user-SY8108G-D12R-G4 networkd-dispatcher[1382]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 02 09:30:04 user-SY8108G-D12R-G4 networkd-dispatcher[1382]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx7a78af7b3666', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 02 09:30:04 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1613]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 02 09:30:13 user-SY8108G-D12R-G4 gnome-session[1890]: gnome-session-binary[1890]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 09:30:13 user-SY8108G-D12R-G4 gnome-session[1890]: gnome-session-binary[1890]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 09:30:13 user-SY8108G-D12R-G4 gnome-session-binary[1890]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 09:30:13 user-SY8108G-D12R-G4 gnome-session-binary[1890]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 09:30:14 user-SY8108G-D12R-G4 gsd-sharing[2165]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 02 09:30:14 user-SY8108G-D12R-G4 gsd-sharing[2165]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 02 09:30:14 user-SY8108G-D12R-G4 gnome-shell[2038]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 02 09:30:15 user-SY8108G-D12R-G4 gnome-shell[2038]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 02 09:36:17 user-SY8108G-D12R-G4 snapd[3251]: helpers.go:190: error trying to compare the snap system key: system-key versions not comparable
+12月 02 10:13:12 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 02 10:13:12 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 02 17:35:55 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1613]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 02 17:35:55 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1613]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 02 18:11:09 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 02 18:11:09 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 02 18:11:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 02 18:11:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 02 18:11:16 user-SY8108G-D12R-G4 networkd-dispatcher[1298]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 02 18:11:16 user-SY8108G-D12R-G4 networkd-dispatcher[1298]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 02 18:11:16 user-SY8108G-D12R-G4 networkd-dispatcher[1298]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx7a78af7b3666', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 02 18:11:26 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1619]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 02 18:11:27 user-SY8108G-D12R-G4 gnome-session[1770]: gnome-session-binary[1770]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 18:11:27 user-SY8108G-D12R-G4 gnome-session[1770]: gnome-session-binary[1770]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 18:11:27 user-SY8108G-D12R-G4 gnome-session-binary[1770]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 18:11:27 user-SY8108G-D12R-G4 gnome-session-binary[1770]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 02 18:11:28 user-SY8108G-D12R-G4 gsd-sharing[2044]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 02 18:11:28 user-SY8108G-D12R-G4 gsd-sharing[2044]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 02 18:11:29 user-SY8108G-D12R-G4 gnome-shell[1916]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 02 18:11:29 user-SY8108G-D12R-G4 gnome-shell[1916]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 02 18:16:10 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2428]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2822: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2822 does not exist.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2822: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2822 does not exist.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2830: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2830 does not exist.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2830: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2830 does not exist.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2831: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2831 does not exist.
+12月 02 18:16:11 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 2831: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2831 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-shell[2840]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3136: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3136 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3136: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3136 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3187: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3187 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3187: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3187 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session[2815]: gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3193: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3193 does not exist.
+12月 02 18:16:12 user-SY8108G-D12R-G4 gnome-session-binary[2815]: GnomeDesktop-WARNING: Could not create transient scope for PID 3193: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3193 does not exist.
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-sharing[2044]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-rfkill[2053]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-print-notif[2051]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-smartcard[2057]: Error releasing name org.gnome.SettingsDaemon.Smartcard: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-screensaver[2064]: Error releasing name org.freedesktop.ScreenSaver: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-a11y-settin[2069]: Error releasing name org.gnome.SettingsDaemon.A11ySettings: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-sound[2068]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-housekeepin[2072]: Error releasing name org.gnome.SettingsDaemon.Housekeeping: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-datetime[2058]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-media-keys[2060]: Error releasing name org.gnome.SettingsDaemon.MediaKeys: The connection is closed
+12月 02 18:16:13 user-SY8108G-D12R-G4 gsd-power[2075]: Error releasing name org.gnome.SettingsDaemon.Power: The connection is closed
+12月 02 18:16:35 user-SY8108G-D12R-G4 pulseaudio[2346]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 02 18:27:47 user-SY8108G-D12R-G4 gnome-shell[2840]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 02 18:28:21 user-SY8108G-D12R-G4 gdm3[1591]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (systemd-sysusers.service has 'stop' job queued, but 'start' is included in transaction).
+12月 02 18:28:21 user-SY8108G-D12R-G4 sh[4098]: dbus-update-activation-environment: error: unable to connect to D-Bus: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 02 18:28:21 user-SY8108G-D12R-G4 evolution-calen[2948]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 02 18:28:21 user-SY8108G-D12R-G4 evolution-addre[2992]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 02 18:28:21 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2428]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 02 18:28:21 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2428]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 03 09:43:15 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 03 09:43:15 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 03 09:43:17 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 09:43:17 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 09:43:18 user-SY8108G-D12R-G4 networkd-dispatcher[1280]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 03 09:43:18 user-SY8108G-D12R-G4 networkd-dispatcher[1280]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 09:43:18 user-SY8108G-D12R-G4 networkd-dispatcher[1280]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx7251c039604a', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 09:43:28 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1604]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 09:43:29 user-SY8108G-D12R-G4 gnome-session[1741]: gnome-session-binary[1741]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:43:29 user-SY8108G-D12R-G4 gnome-session[1741]: gnome-session-binary[1741]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:43:29 user-SY8108G-D12R-G4 gnome-session-binary[1741]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:43:29 user-SY8108G-D12R-G4 gnome-session-binary[1741]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:43:30 user-SY8108G-D12R-G4 gsd-sharing[2045]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 09:43:30 user-SY8108G-D12R-G4 gsd-sharing[2045]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 09:43:30 user-SY8108G-D12R-G4 gnome-shell[1887]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 09:43:31 user-SY8108G-D12R-G4 gnome-shell[1887]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 09:49:14 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[3064]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session[3423]: gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3434: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3434 does not exist.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3434: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3434 does not exist.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session[3423]: gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3441: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3441 does not exist.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3441: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3441 does not exist.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session[3423]: gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3442: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3442 does not exist.
+12月 03 09:49:14 user-SY8108G-D12R-G4 gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3442: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3442 does not exist.
+12月 03 09:49:16 user-SY8108G-D12R-G4 gnome-session[3423]: gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3715: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3715 does not exist.
+12月 03 09:49:16 user-SY8108G-D12R-G4 gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3715: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3715 does not exist.
+12月 03 09:49:16 user-SY8108G-D12R-G4 gnome-session[3423]: gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3720: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3720 does not exist.
+12月 03 09:49:16 user-SY8108G-D12R-G4 gnome-session-binary[3423]: GnomeDesktop-WARNING: Could not create transient scope for PID 3720: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3720 does not exist.
+12月 03 09:49:16 user-SY8108G-D12R-G4 gnome-shell[3450]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-sharing[2045]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-print-notif[2052]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-smartcard[2057]: Error releasing name org.gnome.SettingsDaemon.Smartcard: The connection is closed
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-sound[2073]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-datetime[2060]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 03 09:49:17 user-SY8108G-D12R-G4 gsd-power[2082]: Error releasing name org.gnome.SettingsDaemon.Power: The connection is closed
+12月 03 09:49:39 user-SY8108G-D12R-G4 pulseaudio[3019]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 03 09:50:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 09:50:15 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 09:50:15 user-SY8108G-D12R-G4 evolution-calen[3561]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 03 09:50:15 user-SY8108G-D12R-G4 evolution-addre[3594]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 03 09:51:52 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 09:51:52 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 09:51:52 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[16349]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 09:51:59 user-SY8108G-D12R-G4 gnome-session[16529]: gnome-session-binary[16529]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:51:59 user-SY8108G-D12R-G4 gnome-session[16529]: gnome-session-binary[16529]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:51:59 user-SY8108G-D12R-G4 gnome-session-binary[16529]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:51:59 user-SY8108G-D12R-G4 gnome-session-binary[16529]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 09:52:00 user-SY8108G-D12R-G4 gsd-sharing[16803]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 09:52:00 user-SY8108G-D12R-G4 gsd-sharing[16803]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 09:52:00 user-SY8108G-D12R-G4 gnome-shell[16675]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 09:52:00 user-SY8108G-D12R-G4 gnome-shell[16675]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 09:52:07 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[17103]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17434: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17434 does not exist.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17434: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17434 does not exist.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17441: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17441 does not exist.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17441: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17441 does not exist.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17442: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17442 does not exist.
+12月 03 09:52:09 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17442: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17442 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17913: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17913 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17913: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17913 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17915: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17915 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17915: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17915 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session[17412]: gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17921: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17921 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-session-binary[17412]: GnomeDesktop-WARNING: Could not create transient scope for PID 17921: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 17921 does not exist.
+12月 03 09:52:10 user-SY8108G-D12R-G4 gnome-shell[17450]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 09:52:11 user-SY8108G-D12R-G4 unknown[16803]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 gsd-print-notif[16813]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 unknown[16826]: Error releasing name org.freedesktop.ScreenSaver: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 unknown[16827]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 unknown[16828]: Error releasing name org.gnome.SettingsDaemon.A11ySettings: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 gsd-datetime[16822]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 unknown[16832]: Error releasing name org.gnome.SettingsDaemon.Housekeeping: The connection is closed
+12月 03 09:52:11 user-SY8108G-D12R-G4 gsd-media-keys[16823]: Error releasing name org.gnome.SettingsDaemon.MediaKeys: The connection is closed
+12月 03 09:52:17 user-SY8108G-D12R-G4 pulseaudio[17009]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 03 09:53:47 user-SY8108G-D12R-G4 gdm3[16313]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (veritysetup.target has 'stop' job queued, but 'start' is included in transaction).
+12月 03 09:53:47 user-SY8108G-D12R-G4 evolution-calen[17685]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 03 09:53:47 user-SY8108G-D12R-G4 evolution-addre[17715]: Error setting property 'ConnectionStatus' on interface org.gnome.evolution.dataserver.Source: The connection is closed (g-io-error-quark, 18)
+12月 03 09:53:49 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[17103]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 03 09:53:49 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[17103]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 03 09:53:49 user-SY8108G-D12R-G4 xdg-document-portal[18452]: No permission store: Error calling StartServiceByName for org.freedesktop.impl.portal.PermissionStore: The connection is closed
+12月 03 10:03:11 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 03 10:03:11 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 03 10:03:13 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 10:03:13 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 10:03:14 user-SY8108G-D12R-G4 networkd-dispatcher[1381]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:03:14 user-SY8108G-D12R-G4 networkd-dispatcher[1381]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:03:14 user-SY8108G-D12R-G4 networkd-dispatcher[1381]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx0edee043db11', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:03:14 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1558]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 10:03:24 user-SY8108G-D12R-G4 gnome-session[1979]: gnome-session-binary[1979]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:03:24 user-SY8108G-D12R-G4 gnome-session[1979]: gnome-session-binary[1979]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:03:24 user-SY8108G-D12R-G4 gnome-session-binary[1979]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:03:24 user-SY8108G-D12R-G4 gnome-session-binary[1979]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:03:25 user-SY8108G-D12R-G4 gsd-sharing[2251]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 10:03:25 user-SY8108G-D12R-G4 gsd-sharing[2251]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 10:03:25 user-SY8108G-D12R-G4 gnome-shell[2125]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 10:03:26 user-SY8108G-D12R-G4 gnome-shell[2125]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 10:06:59 user-SY8108G-D12R-G4 gdm3[1513]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (proc-sys-fs-binfmt_misc.automount has 'stop' job queued, but 'start' is included in transaction).
+12月 03 10:07:01 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1558]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 03 10:07:01 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1558]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 03 10:17:18 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 03 10:17:18 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 03 10:17:20 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 10:17:20 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 10:17:20 user-SY8108G-D12R-G4 networkd-dispatcher[1317]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:17:20 user-SY8108G-D12R-G4 networkd-dispatcher[1317]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:17:20 user-SY8108G-D12R-G4 networkd-dispatcher[1317]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enxf658fc246aa8', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 10:17:20 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1551]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 10:17:28 user-SY8108G-D12R-G4 gnome-session[1924]: gnome-session-binary[1924]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:17:28 user-SY8108G-D12R-G4 gnome-session[1924]: gnome-session-binary[1924]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:17:28 user-SY8108G-D12R-G4 gnome-session-binary[1924]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:17:28 user-SY8108G-D12R-G4 gnome-session-binary[1924]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 10:17:29 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 10:17:29 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 10:17:29 user-SY8108G-D12R-G4 gnome-shell[2070]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 10:17:29 user-SY8108G-D12R-G4 gnome-shell[2070]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 10:18:44 user-SY8108G-D12R-G4 gdm3[1447]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (time-set.target has 'stop' job queued, but 'start' is included in transaction).
+12月 03 10:18:46 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1551]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 03 10:18:46 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1551]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 03 14:46:29 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 03 14:46:29 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 03 14:46:31 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 03 14:46:31 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 03 14:46:31 user-SY8108G-D12R-G4 networkd-dispatcher[1316]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 03 14:46:31 user-SY8108G-D12R-G4 networkd-dispatcher[1316]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 14:46:31 user-SY8108G-D12R-G4 networkd-dispatcher[1316]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 03 14:46:32 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1543]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 14:46:39 user-SY8108G-D12R-G4 gnome-session[1939]: gnome-session-binary[1939]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 14:46:39 user-SY8108G-D12R-G4 gnome-session[1939]: gnome-session-binary[1939]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 14:46:39 user-SY8108G-D12R-G4 gnome-session-binary[1939]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 14:46:39 user-SY8108G-D12R-G4 gnome-session-binary[1939]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 03 14:46:40 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 14:46:40 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 03 14:46:40 user-SY8108G-D12R-G4 gnome-shell[2085]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 14:46:41 user-SY8108G-D12R-G4 gnome-shell[2085]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 14:57:05 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": dial tcp: lookup api.snapcraft.io on 127.0.0.53:53: server misbehaving
+12月 03 15:04:23 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2653]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session[2976]: gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2988: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2988 does not exist.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2988: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2988 does not exist.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session[2976]: gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2995: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2995 does not exist.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session[2976]: gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2996: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2996 does not exist.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2995: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2995 does not exist.
+12月 03 15:04:25 user-SY8108G-D12R-G4 gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 2996: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 2996 does not exist.
+12月 03 15:04:26 user-SY8108G-D12R-G4 gnome-session[2976]: gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 3408: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3408 does not exist.
+12月 03 15:04:26 user-SY8108G-D12R-G4 gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 3408: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3408 does not exist.
+12月 03 15:04:26 user-SY8108G-D12R-G4 gnome-session[2976]: gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 3413: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3413 does not exist.
+12月 03 15:04:26 user-SY8108G-D12R-G4 gnome-session-binary[2976]: GnomeDesktop-WARNING: Could not create transient scope for PID 3413: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Process with ID 3413 does not exist.
+12月 03 15:04:26 user-SY8108G-D12R-G4 gnome-shell[3004]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-sharing[2214]: Error releasing name org.gnome.SettingsDaemon.Sharing: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-rfkill[2225]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-print-notif[2224]: Error releasing name org.gnome.SettingsDaemon.PrintNotifications: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-smartcard[2227]: Error releasing name org.gnome.SettingsDaemon.Smartcard: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-sound[2242]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-screensaver[2240]: Error releasing name org.gnome.SettingsDaemon.ScreensaverProxy: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-a11y-settin[2247]: Error releasing name org.gnome.SettingsDaemon.A11ySettings: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-datetime[2230]: Error releasing name org.gnome.SettingsDaemon.Datetime: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 unknown[2250]: Error releasing name org.gnome.SettingsDaemon.Housekeeping: The connection is closed
+12月 03 15:04:27 user-SY8108G-D12R-G4 gsd-power[2251]: Error releasing name org.gnome.SettingsDaemon.Power: The connection is closed
+12月 03 15:04:47 user-SY8108G-D12R-G4 pulseaudio[2571]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 03 15:26:58 user-SY8108G-D12R-G4 gnome-shell[3004]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 03 15:36:35 user-SY8108G-D12R-G4 gnome-shell[3004]: JS ERROR: TypeError: this.actor is null
+12月 03 16:06:25 user-SY8108G-D12R-G4 pipewire[9854]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 03 16:06:25 user-SY8108G-D12R-G4 pipewire-media-session[9855]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 03 16:06:25 user-SY8108G-D12R-G4 pipewire[9854]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 03 16:06:51 user-SY8108G-D12R-G4 pulseaudio[9856]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 04 12:06:54 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: cannot query the store for updates: got unexpected HTTP status code 408 via POST to "https://api.snapcraft.io/v2/snaps/refresh"
+12月 05 10:55:22 user-SY8108G-D12R-G4 pipewire[908696]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 10:55:22 user-SY8108G-D12R-G4 pipewire-media-session[908697]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 10:55:22 user-SY8108G-D12R-G4 pipewire[908696]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 10:55:47 user-SY8108G-D12R-G4 pulseaudio[908698]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 05 18:59:54 user-SY8108G-D12R-G4 pipewire[1069986]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 18:59:54 user-SY8108G-D12R-G4 pipewire-media-session[1069987]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 18:59:54 user-SY8108G-D12R-G4 pipewire[1069986]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 05 19:00:19 user-SY8108G-D12R-G4 pulseaudio[1069988]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 08 05:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 08 07:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 08 12:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 08 15:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 08 18:32:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 09 00:07:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 09 03:02:41 user-SY8108G-D12R-G4 update-notifier.desktop[3211563]: WARNING:root:Error loading .desktop file /usr/share/applications/evolution-calendar.desktop: constructor returned NULL
+12月 09 11:02:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 09 14:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 09 15:22:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 09 19:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 10 02:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 10 10:42:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 10 12:22:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 10 15:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 10 19:47:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 11 04:22:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 11 08:42:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 11 15:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 11 16:32:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+12月 11 20:12:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 12 01:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+12月 12 03:35:47 user-SY8108G-D12R-G4 apt-helper[2567327]: E: Sub-process nm-online returned an error code (1)
+12月 12 08:07:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 12 15:27:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 12 19:44:32 user-SY8108G-D12R-G4 pipewire[3446671]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 12 19:44:32 user-SY8108G-D12R-G4 pipewire-media-session[3446672]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 12 19:44:32 user-SY8108G-D12R-G4 pipewire[3446671]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 13 11:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 13 22:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 14 02:17:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 14 03:27:18 user-SY8108G-D12R-G4 sshd[1118453]: error: kex_exchange_identification: Connection closed by remote host
+12月 14 07:27:45 user-SY8108G-D12R-G4 sshd[1346932]: error: kex_exchange_identification: Connection closed by remote host
+12月 14 07:28:45 user-SY8108G-D12R-G4 sshd[1347835]: error: kex_exchange_identification: Connection closed by remote host
+12月 14 10:37:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 14 13:12:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Post "https://api.snapcraft.io/v2/snaps/refresh": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 14 15:32:13 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: Get "https://api.snapcraft.io/api/v1/snaps/sections": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+12月 14 16:49:48 user-SY8108G-D12R-G4 sshd[1852520]: error: kex_exchange_identification: Connection closed by remote host
+12月 15 22:41:28 user-SY8108G-D12R-G4 pipewire[4055392]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 15 22:41:28 user-SY8108G-D12R-G4 pipewire-media-session[4055393]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 15 22:41:28 user-SY8108G-D12R-G4 pipewire[4055392]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 15 22:41:53 user-SY8108G-D12R-G4 pulseaudio[4055394]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 16 15:31:44 user-SY8108G-D12R-G4 snapd[1324]: stateengine.go:161: state ensure error: decode new commands catalog: net/http: request canceled (Client.Timeout or context cancellation while reading body)
+12月 16 16:19:27 user-SY8108G-D12R-G4 pipewire[1840275]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:19:27 user-SY8108G-D12R-G4 pipewire-media-session[1840277]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:19:27 user-SY8108G-D12R-G4 pipewire[1840275]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:19:59 user-SY8108G-D12R-G4 pipewire[1841780]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:19:59 user-SY8108G-D12R-G4 pipewire-media-session[1841781]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:19:59 user-SY8108G-D12R-G4 pipewire[1841780]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:20:48 user-SY8108G-D12R-G4 pipewire[1843309]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:20:48 user-SY8108G-D12R-G4 pipewire-media-session[1843310]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:20:48 user-SY8108G-D12R-G4 pipewire[1843309]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 16 16:21:13 user-SY8108G-D12R-G4 pulseaudio[1843311]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 16 21:11:27 user-SY8108G-D12R-G4 kernel: python[2404312]: segfault at 18 ip 00007c4bb87f1a22 sp 00007ffd278d1bc0 error 4 in _backend_agg.cpython-310-x86_64-linux-gnu.so[7c4bb878f000+73000] likely on CPU 31 (core 7, socket 0)
+12月 17 09:48:59 user-SY8108G-D12R-G4 kernel: python[3548149]: segfault at 7b42e73d30b8 ip 00007b3273a212f3 sp 00007ffc0ea766e8 error 4 in libcuda.so.580.105.08[7b3273966000+f82000] likely on CPU 12 (core 0, socket 1)
+12月 17 09:52:06 user-SY8108G-D12R-G4 kernel: python[3551308]: segfault at 7ddc7b2010b8 ip 00007dcc078212f3 sp 00007fffb8ba52c8 error 4 in libcuda.so.580.105.08[7dcc07766000+f82000] likely on CPU 10 (core 10, socket 0)
+12月 17 09:55:28 user-SY8108G-D12R-G4 kernel: python[3554872]: segfault at 7246831d30b8 ip 000072360f8212f3 sp 00007fff556197b8 error 4 in libcuda.so.580.105.08[72360f766000+f82000] likely on CPU 22 (core 10, socket 1)
+12月 17 10:01:47 user-SY8108G-D12R-G4 kernel: python[3561277]: segfault at 7be5b09fb0b8 ip 00007bd53d0212f3 sp 00007ffe5c4abea8 error 4 in libcuda.so.580.105.08[7bd53cf66000+f82000] likely on CPU 15 (core 3, socket 1)
+12月 17 10:05:02 user-SY8108G-D12R-G4 kernel: python[3564586]: segfault at 7732ccdfb0b8 ip 00007722594212f3 sp 00007ffce20ce148 error 4 in libcuda.so.580.105.08[772259366000+f82000] likely on CPU 42 (core 6, socket 1)
+12月 17 10:11:31 user-SY8108G-D12R-G4 kernel: python[3571339]: segfault at 78f1a11fb0b8 ip 000078e12d8212f3 sp 00007ffdb0e5aa48 error 4 in libcuda.so.580.105.08[78e12d766000+f82000] likely on CPU 47 (core 11, socket 1)
+12月 17 10:12:17 user-SY8108G-D12R-G4 pipewire[3572400]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 10:12:17 user-SY8108G-D12R-G4 pipewire-media-session[3572401]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 10:12:17 user-SY8108G-D12R-G4 pipewire[3572400]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 10:12:42 user-SY8108G-D12R-G4 pulseaudio[3572402]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 17 10:14:41 user-SY8108G-D12R-G4 kernel: python[3575889]: segfault at 7acdce6010b8 ip 00007abd5ac212f3 sp 00007ffdcf17ba68 error 4 in libcuda.so.580.105.08[7abd5ab66000+f82000] likely on CPU 23 (core 11, socket 1)
+12月 17 10:53:19 user-SY8108G-D12R-G4 kernel: python[3623778]: segfault at 7ce05ddfb0b8 ip 00007ccfea421304 sp 00007ffd14384558 error 4 in libcuda.so.580.105.08[7ccfea366000+f82000] likely on CPU 15 (core 3, socket 1)
+12月 17 11:12:01 user-SY8108G-D12R-G4 kernel: python[3657040]: segfault at 7db56de010b8 ip 00007da4fa421304 sp 00007ffd3adf7258 error 4 in libcuda.so.580.105.08[7da4fa366000+f82000] likely on CPU 21 (core 9, socket 1)
+12月 17 11:12:22 user-SY8108G-D12R-G4 kernel: python[3657886]: segfault at 77f3257d30b8 ip 000077e2b1e21304 sp 00007ffe7f8bdf48 error 4 in libcuda.so.580.105.08[77e2b1d66000+f82000] likely on CPU 20 (core 8, socket 1)
+12月 17 11:12:50 user-SY8108G-D12R-G4 kernel: python[3659156]: segfault at 7f8755ffb0b8 ip 00007f76e2621304 sp 00007ffce1005d88 error 4 in libcuda.so.580.105.08[7f76e2566000+f82000] likely on CPU 47 (core 11, socket 1)
+12月 17 11:13:09 user-SY8108G-D12R-G4 kernel: python[3660005]: segfault at 71c2b87fb0b8 ip 000071b244e21304 sp 00007ffc76738f08 error 4 in libcuda.so.580.105.08[71b244d66000+f82000] likely on CPU 19 (core 7, socket 1)
+12月 17 11:13:32 user-SY8108G-D12R-G4 kernel: python[3661030]: segfault at 701dcce010b8 ip 0000700d59421304 sp 00007ffd20782778 error 4 in libcuda.so.580.105.08[700d59366000+f82000] likely on CPU 15 (core 3, socket 1)
+12月 17 11:18:06 user-SY8108G-D12R-G4 kernel: python[3673349]: segfault at 71de6b6010b8 ip 000071cdf7c21304 sp 00007ffdb8f3faf8 error 4 in libcuda.so.580.105.08[71cdf7b66000+f82000] likely on CPU 7 (core 7, socket 0)
+12月 17 11:18:28 user-SY8108G-D12R-G4 kernel: python[3674463]: segfault at 77ddc64010b8 ip 000077cd52a21304 sp 00007fffd1906088 error 4 in libcuda.so.580.105.08[77cd52966000+f82000] likely on CPU 11 (core 11, socket 0)
+12月 17 11:18:46 user-SY8108G-D12R-G4 kernel: python[3675143]: segfault at 7a32c27d30b8 ip 00007a224ee21304 sp 00007fff1044c1b8 error 4 in libcuda.so.580.105.08[7a224ed66000+f82000] likely on CPU 5 (core 5, socket 0)
+12月 17 12:14:01 user-SY8108G-D12R-G4 kernel: python[3803212]: segfault at 7e444da010b8 ip 00007e33da021304 sp 00007ffcf868ae88 error 4 in libcuda.so.580.105.08[7e33d9f66000+f82000] likely on CPU 15 (core 3, socket 1)
+12月 17 12:14:16 user-SY8108G-D12R-G4 kernel: python[3803875]: segfault at 7427bba010b8 ip 0000741748021304 sp 00007ffce5701778 error 4 in libcuda.so.580.105.08[741747f66000+f82000] likely on CPU 36 (core 0, socket 1)
+12月 17 22:53:08 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 17 22:53:08 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 17 22:53:13 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 17 22:53:13 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 17 22:53:14 user-SY8108G-D12R-G4 networkd-dispatcher[1329]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 17 22:53:14 user-SY8108G-D12R-G4 networkd-dispatcher[1329]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 22:53:14 user-SY8108G-D12R-G4 networkd-dispatcher[1329]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 22:53:24 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1693]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 17 22:53:25 user-SY8108G-D12R-G4 gnome-session[1829]: gnome-session-binary[1829]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 22:53:25 user-SY8108G-D12R-G4 gnome-session[1829]: gnome-session-binary[1829]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 22:53:25 user-SY8108G-D12R-G4 gnome-session-binary[1829]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 22:53:25 user-SY8108G-D12R-G4 gnome-session-binary[1829]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 22:53:26 user-SY8108G-D12R-G4 gsd-sharing[2103]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 22:53:26 user-SY8108G-D12R-G4 gsd-sharing[2103]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 22:53:26 user-SY8108G-D12R-G4 gnome-shell[1975]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 17 22:53:27 user-SY8108G-D12R-G4 gnome-shell[1975]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 17 22:53:31 user-SY8108G-D12R-G4 pipewire[2298]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:53:31 user-SY8108G-D12R-G4 pipewire-media-session[2299]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:53:31 user-SY8108G-D12R-G4 pipewire[2298]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:53:49 user-SY8108G-D12R-G4 pulseaudio[2300]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 17 22:54:10 user-SY8108G-D12R-G4 pipewire[2722]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:54:11 user-SY8108G-D12R-G4 pipewire-media-session[2723]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:54:11 user-SY8108G-D12R-G4 pipewire[2722]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 22:54:36 user-SY8108G-D12R-G4 pulseaudio[2724]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 17 23:18:09 user-SY8108G-D12R-G4 pipewire[8184]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:18:09 user-SY8108G-D12R-G4 pipewire-media-session[8185]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:18:09 user-SY8108G-D12R-G4 pipewire[8184]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:18:34 user-SY8108G-D12R-G4 pulseaudio[8186]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 17 23:44:34 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1693]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 17 23:44:34 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1693]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 17 23:44:34 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00001700] Failed to allocate NvKmsKapiDevice
+12月 17 23:44:34 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00002a00] Failed to allocate NvKmsKapiDevice
+12月 17 23:44:34 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000ab00] Failed to allocate NvKmsKapiDevice
+12月 17 23:44:35 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000bd00] Failed to allocate NvKmsKapiDevice
+12月 17 23:45:36 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 17 23:45:36 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 17 23:45:37 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 17 23:45:48 user-SY8108G-D12R-G4 networkd-dispatcher[1245]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:45:48 user-SY8108G-D12R-G4 networkd-dispatcher[1245]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:45:48 user-SY8108G-D12R-G4 networkd-dispatcher[1245]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:45:37 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 17 23:45:41 user-SY8108G-D12R-G4 pipewire[1571]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:41 user-SY8108G-D12R-G4 pipewire-media-session[1572]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:41 user-SY8108G-D12R-G4 pipewire[1571]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:43 user-SY8108G-D12R-G4 pipewire[1931]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:43 user-SY8108G-D12R-G4 pipewire-media-session[1932]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:43 user-SY8108G-D12R-G4 pipewire[1931]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:47 user-SY8108G-D12R-G4 pipewire[8605]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:47 user-SY8108G-D12R-G4 pipewire-media-session[8608]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:47 user-SY8108G-D12R-G4 pipewire[8605]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:45:49 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00001700] Failed to allocate NvKmsKapiDevice
+12月 17 23:45:49 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00002a00] Failed to allocate NvKmsKapiDevice
+12月 17 23:45:49 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000ab00] Failed to allocate NvKmsKapiDevice
+12月 17 23:45:49 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000bd00] Failed to allocate NvKmsKapiDevice
+12月 17 23:45:49 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[9502]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 17 23:45:51 user-SY8108G-D12R-G4 gnome-session[9622]: gnome-session-binary[9622]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:45:51 user-SY8108G-D12R-G4 gnome-session[9622]: gnome-session-binary[9622]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:45:51 user-SY8108G-D12R-G4 gnome-session-binary[9622]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:45:51 user-SY8108G-D12R-G4 gnome-session-binary[9622]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:45:52 user-SY8108G-D12R-G4 gsd-sharing[9940]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:45:52 user-SY8108G-D12R-G4 gsd-sharing[9940]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:45:52 user-SY8108G-D12R-G4 gnome-shell[9769]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 17 23:45:53 user-SY8108G-D12R-G4 gnome-shell[9769]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 17 23:46:06 user-SY8108G-D12R-G4 pulseaudio[1573]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 17 23:46:06 user-SY8108G-D12R-G4 pulseaudio[8609]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 17 23:46:06 user-SY8108G-D12R-G4 pulseaudio[1933]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 17 23:51:17 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[9502]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 17 23:51:17 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[9502]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 17 23:52:20 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 17 23:52:20 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 17 23:52:33 user-SY8108G-D12R-G4 networkd-dispatcher[1295]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:52:33 user-SY8108G-D12R-G4 networkd-dispatcher[1295]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:52:33 user-SY8108G-D12R-G4 networkd-dispatcher[1295]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:52:22 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 17 23:52:22 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 17 23:52:27 user-SY8108G-D12R-G4 pipewire[1576]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:27 user-SY8108G-D12R-G4 pipewire-media-session[1577]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:27 user-SY8108G-D12R-G4 pipewire[1576]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:30 user-SY8108G-D12R-G4 pipewire-media-session[2117]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:30 user-SY8108G-D12R-G4 pipewire[2116]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:30 user-SY8108G-D12R-G4 pipewire[2116]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:52:33 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00001700] Failed to allocate NvKmsKapiDevice
+12月 17 23:52:33 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00002a00] Failed to allocate NvKmsKapiDevice
+12月 17 23:52:33 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000ab00] Failed to allocate NvKmsKapiDevice
+12月 17 23:52:33 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000bd00] Failed to allocate NvKmsKapiDevice
+12月 17 23:52:34 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2913]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 17 23:52:35 user-SY8108G-D12R-G4 gnome-session[3037]: gnome-session-binary[3037]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:52:35 user-SY8108G-D12R-G4 gnome-session[3037]: gnome-session-binary[3037]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:52:35 user-SY8108G-D12R-G4 gnome-session-binary[3037]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:52:35 user-SY8108G-D12R-G4 gnome-session-binary[3037]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:52:36 user-SY8108G-D12R-G4 gsd-sharing[3311]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:52:36 user-SY8108G-D12R-G4 gsd-sharing[3311]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:52:36 user-SY8108G-D12R-G4 gnome-shell[3183]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 17 23:52:37 user-SY8108G-D12R-G4 gnome-shell[3183]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 17 23:52:52 user-SY8108G-D12R-G4 pulseaudio[2118]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 17 23:52:52 user-SY8108G-D12R-G4 pulseaudio[1578]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 17 23:56:06 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00001700] Failed to allocate NvKmsKapiDevice
+12月 17 23:56:06 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00002a00] Failed to allocate NvKmsKapiDevice
+12月 17 23:56:06 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000ab00] Failed to allocate NvKmsKapiDevice
+12月 17 23:56:06 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000bd00] Failed to allocate NvKmsKapiDevice
+12月 17 23:56:28 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2913]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 17 23:56:28 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2913]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 17 23:57:30 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 17 23:57:30 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 17 23:57:32 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 17 23:57:32 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 17 23:57:43 user-SY8108G-D12R-G4 networkd-dispatcher[1241]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:57:43 user-SY8108G-D12R-G4 networkd-dispatcher[1241]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:57:43 user-SY8108G-D12R-G4 networkd-dispatcher[1241]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 17 23:57:41 user-SY8108G-D12R-G4 pipewire[1621]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:57:41 user-SY8108G-D12R-G4 pipewire-media-session[1622]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:57:41 user-SY8108G-D12R-G4 pipewire[1621]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 17 23:57:43 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00001700] Failed to allocate NvKmsKapiDevice
+12月 17 23:57:43 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x00002a00] Failed to allocate NvKmsKapiDevice
+12月 17 23:57:43 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000ab00] Failed to allocate NvKmsKapiDevice
+12月 17 23:57:43 user-SY8108G-D12R-G4 kernel: [drm:nv_drm_dev_load [nvidia_drm]] *ERROR* [nvidia-drm] [GPU ID 0x0000bd00] Failed to allocate NvKmsKapiDevice
+12月 17 23:57:44 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2336]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 17 23:57:45 user-SY8108G-D12R-G4 gnome-session[2456]: gnome-session-binary[2456]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:57:45 user-SY8108G-D12R-G4 gnome-session[2456]: gnome-session-binary[2456]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:57:45 user-SY8108G-D12R-G4 gnome-session-binary[2456]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:57:45 user-SY8108G-D12R-G4 gnome-session-binary[2456]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 17 23:57:46 user-SY8108G-D12R-G4 gsd-sharing[2733]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:57:46 user-SY8108G-D12R-G4 gsd-sharing[2733]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 17 23:57:46 user-SY8108G-D12R-G4 gnome-shell[2602]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 17 23:57:47 user-SY8108G-D12R-G4 gnome-shell[2602]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 17 23:58:06 user-SY8108G-D12R-G4 pulseaudio[1623]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 18 00:05:48 user-SY8108G-D12R-G4 pipewire[22122]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:05:48 user-SY8108G-D12R-G4 pipewire-media-session[22123]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:05:48 user-SY8108G-D12R-G4 pipewire[22122]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:06:13 user-SY8108G-D12R-G4 pulseaudio[22124]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 18 00:10:45 user-SY8108G-D12R-G4 gdm3[2172]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (systemd-timesyncd.service has 'stop' job queued, but 'start' is included in transaction).
+12月 18 00:10:45 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2336]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 18 00:10:45 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2336]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 18 00:11:53 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 18 00:11:53 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 18 00:11:55 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 18 00:11:55 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 18 00:11:55 user-SY8108G-D12R-G4 networkd-dispatcher[1242]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:11:55 user-SY8108G-D12R-G4 networkd-dispatcher[1242]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:11:55 user-SY8108G-D12R-G4 networkd-dispatcher[1242]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:12:00 user-SY8108G-D12R-G4 pipewire[1598]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:00 user-SY8108G-D12R-G4 pipewire-media-session[1599]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:00 user-SY8108G-D12R-G4 pipewire[1598]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:02 user-SY8108G-D12R-G4 pipewire[2139]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:02 user-SY8108G-D12R-G4 pipewire-media-session[2140]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:02 user-SY8108G-D12R-G4 pipewire[2139]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:12:05 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2879]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 18 00:12:06 user-SY8108G-D12R-G4 gnome-session[3000]: gnome-session-binary[3000]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:12:06 user-SY8108G-D12R-G4 gnome-session[3000]: gnome-session-binary[3000]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:12:06 user-SY8108G-D12R-G4 gnome-session-binary[3000]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:12:06 user-SY8108G-D12R-G4 gnome-session-binary[3000]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:12:07 user-SY8108G-D12R-G4 gsd-sharing[3273]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:12:07 user-SY8108G-D12R-G4 gsd-sharing[3273]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:12:07 user-SY8108G-D12R-G4 gnome-shell[3146]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 18 00:12:08 user-SY8108G-D12R-G4 gnome-shell[3146]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 18 00:12:25 user-SY8108G-D12R-G4 pulseaudio[1600]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 18 00:12:25 user-SY8108G-D12R-G4 pulseaudio[2141]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 18 00:18:04 user-SY8108G-D12R-G4 gdm3[2850]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (system-systemd\x2dfsck.slice has 'stop' job queued, but 'start' is included in transaction).
+12月 18 00:18:05 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2879]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 18 00:18:05 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2879]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 18 00:19:09 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 18 00:19:09 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 18 00:19:22 user-SY8108G-D12R-G4 networkd-dispatcher[1236]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:19:22 user-SY8108G-D12R-G4 networkd-dispatcher[1236]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:19:22 user-SY8108G-D12R-G4 networkd-dispatcher[1236]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:19:11 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 18 00:19:11 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 18 00:19:17 user-SY8108G-D12R-G4 pipewire[1610]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:19:17 user-SY8108G-D12R-G4 pipewire-media-session[1611]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:19:17 user-SY8108G-D12R-G4 pipewire[1610]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:19:22 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2355]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 18 00:19:24 user-SY8108G-D12R-G4 gnome-session[2554]: gnome-session-binary[2554]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:19:24 user-SY8108G-D12R-G4 gnome-session[2554]: gnome-session-binary[2554]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:19:24 user-SY8108G-D12R-G4 gnome-session-binary[2554]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:19:24 user-SY8108G-D12R-G4 gnome-session-binary[2554]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:19:25 user-SY8108G-D12R-G4 gsd-sharing[2827]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:19:25 user-SY8108G-D12R-G4 gsd-sharing[2827]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:19:25 user-SY8108G-D12R-G4 gnome-shell[2700]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 18 00:19:26 user-SY8108G-D12R-G4 gnome-shell[2700]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 18 00:19:42 user-SY8108G-D12R-G4 pulseaudio[1612]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 18 00:24:28 user-SY8108G-D12R-G4 pipewire[6598]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:24:28 user-SY8108G-D12R-G4 pipewire-media-session[6599]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:24:28 user-SY8108G-D12R-G4 pipewire[6598]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:24:53 user-SY8108G-D12R-G4 pulseaudio[6600]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 18 00:30:28 user-SY8108G-D12R-G4 unknown[2838]: Error releasing name org.gnome.SettingsDaemon.Rfkill: The connection is closed
+12月 18 00:30:28 user-SY8108G-D12R-G4 unknown[2846]: Error releasing name org.freedesktop.ScreenSaver: The connection is closed
+12月 18 00:30:28 user-SY8108G-D12R-G4 unknown[2851]: Error releasing name org.gnome.SettingsDaemon.Sound: The connection is closed
+12月 18 00:30:28 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2355]: (WW) xf86CloseConsole: KDSETMODE failed: Input/output error
+12月 18 00:30:28 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2355]: (WW) xf86CloseConsole: VT_GETMODE failed: Input/output error
+12月 18 00:30:28 user-SY8108G-D12R-G4 gdm3[2325]: Gdm: Failed to contact accountsservice: Error calling StartServiceByName for org.freedesktop.Accounts: Transaction for accounts-daemon.service/start is destructive (data.mount has 'stop' job queued, but 'start' is included in transaction).
+12月 18 00:31:33 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 18 00:31:33 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 18 00:31:45 user-SY8108G-D12R-G4 networkd-dispatcher[1259]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:31:45 user-SY8108G-D12R-G4 networkd-dispatcher[1259]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:31:45 user-SY8108G-D12R-G4 networkd-dispatcher[1259]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 18 00:31:35 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 18 00:31:35 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 18 00:31:38 user-SY8108G-D12R-G4 pipewire[1595]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:38 user-SY8108G-D12R-G4 pipewire-media-session[1596]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:38 user-SY8108G-D12R-G4 pipewire[1595]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:41 user-SY8108G-D12R-G4 pipewire[2134]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:41 user-SY8108G-D12R-G4 pipewire-media-session[2135]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:41 user-SY8108G-D12R-G4 pipewire[2134]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 00:31:46 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[2960]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 18 00:31:53 user-SY8108G-D12R-G4 gnome-session[3170]: gnome-session-binary[3170]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:31:53 user-SY8108G-D12R-G4 gnome-session[3170]: gnome-session-binary[3170]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:31:53 user-SY8108G-D12R-G4 gnome-session-binary[3170]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:31:53 user-SY8108G-D12R-G4 gnome-session-binary[3170]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 18 00:31:54 user-SY8108G-D12R-G4 gsd-sharing[3446]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:31:54 user-SY8108G-D12R-G4 gsd-sharing[3446]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 18 00:31:54 user-SY8108G-D12R-G4 gnome-shell[3318]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 18 00:31:55 user-SY8108G-D12R-G4 gnome-shell[3318]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 18 00:32:03 user-SY8108G-D12R-G4 pulseaudio[2136]: GetManagedObjects() failed: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+12月 18 00:32:03 user-SY8108G-D12R-G4 pulseaudio[1597]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 18 10:06:36 user-SY8108G-D12R-G4 pipewire[352616]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 10:06:36 user-SY8108G-D12R-G4 pipewire-media-session[352617]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 10:06:36 user-SY8108G-D12R-G4 pipewire[352616]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 10:07:01 user-SY8108G-D12R-G4 pulseaudio[352618]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 18 13:19:13 user-SY8108G-D12R-G4 pipewire[499230]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 13:19:13 user-SY8108G-D12R-G4 pipewire-media-session[499231]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 13:19:13 user-SY8108G-D12R-G4 pipewire[499230]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 18 13:19:38 user-SY8108G-D12R-G4 pulseaudio[499232]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 19 16:22:53 user-SY8108G-D12R-G4 sshd[1785637]: error: kex_exchange_identification: read: Connection reset by peer
+12月 19 21:12:13 user-SY8108G-D12R-G4 sshd[1382]: error: beginning MaxStartups throttling
+12月 19 21:48:52 user-SY8108G-D12R-G4 kernel: ERST: Error Record Serialization Table (ERST) support is initialized.
+12月 19 21:48:52 user-SY8108G-D12R-G4 kernel: RAS: Correctable Errors collector initialized.
+12月 19 21:48:55 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (file watch) being skipped.
+12月 19 21:48:55 user-SY8108G-D12R-G4 systemd[1]: Condition check resulted in Process error reports when automatic reporting is enabled (timer based) being skipped.
+12月 19 21:48:56 user-SY8108G-D12R-G4 networkd-dispatcher[1360]: ERROR:Unknown state for interface NetworkctlListState(idx=1, name='lo', type='loopback', operational='n/a', administrative='unmanaged'): n/a
+12月 19 21:48:56 user-SY8108G-D12R-G4 networkd-dispatcher[1360]: ERROR:Unknown state for interface NetworkctlListState(idx=2, name='ens1', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 19 21:48:56 user-SY8108G-D12R-G4 networkd-dispatcher[1360]: ERROR:Unknown state for interface NetworkctlListState(idx=3, name='enx4e5ce8cebffc', type='ether', operational='n/a', administrative='unmanaged'): n/a
+12月 19 21:48:56 user-SY8108G-D12R-G4 /usr/libexec/gdm-x-session[1548]:         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+12月 19 21:49:04 user-SY8108G-D12R-G4 gnome-session[1941]: gnome-session-binary[1941]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 19 21:49:04 user-SY8108G-D12R-G4 gnome-session[1941]: gnome-session-binary[1941]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 19 21:49:04 user-SY8108G-D12R-G4 gnome-session-binary[1941]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 19 21:49:04 user-SY8108G-D12R-G4 gnome-session-binary[1941]: GLib-GIO-CRITICAL: g_bus_get_sync: assertion 'error == NULL || *error == NULL' failed
+12月 19 21:49:06 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 19 21:49:06 user-SY8108G-D12R-G4 gsd-sharing[2214]: Failed to StopUnit service: GDBus.Error:org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.systemd1 exited with status 1
+12月 19 21:49:06 user-SY8108G-D12R-G4 gnome-shell[2088]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
+12月 19 21:49:06 user-SY8108G-D12R-G4 gnome-shell[2088]: JS ERROR: Failed to initialize fprintd service: Gio.IOErrorEnum: GDBus.Error:net.reactivated.Fprint.Error.NoSuchDevice: No devices available
+12月 19 21:54:42 user-SY8108G-D12R-G4 pipewire[2497]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:54:42 user-SY8108G-D12R-G4 pipewire-media-session[2498]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:54:42 user-SY8108G-D12R-G4 pipewire[2497]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:55:07 user-SY8108G-D12R-G4 pulseaudio[2499]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 19 21:58:14 user-SY8108G-D12R-G4 pipewire[4368]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:58:14 user-SY8108G-D12R-G4 pipewire-media-session[4369]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:58:14 user-SY8108G-D12R-G4 pipewire[4368]: mod.rt: RTKit error: org.freedesktop.DBus.Error.AccessDenied
+12月 19 21:58:39 user-SY8108G-D12R-G4 pulseaudio[4370]: GetManagedObjects() failed: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+12月 19 22:07:20 user-SY8108G-D12R-G4 sudo[6868]:     root : TTY=pts/2 ; PWD=/data/public/ripemangobox/Motion/DART ; USER=root ; COMMAND=/usr/bin/grep -i error /var/log/syslog
