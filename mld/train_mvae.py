@@ -366,7 +366,10 @@ class Trainer:
         total_steps = train_args.stage1_steps + train_args.stage2_steps + train_args.stage3_steps
         rest_steps = (total_steps - self.start_step) // self.train_dataset.num_primitive + 1
         rest_steps = rest_steps * self.train_dataset.num_primitive
-        progress_bar = iter(tqdm(range(rest_steps)))
+        # progress_bar = iter(tqdm(range(rest_steps)))
+        # 修改1: 将 tqdm 实例化为对象 pbar，以便后续调用 set_postfix
+        
+        pbar = tqdm(range(rest_steps))
         self.step = self.start_step
         while self.step <= total_steps:
             # Annealing the rate if instructed to do so.
@@ -424,7 +427,11 @@ class Trainer:
                     self.validate()
 
                 self.step += 1
-                next(progress_bar)
+                # next(progress_bar)
+
+                # 修改2: 设置进度条后缀显示 loss，并手动更新进度条
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+                pbar.update(1)
 
     def get_primitive_batch(self, batch, primitive_idx):
         motion = batch[primitive_idx]['motion_tensor_normalized']  # [bs, D, 1, T]

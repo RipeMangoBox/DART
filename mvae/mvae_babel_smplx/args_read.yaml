@@ -1,7 +1,7 @@
 data_args:
   body_type: smplx
   cfg_path: ./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml
-  data_dir: ./data/seq_data_zero_male_fd
+  data_dir: ./data/seq_data_zero_male
   dataset: mp_seq_v2
   enforce_gender: male
   enforce_zero_beta: 1
@@ -11,7 +11,7 @@ data_args:
   num_primitive: 8
   prob_static: 0.0
   text_tolerance: 0.0
-  weight_scheme: uniform
+  weight_scheme: text_samp:0.
 device: cuda
 exp_name: mvae_babel_smplx
 model_args:
@@ -33,7 +33,7 @@ save_dir: !!python/object/apply:pathlib.PosixPath
 - mvae_babel_smplx
 seed: 0
 torch_deterministic: true
-track: 1
+track: 0
 train_args:
   anneal_lr: 1
   batch_size: 128

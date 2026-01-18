@@ -1,0 +1,343 @@
+{
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "python": "3.10.19",
+    "heartbeatAt": "2026-01-16T12:16:27.619716",
+    "startedAt": "2026-01-16T12:16:23.099031",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--track",
+        "1",
+        "--exp_name",
+        "mpae_babel_smplx",
+        "--data_args.dataset",
+        "mp_seq_v2",
+        "--data_args.data_dir",
+        "./data/seq_data_zero_male",
+        "--data_args.cfg_path",
+        "./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml",
+        "--data_args.weight_scheme",
+        "text_samp:0.",
+        "--train_args.batch_size",
+        "128",
+        "--train_args.weight_kl",
+        "1e-6",
+        "--train_args.stage1_steps",
+        "100000",
+        "--train_args.stage2_steps",
+        "50000",
+        "--train_args.stage3_steps",
+        "50000",
+        "--train_args.save_interval",
+        "50000",
+        "--train_args.weight_smpl_joints_rec",
+        "10.0",
+        "--train_args.weight_joints_consistency",
+        "10.0",
+        "--train_args.weight_transl_delta",
+        "100",
+        "--train_args.weight_joints_delta",
+        "100",
+        "--train_args.weight_orient_delta",
+        "100",
+        "--model_args.arch",
+        "all_encoder",
+        "--train_args.ema_decay",
+        "0.999",
+        "--model_args.num_layers",
+        "7",
+        "--model_args.latent_dim",
+        "1",
+        "256"
+    ],
+    "state": "running",
+    "program": "-m mld.train_mpae",
+    "codePathLocal": null,
+    "git": {
+        "remote": "git@github.com:RipeMangoBox/DART.git",
+        "commit": "1aaf4ae27d3cf0b3292398ca7ad65efb399b69be"
+    },
+    "email": "ripemangobox@gmail.com",
+    "root": "/data/public/ripemangobox/Motion/DART",
+    "host": "user-SY8108G-D12R-G4",
+    "username": "ripemangobox",
+    "executable": "/home/ripemangobox/miniconda3/envs/DART5/bin/python",
+    "cpu_count": 24,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 1532.988395833333,
+        "min": 800.0,
+        "max": 3900.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1890.38,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2799.972,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2799.918,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1187.586,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2806.682,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 1006.004,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.028,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 2800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        },
+        {
+            "current": 800.0,
+            "min": 800.0,
+            "max": 3900.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1758.8579597473145,
+            "used": 393.2632637023926
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_count": 4,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 5090",
+            "memory_total": 34190917632
+        },
+        {
+            "name": "NVIDIA GeForce RTX 5090",
+            "memory_total": 34190917632
+        },
+        {
+            "name": "NVIDIA GeForce RTX 5090",
+            "memory_total": 34190917632
+        },
+        {
+            "name": "NVIDIA GeForce RTX 5090",
+            "memory_total": 34190917632
+        }
+    ],
+    "memory": {
+        "total": 125.4869270324707
+    }
+}
