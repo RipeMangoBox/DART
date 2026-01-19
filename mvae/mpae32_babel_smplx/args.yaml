@@ -1,0 +1,18 @@
+"# tyro YAML.\n!dataclass:Args\ndata_args: !dataclass:DataArgs\n  body_type: smplx\n\
+  \  cfg_path: ./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml\n  data_dir:\
+  \ ./data/seq_data_zero_male\n  dataset: mp_seq_v2\n  enforce_gender: male\n  enforce_zero_beta:\
+  \ 1\n  feature_dim: 276\n  future_length: 8\n  history_length: 2\n  num_primitive:\
+  \ 8\n  prob_static: 0.0\n  text_tolerance: 0.0\n  weight_scheme: text_samp:0.\n\
+  device: cuda\nexp_name: mpae32_babel_smplx\nmodel_args: !dataclass:VAEArgs\n  activation:\
+  \ gelu\n  arch: all_encoder\n  dropout: 0.1\n  ff_size: 1024\n  h_dim: 32\n  latent_dim:\
+  \ !!python/tuple\n  - 1\n  - 32\n  nfeats: 276\n  normalize_before: false\n  num_heads:\
+  \ 4\n  num_layers: 7\n  position_embedding: learned\nsave_dir: !!python/object/apply:pathlib.PosixPath\n\
+  - mvae\n- mpae32_babel_smplx\nseed: 0\ntorch_deterministic: true\ntrack: 1\ntrain_args:\
+  \ !dataclass:TrainArgs\n  anneal_lr: 1\n  batch_size: 128\n  ema_decay: 0.999\n\
+  \  grad_clip: 1.0\n  learning_rate: 0.0001\n  log_interval: 1000\n  resume_checkpoint:\
+  \ null\n  save_interval: 50000\n  stage1_steps: 100000\n  stage2_steps: 50000\n\
+  \  stage3_steps: 50000\n  use_amp: 0\n  use_predicted_joints: 0\n  val_interval:\
+  \ 10000\n  weight_feature_rec: 0.0\n  weight_joints_consistency: 10.0\n  weight_joints_delta:\
+  \ 100.0\n  weight_kl: 1.0e-06\n  weight_latent_rec: 1.0\n  weight_orient_delta:\
+  \ 100.0\n  weight_rec: 1.0\n  weight_smpl_joints_rec: 10.0\n  weight_transl_delta:\
+  \ 100.0\nwandb_entity: MangoBox\nwandb_project_name: mld_vae\n"
