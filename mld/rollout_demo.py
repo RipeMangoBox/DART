@@ -32,7 +32,7 @@ import threading
 
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
 from model.mld_vae import AutoMldVae
-from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
+from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2, SinglePrimitiveDataset
 from utilss.smpl_utils import *
 from utilss.misc_util import encode_text, compose_texts_with_and
 from pytorch3d import transforms
@@ -347,6 +347,18 @@ if __name__ == '__main__':
                                      enforce_gender='male',
                                      enforce_zero_beta=1,
                                      )
+    
+    # dataset = WeightedPrimitiveSequenceDatasetV2(dataset_path=vae_args.data_args.data_dir,
+    #                                 dataset_name=vae_args.data_args.dataset,
+    #                                 cfg_path=vae_args.data_args.cfg_path, prob_static=vae_args.data_args.prob_static,
+    #                                 sequence_path=f'./data/stand.pkl' if rollout_args.dataset == 'babel' else f'./data/stand_20fps.pkl',
+    #                                 enforce_gender='male',
+    #                                 enforce_zero_beta=1,
+    #                                 body_type=vae_args.data_args.body_type,
+    #                                 split='train', device=device,
+    #                                 weight_scheme='uniform',
+    #                                 )
+    
     primitive_utility = PrimitiveUtility(device=device, dtype=torch.float32)
 
     batch_size = rollout_args.batch_size

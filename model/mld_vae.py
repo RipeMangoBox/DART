@@ -55,8 +55,6 @@ class AutoMldVae(nn.Module):
         input_feats = nfeats
         output_feats = nfeats
         self.arch = arch
-        self.mlp_dist = False
-        self.pe_type = "mld"
 
         self.query_pos_encoder = build_position_encoding(
             self.h_dim, position_embedding=position_embedding)

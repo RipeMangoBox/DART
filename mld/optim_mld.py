@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import pdb
 import random
 import time
