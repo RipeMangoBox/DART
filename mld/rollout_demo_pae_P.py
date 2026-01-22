@@ -31,7 +31,7 @@ import trimesh
 import threading
 
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldPae
+from model.mld_vae import AutoMldPae_P
 from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
 from utilss.smpl_utils import *
 from utilss.misc_util import encode_text, compose_texts_with_and
@@ -42,7 +42,7 @@ from diffusion.resample import create_named_schedule_sampler
 
 from mld.train_mpae import Args as MVAEArgs
 from mld.train_mpae import DataArgs, TrainArgs
-from mld.train_mld_pae import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
+from mld.train_mld_pae_P import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
 from visualize.vis_seq import makeLookAt
 from pyrender.trackball import Trackball
 
@@ -121,7 +121,7 @@ def load_mld(denoiser_checkpoint, device):
         vae_args = tyro.extras.from_yaml(MVAEArgs, yaml.safe_load(f))
     # load mvae model and freeze
     print('vae model args:', asdict(vae_args.model_args))
-    vae_model = AutoMldPae(
+    vae_model = AutoMldPae_P(
         **asdict(vae_args.model_args),
     ).to(device)
     checkpoint = torch.load(denoiser_args.mvae_path, map_location='cpu')
@@ -183,8 +183,8 @@ def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, datas
         dump_steps=None,
         noise=torch.zeros_like(guidance_param) if rollout_args.zero_noise else None,
         const_noise=False,
-    )  # [B, T=1, D]
-    latent_pred = x_start_pred.permute(1, 0, 2)  # [T=1, B, D]
+    )  # [T=1, B, D]
+    latent_pred = x_start_pred.permute(1, 0, 2)  # [T=1, B, D] -> [B, T=1, D]
     future_motion_pred = vae_model.decode(latent_pred, history_motion_normalized, nfuture=future_length,
                                                scale_latent=denoiser_args.rescale_latent)  # [B, F, D], normalized
 

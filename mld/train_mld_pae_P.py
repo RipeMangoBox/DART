@@ -86,6 +86,7 @@ class DenoiserTransformerArgs:
 class DenoiserArgs:
     mvae_path: str = ''
     rescale_latent: int = 1
+    use_latent_norm: bool = False
 
     train_rollout_type: Literal["single", "full"] = "single"
     """whether to use the full denoising loop to generate the previous primitive or a single step in rollout training"""

@@ -10,5 +10,5 @@ model_list=(
 )
 
 for model in "${model_list[@]}"; do
-  python -m mld.rollout_demo_pae --denoiser_checkpoint "$model" --batch_size $batch_size --guidance_param $guidance --respacing "$respacing" --use_predicted_joints $use_predicted_joints
+  python -m mld.rollout_demo_pae_P --denoiser_checkpoint "$model" --batch_size $batch_size --guidance_param $guidance --respacing "$respacing" --use_predicted_joints $use_predicted_joints
 done
