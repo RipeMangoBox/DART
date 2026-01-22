@@ -15,7 +15,7 @@
   seed: 0\ntorch_deterministic: true\ntrack: 0\ntrain_args: !dataclass:TrainArgs\n\
   \  anneal_lr: 1\n  batch_size: 1024\n  ema_decay: 0.999\n  grad_clip: 1.0\n  learning_rate:\
   \ 0.0001\n  log_interval: 1000\n  resume_checkpoint: null\n  save_interval: 100000\n\
-  \  stage1_steps: 10\n  stage2_steps: 100000\n  stage3_steps: 100000\n  use_amp:\
+  \  stage1_steps: 100000\n  stage2_steps: 100000\n  stage3_steps: 100000\n  use_amp:\
   \ 0\n  use_predicted_joints: 0\n  val_interval: 10000\n  weight_feature_rec: 1.0\n\
   \  weight_joints_consistency: 0.0\n  weight_joints_delta: 10000.0\n  weight_kl:\
   \ 0.0001\n  weight_latent_rec: 1.0\n  weight_orient_delta: 10000.0\n  weight_rec:\

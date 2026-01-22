@@ -206,6 +206,25 @@
                 "--use_predicted_joints", "1"
             ]
         },
+
+        {
+            "name": "Rollout Demo PAE_P",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "mld/rollout_demo_pae_P.py",
+            "console": "integratedTerminal",
+            // 1. 设置工作目录为项目根目录
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false,
+            // 2. 修正所有参数，按空格拆分
+            "args": [
+                "--denoiser_checkpoint", "./mld_denoiser/mld_pae_babel_smplx/checkpoint_300000.pt",
+                "--batch_size", "1",
+                "--guidance_param", "5",
+                "--respacing", "",
+                "--use_predicted_joints", "1"
+            ]
+        },
         // {
         //     "name": "GT VAE Demo",
         //     "type": "debugpy",

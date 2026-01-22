@@ -248,7 +248,7 @@ class Trainer:
         vae_model = AutoMldPae(
             **asdict(mvae_args.model_args),
         ).to(device)
-        checkpoint = torch.load(denoiser_args.mvae_path)
+        checkpoint = torch.load(denoiser_args.mvae_path, map_location=device)
         model_state_dict = checkpoint['model_state_dict']
         if 'latent_mean' not in model_state_dict:
             model_state_dict['latent_mean'] = torch.tensor(0)
@@ -274,7 +274,7 @@ class Trainer:
         optimizer = optim.AdamW(denoiser_model.parameters(), lr=train_args.learning_rate)
         start_step = 1
         if args.train_args.resume_checkpoint is not None:
-            checkpoint = torch.load(args.train_args.resume_checkpoint)
+            checkpoint = torch.load(args.train_args.resume_checkpoint, map_location=device)
             model_state_dict = checkpoint['model_state_dict']
             denoiser_model.load_state_dict(model_state_dict)
             # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
