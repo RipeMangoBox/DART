@@ -2191,10 +2191,14 @@ class WeightedPrimitiveSequenceDatasetV2(WeightedPrimitiveSequenceDataset):
         }
         return output
 
-    def get_batch(self, batch_size=8):
+    def get_full_dataset(self):
+        batch_idx = list(range(len(self.dataset)))
+        return self.get_batch(batch_idx=batch_idx)
+
+    def get_batch(self, batch_size=8, batch_idx=None):
         self.time = time.time()
         seq_list = []
-        batch_idx = self.get_batch_idx(batch_size)
+        batch_idx = self.get_batch_idx(batch_size) if batch_idx is None else batch_idx
         # print('#batch_idx: ', len(batch_idx))
 
         # pool = mp.Pool(2)  # Create a process pool

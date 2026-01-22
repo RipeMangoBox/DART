@@ -262,6 +262,7 @@ class Trainer:
 
         terms = {}
 
+        #TODO, test variants that calculuate rec_loss in denormalized motion space
         # reconstruction loss
         rec_loss = self.rec_criterion(future_motion_pred, future_motion_gt)
         terms['rec_loss'] = rec_loss

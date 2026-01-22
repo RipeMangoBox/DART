@@ -316,25 +316,43 @@ class AutoMldPae(nn.Module):
             p[:, i] = torch.atan2(v[:, 1], v[:, 0]) / self.tpi
 
         #Parameters    
-        # p = p.unsqueeze(2)  # (bs, latent_dim, 1)
-        # f = f.unsqueeze(2)  # (bs, latent_dim, 1)
-        # a = a.unsqueeze(2)  # (bs, latent_dim, 1)
-        # b = b.unsqueeze(2)  # (bs, latent_dim, 1)
-        # # params = [p, f, a, b]
-        params = torch.cat([p, f, a, b], dim=1).unsqueeze(0) # (1, bs,  4 *latent_dim)
-        # params = torch.stack([p, f, a, b], dim=2)
+        p = p.unsqueeze(2)  # (bs, latent_dim, 1)
+        f = f.unsqueeze(2)  # (bs, latent_dim, 1)
+        a = a.unsqueeze(2)  # (bs, latent_dim, 1)
+        b = b.unsqueeze(2)  # (bs, latent_dim, 1)
+        params = [p, f, a, b]
+        # params = torch.cat([p, f, a, b], dim=1).unsqueeze(0) # (1, bs,  4 *latent_dim)
         
         # signal = a * torch.sin(self.tpi * (f * self.args + p)) + b
 
         return params, latent
+    
+    def encode_to_manifold(self, future_motion, history_motion, scale_latent: bool = False):
+        params, latent = self.encode(future_motion, history_motion, scale_latent)
+        return self.p_to_manifold(params)
 
-    def decode(self, params: Tensor, history_motion, nfuture,
-               scale_latent: bool = False,
+    def p_to_manifold(self, params):
+        p, f, a, b = params
+        sx = torch.sin(2 * torch.pi * p)
+        sy = torch.cos(2 * torch.pi * p)
+        #TODO, normalize the f, a, b and p to [0, 1]
+        return torch.cat([sx, sy, f, a, b], dim=1)  # (1, bs, 5 * latent_dim)
+    
+    def decode_from_manifold(self, manifold, history_motion, nfuture,
+               scale_latent: bool = False):
+        sx, sy, f, a, b = torch.split(manifold, self.latent_dim, dim=1)
+        p = torch.atan2(sy, sx) / (2 * torch.pi)
+        params = [p, f, a, b]
+        return self.decode(params, history_motion, nfuture, scale_latent)
+
+    def decode(self, params: List[Tensor], history_motion, nfuture,
+               scale_latent: bool = False
                ):
         bs = history_motion.shape[0]
             
         """ 接收 PAE 参数进行正弦重建 """
-        p, f, a, b = params.permute(1, 2, 0).split(self.latent_dim, dim=1) # 4 * (bs, latent_dim, 1)
+        # p, f, a, b = params.permute(1, 2, 0).split(self.latent_dim, dim=1) # 4 * (bs, latent_dim, 1)
+        p, f, a, b = params
 
         # 1. 信号重建 (PAE 核心公式)
         # y: [bs, latent_dim, time_range]
