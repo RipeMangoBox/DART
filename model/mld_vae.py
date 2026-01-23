@@ -555,9 +555,14 @@ class AutoMldPae_P(nn.Module):
 
         return params, latent
     
-    def decode(self, params, nfuture):
+    def decode(self, params: List[Tensor], history_motion, nfuture,
+               scale_latent: bool = False
+               ):
+        bs = history_motion.shape[0]
+            
         """ 接收 PAE 参数进行正弦重建 """
         p, f, a, b = params.permute(1, 2, 0).split(self.latent_dim, dim=1) # 4 * (bs, latent_dim, 1)
+        # p, f, a, b = params
 
         # 1. 信号重建 (PAE 核心公式)
         # y: [bs, latent_dim, time_range]
@@ -566,11 +571,32 @@ class AutoMldPae_P(nn.Module):
         # 2. 映射回特征空间 [bs, emb, seq] -> [seq, bs, emb]
         y = y.permute(2, 0, 1)
         
-        # 3. 最终投影到运动维度 [seq, bs, nfeats]
-        output = self.final_layer(y)
-        
-        # 返回最后 nfuture 帧 [bs, nfuture, nfeats]
-        return output[-nfuture:].permute(1, 0, 2)
+        y = self.decoder_latent_proj(y)  # [latent_size, bs, latent_dim] => [latent_size, bs, h_dim]
+        queries = torch.zeros(nfuture, bs, self.h_dim, device=y.device)
+        history_embedding = self.skel_embedding(history_motion).permute(1, 0, 2)  # [nhistory, bs, h_dim]
+
+        # Pass through the transformer decoder
+        # with the latent vector for memory
+        if self.arch == "all_encoder":
+            xseq = torch.cat((y, history_embedding, queries), dim=0)
+            xseq = self.query_pos_decoder(xseq)
+            output = self.decoder(
+                xseq)[-nfuture:]
+
+        elif self.arch == "encoder_decoder":
+            xseq = torch.cat((history_embedding, queries), dim=0)
+            xseq = self.query_pos_decoder(xseq)
+            output = self.decoder(
+                tgt=xseq,
+                memory=y,
+            )
+            # print('output:', output.shape)
+            output = output[-nfuture:]
+
+        output = self.final_layer(output)
+        # Pytorch Transformer: [Sequence, Batch size, ...]
+        feats = output.permute(1, 0, 2)
+        return feats
 
 class ConvFeatureExtractor(nn.Module):
     def __init__(self, input_channels, h_dim, time_range):
