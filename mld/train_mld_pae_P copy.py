@@ -30,7 +30,7 @@ import copy
 from mld.train_mpae import Args as MVAEArgs
 from mld.train_mpae import DataArgs, TrainArgs
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldPae
+from model.mld_vae import AutoMldPae_P
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
 from utilss.smpl_utils import get_smplx_param_from_6d
@@ -86,7 +86,7 @@ class DenoiserTransformerArgs:
 class DenoiserArgs:
     mvae_path: str = ''
     rescale_latent: int = 1
-    use_latent_norm: bool = False
+    use_latent_norm: int = 0
 
     train_rollout_type: Literal["single", "full"] = "single"
     """whether to use the full denoising loop to generate the previous primitive or a single step in rollout training"""
@@ -220,7 +220,7 @@ class Trainer:
         assert mvae_args.data_args.future_length == data_args.future_length
         assert mvae_args.data_args.feature_dim == data_args.feature_dim
         denoiser_model_args.history_shape = (data_args.history_length, data_args.feature_dim)
-        denoiser_model_args.noise_shape = (mvae_args.model_args.latent_dim[0], mvae_args.model_args.latent_dim[1] * 5) # sx, sy, f, a, b
+        denoiser_model_args.noise_shape = (mvae_args.model_args.latent_dim[0], mvae_args.model_args.latent_dim[1] * 4) # pfab
 
         run_name = f"{args.exp_name}__seed{args.seed}__{int(time.time())}"
         if args.track:
@@ -250,10 +250,10 @@ class Trainer:
 
         # load mvae model and freeze
         print('vae model args:', asdict(mvae_args.model_args))
-        vae_model = AutoMldPae(
+        vae_model = AutoMldPae_P(
             **asdict(mvae_args.model_args), latent_param_mean=self.latent_param_mean, latent_param_std=self.latent_param_std
         ).to(device)
-        checkpoint = torch.load(denoiser_args.mvae_path, map_location=device)
+        checkpoint = torch.load(denoiser_args.mvae_path)
         model_state_dict = checkpoint['model_state_dict']
         if 'latent_mean' not in model_state_dict:
             model_state_dict['latent_mean'] = torch.tensor(0)
@@ -279,7 +279,7 @@ class Trainer:
         optimizer = optim.AdamW(denoiser_model.parameters(), lr=train_args.learning_rate)
         start_step = 1
         if args.train_args.resume_checkpoint is not None:
-            checkpoint = torch.load(args.train_args.resume_checkpoint, map_location=device)
+            checkpoint = torch.load(args.train_args.resume_checkpoint)
             model_state_dict = checkpoint['model_state_dict']
             denoiser_model.load_state_dict(model_state_dict)
             # optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
@@ -332,7 +332,7 @@ class Trainer:
                     motion_tensor = motion.squeeze(2).permute(0, 2, 1)  # [B, T, D]
                     future_motion_gt = motion_tensor[:, -future_length:, :]
                     history_motion_gt = motion_tensor[:, :history_length, :]
-                    params, _ = self.vae_model.encode(future_motion=future_motion_gt,
+                    params, _ = self.vae_model.encode_to_manifold(future_motion=future_motion_gt,
                                                         history_motion=history_motion_gt,
                                                         scale_latent=denoiser_args.rescale_latent)  # [T=1, B, 5*latent_dim]
                     
@@ -363,7 +363,7 @@ class Trainer:
             return default_dict
         
         return statistics_dict
-
+    
     def calc_loss(self, motion, cond, history_motion, future_motion_gt, future_motion_pred, manifold_gt, manifold_pred, weights):
         train_args = self.args.train_args
         model_kwargs = cond
@@ -481,14 +481,14 @@ class Trainer:
             history_motion = history_motion_gt
         manifold_gt = self.vae_model.encode_to_manifold(future_motion=future_motion_gt,
                                              history_motion=history_motion_gt if denoiser_args.train_rollout_history == "gt" else history_motion,
-                                             scale_latent=denoiser_args.rescale_latent)  # [T=1, B, 5*latent_dim]
+                                             scale_latent=denoiser_args.rescale_latent)  # [B, D, T=1]
         # pdb.set_trace()
 
         t, weights = self.schedule_sampler.sample(self.batch_size, device=self.device)  # weights always 1
         # print('t:', t, 'weights:', weights)
 
         # forward diffusion
-        x_start = manifold_gt.permute(0, 2, 1)  # [B, D, T=1] -> [B, T=1, D]
+        x_start = manifold_gt.permute(0, 2, 1)  # [B, T=1, D]
         x_t = self.diffusion.q_sample(x_start=x_start, t=t, noise=torch.randn_like(x_start))
         # denoise
         y = {
@@ -496,10 +496,10 @@ class Trainer:
             'history_motion_normalized': history_motion,
         }
         x_start_pred = self.denoiser_model(x_t=x_t, timesteps=self.diffusion._scale_timesteps(t), y=y)  # [B, T=1, D]
-        manifold_pred = x_start_pred.permute(0, 2, 1)  # [B, T=1, D] -> [B, D, T=1]
+        manifold_pred = x_start_pred
 
         future_motion_pred = self.vae_model.decode_from_manifold(manifold_pred, history_motion, nfuture=future_length,
-                                                   scale_latent=denoiser_args.rescale_latent)  # [B, F, D], normalized
+                                                   scale_latent=denoiser_args.rescale_latent)
 
         loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred, manifold_gt, manifold_pred, weights)
 
@@ -519,7 +519,7 @@ class Trainer:
                         noise=None,
                         const_noise=False,
                     )
-                    manifold_pred = x_start_pred.permute(0, 2, 1)  # [B, T=1, D] -> [B, D, T=1]
+                    manifold_pred = x_start_pred.permute(0, 2, 1)  # [B, D, T=1]
                     # if torch.isnan(manifold_pred).any() or torch.isinf(manifold_pred).any():
                     #     print('manifold_pred numerical error')
                     #     pdb.set_trace()
@@ -541,10 +541,7 @@ class Trainer:
         total_steps = train_args.stage1_steps + train_args.stage2_steps + train_args.stage3_steps
         rest_steps = (total_steps - self.start_step) // self.train_dataset.num_primitive + 1
         rest_steps = rest_steps * self.train_dataset.num_primitive
-        
-        # 1. 显式创建 tqdm 对象以便后续更新 
-        pbar = tqdm(range(rest_steps), desc="Training DART")
-        progress_bar_iter = iter(pbar)
+        progress_bar = iter(tqdm(range(rest_steps)))
         self.step = self.start_step
 
         # self.validate()
@@ -587,14 +584,6 @@ class Trainer:
                     if torch.rand(1).item() < rollout_prob:
                         last_primitive = future_motion_pred.detach()  # assume future length >= history length
 
-
-                # 2. 更新进度条显示内容，包括总损失和当前阶段 
-                pbar.set_postfix({
-                    'loss': f"{loss.item():.4f}",
-                    'step': self.step,
-                    'stage': 1 if self.step <= train_args.stage1_steps else (2 if self.step <= train_args.stage1_steps + train_args.stage2_steps else 3)
-                })
-                
                 if self.step % train_args.log_interval == 0:
                     for key in loss_dict:
                         writer.add_scalar(f"loss/{key}", loss_dict[key].item(), self.step)
@@ -607,7 +596,7 @@ class Trainer:
                     self.validate()
 
                 self.step += 1
-                next(progress_bar_iter)
+                next(progress_bar)
             # t3 = time.time()
             # print(f"get data time: {t2 - t1}, percent:{(t2 - t1) / (t3 - t1)}, step time: {t3 - t2}")
 

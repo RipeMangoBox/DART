@@ -154,6 +154,7 @@
                 "--denoiser_args.mvae_path", "./mvae/mpae_babel_smplx/checkpoint_200000.pt",
                 "--denoiser_args.train_rollout_type", "full",
                 "--denoiser_args.train_rollout_history", "rollout",
+                "--denoiser_args.use_latent_norm", "1",
                 "--train_args.batch_size", "1024",
                 "--train_args.stage1_steps", "100000",
                 "--train_args.stage2_steps", "100000",
@@ -167,6 +168,7 @@
                 "--train_args.weight_joints_delta", "1e4",
                 "--train_args.weight_orient_delta", "1e4",
                 "--data_args.weight_scheme", "text_samp:0.",
+                
             ]
         },
         {

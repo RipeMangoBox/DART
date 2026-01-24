@@ -381,7 +381,6 @@ class Trainer:
                         rollout_history = self.get_rollout_history(last_primitive, cond)
                         history_motion = rollout_history    # [B, H, D]
 
-                    # latent, dist = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
                     params, _ = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
                     future_motion_pred = model.decode(params, history_motion, nfuture=future_length)  # [B, F, D]
 
