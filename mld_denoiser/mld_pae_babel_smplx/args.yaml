@@ -8,9 +8,9 @@
   \ true\n  model_args: !dataclass:DenoiserMLPArgs\n    activation: gelu\n    clip_dim:\
   \ 512\n    cond_mask_prob: 0.1\n    dropout: 0.1\n    h_dim: 512\n    history_shape:\
   \ !!python/tuple\n    - 2\n    - 276\n    n_blocks: 2\n    noise_shape: !!python/tuple\n\
-  \    - 1\n    - 1024\n  model_type: mlp\n  mvae_path: ./mvae/mpae_babel_smplx/checkpoint_200000.pt\n\
+  \    - 1\n    - 1280\n  model_type: mlp\n  mvae_path: ./mvae/mpae_babel_smplx/checkpoint_200000.pt\n\
   \  rescale_latent: 1\n  train_rollout_history: rollout\n  train_rollout_type: full\n\
-  \  use_latent_norm: 0\ndevice: cuda\nexp_name: mld_pae_babel_smplx\nsave_dir: !!python/object/apply:pathlib.PosixPath\n\
+  \  use_latent_norm: 1\ndevice: cuda\nexp_name: mld_pae_babel_smplx\nsave_dir: !!python/object/apply:pathlib.PosixPath\n\
   - mld_denoiser\n- mld_pae_babel_smplx\nseed: 0\ntorch_deterministic: true\ntrack:\
   \ 0\ntrain_args: !dataclass:TrainArgs\n  anneal_lr: 1\n  batch_size: 1024\n  ema_decay:\
   \ 0.999\n  grad_clip: 1.0\n  learning_rate: 0.0001\n  log_interval: 1000\n  resume_checkpoint:\

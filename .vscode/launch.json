@@ -13,7 +13,7 @@
             // 2. 修正所有参数，按空格拆分
             "args": [
                 "--track", "0",
-                "--exp_name", "mvae_babel_smplx",
+                "--exp_name", "debug_mvae_babel_smplx",
                 "--data_args.dataset", "mp_seq_v2",
                 "--data_args.data_dir", "./data/seq_data_zero_male",
                 "--data_args.cfg_path", "./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml",
@@ -46,7 +46,7 @@
             // 2. 修正所有参数，按空格拆分
             "args": [
                 "--track", "0",
-                "--exp_name", "mvae_babel_smplx",
+                "--exp_name", "debug_mpae_babel_smplx",
                 "--data_args.dataset", "mp_seq_v2",
                 "--data_args.data_dir", "./data/seq_data_zero_male",
                 "--data_args.cfg_path", "./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml",
@@ -68,44 +68,11 @@
                 "--model_args.latent_dim", "1", "256"
             ]
         },
-        // {
-        //     "name": "Train MVAE on FineDance",
-        //     "type": "debugpy",
-        //     "request": "launch",
-        //     "program": "mld/train_mvae_fd.py",
-        //     "console": "integratedTerminal",
-        //     // 1. 设置工作目录为项目根目录
-        //     "cwd": "${workspaceFolder}",
-        //     // 2. 修正所有参数，按空格拆分
-        //     "args": [
-        //         "--track", "0",
-        //         "--exp_name", "mvae_babel_smplx",
-        //         "--data_args.dataset", "mp_seq_v2",
-        //         "--data_args.data_dir", "./data/seq_data_zero_male_fd",
-        //         "--data_args.cfg_path", "./config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml",
-        //         "--data_args.weight_scheme", "uniform",
-        //         "--train_args.batch_size", "128",
-        //         "--train_args.weight_kl", "1e-6",
-        //         "--train_args.stage1_steps", "100000",
-        //         "--train_args.stage2_steps", "50000",
-        //         "--train_args.stage3_steps", "50000",
-        //         "--train_args.save_interval", "50000",
-        //         "--train_args.weight_smpl_joints_rec", "10.0",
-        //         "--train_args.weight_joints_consistency", "10.0",
-        //         "--train_args.weight_transl_delta", "100",
-        //         "--train_args.weight_joints_delta", "100",
-        //         "--train_args.weight_orient_delta", "100",
-        //         "--model_args.arch", "all_encoder",
-        //         "--train_args.ema_decay", "0.999",
-        //         "--model_args.num_layers", "7",
-        //         "--model_args.latent_dim", "1", "256"
-        //     ]
-        // },
         {
             "name": "Train MLD_PAE_P on BABEL",
             "type": "debugpy",
             "request": "launch",
-            "program": "mld/train_mld_pae_P.py",
+            "program": "mld/train_mld_pae.py",
             "console": "integratedTerminal",
             // 1. 设置工作目录为项目根目录
             "cwd": "${workspaceFolder}",
@@ -113,13 +80,14 @@
             "args": [
                 // python -m mld.train_mld_pae   
                 "--track", "0",
-                "--exp_name", "mld_pae_babel_smplx",
+                "--exp_name", "debug_mld_pae_P_babel_smplx",
                 "--data_args.dataset", "mp_seq_v2",
                 "--data_args.data_dir", "./data/seq_data_zero_male",
                 "--data_args.cfg_path", "./config_files/config_hydra/motion_primitive/mp_h2_f8_r4.yaml",
                 "--denoiser_args.mvae_path", "./mvae/mpae_babel_smplx/checkpoint_200000.pt",
                 "--denoiser_args.train_rollout_type", "full",
                 "--denoiser_args.train_rollout_history", "rollout",
+                "--denoiser_args.pae_type", "P",
                 "--train_args.batch_size", "1024",
                 "--train_args.stage1_steps", "100000",
                 "--train_args.stage2_steps", "100000",
@@ -139,7 +107,7 @@
             "name": "Train MLD_PAE_phase on BABEL",
             "type": "debugpy",
             "request": "launch",
-            "program": "mld/train_mld_pae_phase.py",
+            "program": "mld/train_mld_pae.py",
             "console": "integratedTerminal",
             // 1. 设置工作目录为项目根目录
             "cwd": "${workspaceFolder}",
@@ -147,7 +115,7 @@
             "args": [
                 // python -m mld.train_mld_pae   
                 "--track", "0",
-                "--exp_name", "mld_pae_babel_smplx",
+                "--exp_name", "debug_mld_pae_phase_babel_smplx",
                 "--data_args.dataset", "mp_seq_v2",
                 "--data_args.data_dir", "./data/seq_data_zero_male",
                 "--data_args.cfg_path", "./config_files/config_hydra/motion_primitive/mp_h2_f8_r4.yaml",
@@ -155,6 +123,7 @@
                 "--denoiser_args.train_rollout_type", "full",
                 "--denoiser_args.train_rollout_history", "rollout",
                 "--denoiser_args.use_latent_norm", "1",
+                "--denoiser_args.pae_type", "phase",
                 "--train_args.batch_size", "1024",
                 "--train_args.stage1_steps", "100000",
                 "--train_args.stage2_steps", "100000",

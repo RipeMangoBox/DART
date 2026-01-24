@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+# os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

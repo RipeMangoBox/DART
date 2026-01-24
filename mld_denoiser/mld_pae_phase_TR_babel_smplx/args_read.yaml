@@ -23,28 +23,31 @@ denoiser_args:
     clip_dim: 512
     cond_mask_prob: 0.1
     dropout: 0.1
+    ff_size: 1024
     h_dim: 512
     history_shape: !!python/tuple
     - 2
     - 276
-    n_blocks: 2
     noise_shape: !!python/tuple
     - 1
     - 1280
-  model_type: mlp
+    num_heads: 4
+    num_layers: 8
+  model_type: transformer
   mvae_path: ./mvae/mpae_babel_smplx/checkpoint_200000.pt
+  pae_type: phase
   rescale_latent: 1
   train_rollout_history: rollout
   train_rollout_type: full
-  use_latent_norm: 1
+  use_latent_norm: 0
 device: cuda
-exp_name: mld_pae_babel_smplx
+exp_name: mld_pae_phase_TR_babel_smplx
 save_dir: !!python/object/apply:pathlib.PosixPath
 - mld_denoiser
-- mld_pae_babel_smplx
+- mld_pae_phase_TR_babel_smplx
 seed: 0
 torch_deterministic: true
-track: 0
+track: 1
 train_args:
   anneal_lr: 1
   batch_size: 1024
@@ -57,7 +60,7 @@ train_args:
   stage1_steps: 100000
   stage2_steps: 100000
   stage3_steps: 100000
-  use_amp: 0
+  use_amp: 1
   use_predicted_joints: 0
   val_interval: 10000
   weight_feature_rec: 1.0

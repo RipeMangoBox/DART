@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -30,7 +30,7 @@ import copy
 from mld.train_mpae import Args as MVAEArgs
 from mld.train_mpae import DataArgs, TrainArgs
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldPae
+from model.mld_vae import AutoMldPae_Phase
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
 from utilss.smpl_utils import get_smplx_param_from_6d
@@ -86,7 +86,7 @@ class DenoiserTransformerArgs:
 class DenoiserArgs:
     mvae_path: str = ''
     rescale_latent: int = 1
-    use_latent_norm: bool = False
+    use_latent_norm: int = 0 # 0: no normalization, 1: normalization, 2: normalization and clip
 
     train_rollout_type: Literal["single", "full"] = "single"
     """whether to use the full denoising loop to generate the previous primitive or a single step in rollout training"""
@@ -250,7 +250,7 @@ class Trainer:
 
         # load mvae model and freeze
         print('vae model args:', asdict(mvae_args.model_args))
-        vae_model = AutoMldPae(
+        vae_model = AutoMldPae_Phase(
             **asdict(mvae_args.model_args), latent_param_mean=self.latent_param_mean, latent_param_std=self.latent_param_std
         ).to(device)
         checkpoint = torch.load(denoiser_args.mvae_path, map_location=device)
@@ -342,10 +342,10 @@ class Trainer:
             latent_parameterization = torch.cat(latent_parameterization, dim=0)
             torch.save(
             {
-                "latent_param_max": latent_parameterization.max(dim=0)[0],
-                "latent_param_min": latent_parameterization.min(dim=0)[0],
-                "latent_param_mean": latent_parameterization.mean(dim=0),
-                "latent_param_std": latent_parameterization.std(dim=0),
+                "latent_param_max": latent_parameterization.max(dim=0)[0],  # [3 * latent_dim, T=1]
+                "latent_param_min": latent_parameterization.min(dim=0)[0],  # [3 * latent_dim, T=1]
+                "latent_param_mean": latent_parameterization.mean(dim=0),  # [3 * latent_dim, T=1]
+                "latent_param_std": latent_parameterization.std(dim=0),  # [3 * latent_dim, T=1]
                 },
             statistics_path
             )
@@ -355,10 +355,10 @@ class Trainer:
         
         if not use_latent_norm:
             default_dict = {
-                'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),
-                'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),
-                'latent_param_mean': torch.zeros_like(statistics_dict['latent_param_mean']),
-                'latent_param_std': torch.ones_like(statistics_dict['latent_param_std']),
+                'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),  # [3 * latent_dim, T=1]
+                'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),  # [3 * latent_dim, T=1]
+                'latent_param_mean': torch.zeros_like(statistics_dict['latent_param_mean']),  # [3 * latent_dim, T=1]
+                'latent_param_std': torch.ones_like(statistics_dict['latent_param_std']),  # [3 * latent_dim, T=1]
             }
             return default_dict
         
@@ -481,7 +481,7 @@ class Trainer:
             history_motion = history_motion_gt
         manifold_gt = self.vae_model.encode_to_manifold(future_motion=future_motion_gt,
                                              history_motion=history_motion_gt if denoiser_args.train_rollout_history == "gt" else history_motion,
-                                             scale_latent=denoiser_args.rescale_latent)  # [T=1, B, 5*latent_dim]
+                                             scale_latent=denoiser_args.rescale_latent)  # [B, 5*latent_dim, T=1]
         # pdb.set_trace()
 
         t, weights = self.schedule_sampler.sample(self.batch_size, device=self.device)  # weights always 1

@@ -33,15 +33,16 @@ denoiser_args:
     - 1280
   model_type: mlp
   mvae_path: ./mvae/mpae_babel_smplx/checkpoint_200000.pt
+  pae_type: phase
   rescale_latent: 1
   train_rollout_history: rollout
   train_rollout_type: full
   use_latent_norm: 1
 device: cuda
-exp_name: mld_pae_babel_smplx
+exp_name: debug_mld_pae_phase_babel_smplx
 save_dir: !!python/object/apply:pathlib.PosixPath
 - mld_denoiser
-- mld_pae_babel_smplx
+- debug_mld_pae_phase_babel_smplx
 seed: 0
 torch_deterministic: true
 track: 0
