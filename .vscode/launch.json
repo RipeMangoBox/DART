@@ -122,9 +122,10 @@
                 "--denoiser_args.mvae_path", "./mvae/mpae_babel_smplx/checkpoint_200000.pt",
                 "--denoiser_args.train_rollout_type", "full",
                 "--denoiser_args.train_rollout_history", "rollout",
-                "--denoiser_args.use_latent_norm", "1",
+                "--denoiser_args.use_latent_norm", "0",
                 "--denoiser_args.pae_type", "phase",
                 "--train_args.batch_size", "1024",
+                "--denoiser_args.model_type", "transformer",
                 "--train_args.stage1_steps", "100000",
                 "--train_args.stage2_steps", "100000",
                 "--train_args.stage3_steps", "100000",
@@ -163,18 +164,19 @@
             "name": "Rollout Demo PAE_phase",
             "type": "debugpy",
             "request": "launch",
-            "program": "mld/rollout_demo_pae_phase.py",
+            "program": "mld/rollout_demo_pae.py",
             "console": "integratedTerminal",
             // 1. 设置工作目录为项目根目录
             "cwd": "${workspaceFolder}",
             "justMyCode": false,
             // 2. 修正所有参数，按空格拆分
             "args": [
-                "--denoiser_checkpoint", "./mld_denoiser/mld_pae_phase_babel_smplx/checkpoint_100000.pt",
+                "--denoiser_checkpoint", "./mld_denoiser/mld_pae_phase_TR_babel_smplx/checkpoint_300000.pt",
                 "--batch_size", "1",
                 "--guidance_param", "5",
                 "--respacing", "",
-                "--use_predicted_joints", "1"
+                "--use_predicted_joints", "1",
+                "--use_interpolation", "1"
             ]
         },
 
@@ -182,18 +184,19 @@
             "name": "Rollout Demo PAE_P",
             "type": "debugpy",
             "request": "launch",
-            "program": "mld/rollout_demo_pae_P.py",
+            "program": "mld/rollout_demo_pae.py",
             "console": "integratedTerminal",
             // 1. 设置工作目录为项目根目录
             "cwd": "${workspaceFolder}",
             "justMyCode": false,
             // 2. 修正所有参数，按空格拆分
             "args": [
-                "--denoiser_checkpoint", "./mld_denoiser/mld_pae_babel_smplx/checkpoint_300000.pt",
+                "--denoiser_checkpoint", "./mld_denoiser/mld_pae_P_TR_babel_smplx/checkpoint_300000.pt",
                 "--batch_size", "1",
                 "--guidance_param", "5",
                 "--respacing", "",
-                "--use_predicted_joints", "1"
+                "--use_predicted_joints", "1",
+                "--use_interpolation", "0"
             ]
         },
         // {

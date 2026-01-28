@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '2'    # must be put here, before importing any other modules
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -318,7 +318,7 @@ class Trainer:
         self.transf_rotmat = torch.eye(3, device=self.device).unsqueeze(0)
         self.transf_transl = torch.zeros(3, device=self.device).reshape(1, 1, 3)
 
-    def get_pae_mean_std(self, use_latent_norm: bool = False):
+    def get_pae_mean_std(self, use_latent_norm: int = 0):
         statistics_path = os.path.join(Path(self.args.denoiser_args.mvae_path).parent, "statistics.pt")
         if not os.path.exists(statistics_path):
             batch = self.train_dataset.get_full_dataset()
@@ -357,7 +357,7 @@ class Trainer:
         # load statistics
         statistics_dict = torch.load(statistics_path)
         
-        if not use_latent_norm:
+        if use_latent_norm == 0:
             default_dict = {
                 'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),  # [3 * latent_dim, T=1]
                 'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),  # [3 * latent_dim, T=1]

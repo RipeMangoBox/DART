@@ -31,7 +31,7 @@ import trimesh
 import threading
 
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldPae_P
+from model.mld_vae import AutoMldPae_Phase, AutoMldPae_P
 from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
 from utilss.smpl_utils import *
 from utilss.misc_util import encode_text, compose_texts_with_and
@@ -39,10 +39,10 @@ from pytorch3d import transforms
 from diffusion import gaussian_diffusion as gd
 from diffusion.respace import SpacedDiffusion, space_timesteps
 from diffusion.resample import create_named_schedule_sampler
-
+from utilss.interpolation import interpolate
 from mld.train_mpae import Args as MVAEArgs
 from mld.train_mpae import DataArgs, TrainArgs
-from mld.train_mld_pae_P import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
+from mld.train_mld_pae import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
 from visualize.vis_seq import makeLookAt
 from pyrender.trackball import Trackball
 
@@ -56,6 +56,22 @@ frame_idx = 0
 text_prompt = 'stand'
 text_embedding = None
 motion_tensor = None
+manifold_history = None
+
+def get_pae_mean_std(mvae_path, use_latent_norm: int = 0):
+    statistics_path = os.path.join(Path(mvae_path).parent, "statistics.pt")
+    statistics_dict = torch.load(statistics_path)
+    
+    if use_latent_norm == 0:
+        default_dict = {
+            'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),  # [3 * latent_dim, T=1]
+            'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),  # [3 * latent_dim, T=1]
+            'latent_param_mean': torch.zeros_like(statistics_dict['latent_param_mean']),  # [3 * latent_dim, T=1]
+            'latent_param_std': torch.ones_like(statistics_dict['latent_param_std']),  # [3 * latent_dim, T=1]
+        }
+        return default_dict
+    
+    return statistics_dict
 
 @dataclass
 class RolloutArgs:
@@ -74,6 +90,8 @@ class RolloutArgs:
     export_smpl: int = 0
     zero_noise: int = 0
     use_predicted_joints: int = 0
+    
+    use_interpolation: int = 0
 
 
 class ClassifierFreeWrapper(nn.Module):
@@ -100,6 +118,8 @@ def load_mld(denoiser_checkpoint, device):
     # load mvae model and freeze
     print('denoiser model type:', denoiser_args.model_type)
     print('denoiser model args:', asdict(denoiser_args.model_args))
+    
+    # denoiser_args.model_args = DenoiserMLPArgs() if denoiser_args.model_type == "mlp" else DenoiserTransformerArgs()
     denoiser_class = DenoiserMLP if isinstance(denoiser_args.model_args, DenoiserMLPArgs) else DenoiserTransformer
     denoiser_model = denoiser_class(
         **asdict(denoiser_args.model_args),
@@ -121,10 +141,19 @@ def load_mld(denoiser_checkpoint, device):
         vae_args = tyro.extras.from_yaml(MVAEArgs, yaml.safe_load(f))
     # load mvae model and freeze
     print('vae model args:', asdict(vae_args.model_args))
-    vae_model = AutoMldPae_P(
-        **asdict(vae_args.model_args),
+    print('(#^.^#) use_latent_norm:', denoiser_args.use_latent_norm)
+    statics_dict = get_pae_mean_std(vae_checkpoint, use_latent_norm=denoiser_args.use_latent_norm)
+    latent_param_mean, latent_param_std = statics_dict['latent_param_mean'], statics_dict['latent_param_std']
+
+    # load mvae model and freeze
+    print('vae model args:', asdict(vae_args.model_args))
+    assert denoiser_args.pae_type in ['phase', 'P']
+    pae_class = AutoMldPae_Phase if denoiser_args.pae_type == 'phase' else AutoMldPae_P
+    print('(#^.^#) pae class:', pae_class)
+    vae_model = pae_class(
+        **asdict(vae_args.model_args), latent_param_mean=latent_param_mean, latent_param_std=latent_param_std
     ).to(device)
-    checkpoint = torch.load(denoiser_args.mvae_path, map_location='cpu')
+    checkpoint = torch.load(vae_checkpoint, map_location='cpu')
     model_state_dict = checkpoint['model_state_dict']
     if 'latent_mean' not in model_state_dict:
         model_state_dict['latent_mean'] = torch.tensor(0)
@@ -145,7 +174,7 @@ def load_mld(denoiser_checkpoint, device):
     return denoiser_args, denoiser_model, vae_args, vae_model
 
 def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, dataset, rollout_args):
-    global motion_tensor
+    global motion_tensor, manifold_history
     sample_fn = diffusion.p_sample_loop if rollout_args.respacing == '' else diffusion.ddim_sample_loop
     guidance_param = torch.ones(batch_size, *denoiser_args.model_args.noise_shape).to(device=device) * rollout_args.guidance_param
     history_motion_tensor = motion_tensor[:, -history_length:, :]  # [B, H, D]
@@ -172,6 +201,7 @@ def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, datas
         'scale': guidance_param,
     }
 
+    # 1. Diffusion 采样得到预测的隐流形 (Latent Pred)
     x_start_pred = sample_fn(
         denoiser_model,
         (batch_size, *denoiser_args.model_args.noise_shape),
@@ -183,12 +213,39 @@ def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, datas
         dump_steps=None,
         noise=torch.zeros_like(guidance_param) if rollout_args.zero_noise else None,
         const_noise=False,
-    )  # [T=1, B, D]
-    latent_pred = x_start_pred.permute(1, 0, 2)  # [T=1, B, D] -> [B, T=1, D]
-    future_motion_pred = vae_model.decode(latent_pred, history_motion_normalized, nfuture=future_length,
-                                               scale_latent=denoiser_args.rescale_latent)  # [B, F, D], normalized
-
+    )  # [B, T=1, D]
+    manifold_pred = x_start_pred.permute(0, 2, 1)  # [B, T=1, D] -> [B, D, T=1]
+    
+    # 2. 执行 DeepPhase Eq 9 插值 (隐空间跨窗口握手)
+    if rollout_args.use_interpolation == 1:
+        # 使用隐空间特征进行插值，而非 denormalize 后的关节坐标
+        manifold_final = interpolate(
+            manifold_history, 
+            manifold_pred, 
+            vae_args.model_args.latent_dim[1], 
+            manifold_type=denoiser_args.pae_type,
+            delta_t=1.0/dataset.target_fps, # 频率外推的时间步长
+            weight=0.5
+        )
+    else:
+        manifold_final = manifold_pred
+        
+    # 3. 更新隐空间历史记录 (为下一轮自回归做准备)
+    # 取当前生成的“未来”状态作为下一轮的“历史”
+    manifold_history = manifold_final.detach()
+    
+    # 4. 解码修正后的流形
+    # decode_from_manifold 内部会自动处理 denormalize (f, a, b)
+    future_motion_pred = vae_model.decode_from_manifold(
+        manifold_final, 
+        history_motion_normalized, 
+        nfuture=future_length,
+        scale_latent=denoiser_args.rescale_latent
+    )  # [B, F, D], normalized
+    
+    # 5. 反标准化并拼接到全局动作张量
     future_frames = dataset.denormalize(future_motion_pred)
+    
     future_feature_dict = primitive_utility.tensor_to_dict(future_frames)
     future_feature_dict.update(
         {
@@ -202,7 +259,6 @@ def rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, datas
     future_feature_dict = primitive_utility.transform_feature_to_world(future_feature_dict)
     future_tensor = primitive_utility.dict_to_tensor(future_feature_dict)
     motion_tensor = torch.cat([motion_tensor, future_tensor], dim=1)  # [B, T+F, D]
-
 
 
 def read_input():
