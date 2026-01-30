@@ -1,0 +1,21 @@
+bottleneck_name: GRFSQ_BottleneckBlock
+dim: 256
+levels: [8,5,5,5]
+groups: 8
+num_quantizers: 2
+use_group_norm: False
+group_norm_type: LayerNorm
+latent_loss_type: commit
+base_mask_rate: 0.1                   # Robust
+RFSQ:
+    separate_project_out: False         # Non-Robust, but counts!
+    use_residual_norm: True
+    norm_type: LayerNorm
+    quantize_dropout_prob: 0.1              # Robust
+    # fsq_dropout_base_rate: 0
+    r_rand_scale: 0.01                  # Robust
+    w_scale_dividison: False
+    FSQ:
+        use_norm: True
+        norm_type: LayerNorm
+        noise_type: gaussian

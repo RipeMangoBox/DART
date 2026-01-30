@@ -43,7 +43,7 @@ train_args:
   log_interval: 1000
   resume_checkpoint: null
   save_interval: 50000
-  stage1_steps: 100000
+  stage1_steps: 10
   stage2_steps: 50000
   stage3_steps: 50000
   use_amp: 0
