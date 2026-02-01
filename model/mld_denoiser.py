@@ -58,12 +58,27 @@ class DenoiserMLP(nn.Module):
         emb_history = y['history_motion_normalized'].reshape(batch_size, np.prod(self.history_shape))  # [bs, History * nfeats]
         force_mask = y.get('uncond', False)
         emb_text = self.mask_cond(y['text_embedding'], force_mask=force_mask)  # [bs, clip_dim]
-        emb_noise = x_t.reshape(batch_size, np.prod(self.noise_shape))  # [bs, noise_dim]
+        
+        if x_t.dim() == 3:
+            emb_noise = x_t.reshape(batch_size, x_t.shape[1], np.prod(self.noise_shape))  # [bs, T, noise_dim]
+            emb_time = emb_time.unsqueeze(1).expand(-1, x_t.shape[1], -1)
+            emb_text = emb_text.unsqueeze(1).expand(-1, x_t.shape[1], -1)
+            emb_history = emb_history.unsqueeze(1).expand(-1, x_t.shape[1], -1)
+        elif x_t.dim() == 2:
+            pass
+        else:
+            raise ValueError(f"x_t must be 2D or 3D, but got {x_t.dim()}D")
+        
         # print('emb_time shape:', emb_time.shape, 'emb_text shape:', emb_text.shape, 'emb_history shape:', emb_history.shape, 'emb_noise shape:', emb_noise.shape)
 
-        input_embed = torch.cat((emb_time, emb_text, emb_history, emb_noise), dim=1)  # [bs, input_dim]
+        input_embed = torch.cat((emb_time, emb_text, emb_history, emb_noise), dim=2)  # [bs, T, input_dim]
         output = self.mlp(self.input_project(input_embed))  # [bs, noise_dim]
-        output = output.reshape(batch_size, *self.noise_shape)  # [B, noise_shape[0], noise_shape[1]]
+        if x_t.dim() == 3:
+            pass  # [B, noise_shape[0], noise_shape[1]]
+        elif x_t.dim() == 2:
+            output = output.reshape(batch_size, *self.noise_shape)  # [B, noise_shape[0], noise_shape[1]]
+        else:
+            raise ValueError(f"x_t must be 2D or 3D, but got {x_t.dim()}D")
         # print('output shape:', output.shape)
 
         return output

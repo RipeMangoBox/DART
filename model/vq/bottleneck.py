@@ -109,6 +109,7 @@ class Bottleneck(nn.Module):
     def __init__(self, bottleneckBlock="FSQ_BottleneckBlock", **kwargs):
         super().__init__()
         
+        print(f"bottleneckBlock: {bottleneckBlock}")
         assert bottleneckBlock in bottleneck_switch, f"bottleneckBlock must be one of {bottleneck_switch.keys()}"
         self.bottleneck = bottleneck_switch[bottleneckBlock](**kwargs)
             

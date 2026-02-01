@@ -99,8 +99,34 @@ class QuantizeEMAReset(nn.Module):
         perplexity = torch.exp(-torch.sum(prob * torch.log(prob + 1e-7)))
         return perplexity
 
+    # @torch.no_grad()
+    # def update_codebook(self, x, code_idx):
+    #     code_onehot = torch.zeros(self.nb_code, x.shape[0], device=x.device) # nb_code, N * L
+    #     code_onehot.scatter_(0, code_idx.view(1, x.shape[0]), 1)
+
+    #     code_sum = torch.matmul(code_onehot, x) # nb_code, c
+    #     code_count = code_onehot.sum(dim=-1) # nb_code
+
+    #     out = self._tile(x)
+    #     code_rand = out[:self.nb_code]
+
+    #     # Update centres
+    #     self.code_sum = self.mu * self.code_sum + (1. - self.mu) * code_sum
+    #     self.code_count = self.mu * self.code_count + (1. - self.mu) * code_count
+
+    #     usage = (self.code_count.view(self.nb_code, 1) >= 1.0).float()
+    #     code_update = self.code_sum.view(self.nb_code, self.dim) / self.code_count.view(self.nb_code, 1)
+    #     self.codebook = usage * code_update + (1-usage) * code_rand
+
+
+    #     prob = code_count / torch.sum(code_count)
+    #     perplexity = torch.exp(-torch.sum(prob * torch.log(prob + 1e-7)))
+
+    #     return perplexity
+    
     @torch.no_grad()
     def update_codebook(self, x, code_idx):
+        
         code_onehot = torch.zeros(self.nb_code, x.shape[0], device=x.device) # nb_code, N * L
         code_onehot.scatter_(0, code_idx.view(1, x.shape[0]), 1)
 
@@ -109,15 +135,21 @@ class QuantizeEMAReset(nn.Module):
 
         out = self._tile(x)
         code_rand = out[:self.nb_code]
+    
+    # Update centres
 
-        # Update centres
-        self.code_sum = self.mu * self.code_sum + (1. - self.mu) * code_sum
-        self.code_count = self.mu * self.code_count + (1. - self.mu) * code_count
+        new_code_sum  = self.mu * self.code_sum + (1. - self.mu) * code_sum
+        new_code_count = self.mu * self.code_count + (1. - self.mu) * code_count
 
-        usage = (self.code_count.view(self.nb_code, 1) >= 1.0).float()
-        code_update = self.code_sum.view(self.nb_code, self.dim) / self.code_count.view(self.nb_code, 1)
-        self.codebook = usage * code_update + (1-usage) * code_rand
+        usage = (new_code_count.view(-1, 1) >= 1.0).float()
+        code_update = new_code_sum / new_code_count.view(-1, 1)
 
+        new_codebook = usage * code_update + (1 - usage) * code_rand
+
+        # single assignment at the end
+        self.codebook.copy_(new_codebook)
+        self.code_sum.copy_(new_code_sum)
+        self.code_count.copy_(new_code_count)
 
         prob = code_count / torch.sum(code_count)
         perplexity = torch.exp(-torch.sum(prob * torch.log(prob + 1e-7)))
@@ -141,10 +173,6 @@ class QuantizeEMAReset(nn.Module):
         code_idx = self.quantize(x, temperature)
         x_d = self.dequantize(code_idx)
 
-        if self.training:
-            perplexity = self.update_codebook(x, code_idx)
-        else:
-            perplexity = self.compute_perplexity(code_idx)
 
         commit_loss = F.mse_loss(x, x_d.detach()) + F.mse_loss(x.detach(), x_d) # compute loss for embedding
 
@@ -155,6 +183,13 @@ class QuantizeEMAReset(nn.Module):
         # Postprocess
         x_d = x_d.view(B, N, D).contiguous()
         code_idx = code_idx.view(B, N).contiguous()
+        
+        if self.training:
+            with torch.no_grad():
+                perplexity = self.update_codebook(x, code_idx)
+        else:
+            perplexity = self.compute_perplexity(code_idx)
+            
         # print(code_idx[0])
         if return_idx:
             return x_d, code_idx, commit_loss, perplexity

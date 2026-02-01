@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'    # must be put here, before importing any other modules
+# os.environ['CUDA_VISIBLE_DEVICES'] = '2'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,10 +27,10 @@ import pickle
 import json
 import copy
 
-from mld.train_mvae import Args as MVAEArgs
-from mld.train_mvae import DataArgs, TrainArgs
+from mld.train_mvae_Tcomp import Args as MVAEArgs
+from mld.train_mvae_Tcomp import DataArgs, TrainArgs
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldVae
+from model.mld_vae_Tcomp import AutoMldVae
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
 from utilss.smpl_utils import get_smplx_param_from_6d
@@ -425,7 +425,7 @@ class Trainer:
             history_motion = history_motion_gt
         latent_gt, _ = self.vae_model.encode(future_motion=future_motion_gt,
                                              history_motion=history_motion_gt if denoiser_args.train_rollout_history == "gt" else history_motion,
-                                             scale_latent=denoiser_args.rescale_latent)  # [T=1, B, D]
+                                             scale_latent=denoiser_args.rescale_latent)  # [B, T, D]
         # print('latent_gt:', latent_gt)
         # pdb.set_trace()
 
@@ -433,7 +433,7 @@ class Trainer:
         # print('t:', t, 'weights:', weights)
 
         # forward diffusion
-        x_start = latent_gt.permute(1, 0, 2)  # [T, B, D] -> [B, T, D]
+        x_start = latent_gt
         x_t = self.diffusion.q_sample(x_start=x_start, t=t, noise=torch.randn_like(x_start))
         # denoise
         y = {
@@ -441,10 +441,10 @@ class Trainer:
             'history_motion_normalized': history_motion,
         }
         x_start_pred = self.denoiser_model(x_t=x_t, timesteps=self.diffusion._scale_timesteps(t), y=y)  # [B, T=1, D]
-        latent_pred = x_start_pred.permute(1, 0, 2)  # [B, T, D] -> [T, B, D]
+        latent_pred = x_start_pred  # [B, T=1, D]
 
         future_motion_pred = self.vae_model.decode(latent_pred, history_motion, nfuture=future_length,
-                                                   scale_latent=denoiser_args.rescale_latent)  # [B, N, D]
+                                                   scale_latent=denoiser_args.rescale_latent)  # [B, F, D], normalized
 
         loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred, latent_gt, latent_pred, weights)
 

@@ -433,7 +433,7 @@ class Trainer:
         # print('t:', t, 'weights:', weights)
 
         # forward diffusion
-        x_start = latent_gt.permute(1, 0, 2)  # [T, B, D] -> [B, T, D]
+        x_start = latent_gt.permute(1, 0, 2)  # [B, T=1, D]
         x_t = self.diffusion.q_sample(x_start=x_start, t=t, noise=torch.randn_like(x_start))
         # denoise
         y = {
@@ -441,10 +441,10 @@ class Trainer:
             'history_motion_normalized': history_motion,
         }
         x_start_pred = self.denoiser_model(x_t=x_t, timesteps=self.diffusion._scale_timesteps(t), y=y)  # [B, T=1, D]
-        latent_pred = x_start_pred.permute(1, 0, 2)  # [B, T, D] -> [T, B, D]
+        latent_pred = x_start_pred.permute(1, 0, 2)  # [T=1, B, D]
 
         future_motion_pred = self.vae_model.decode(latent_pred, history_motion, nfuture=future_length,
-                                                   scale_latent=denoiser_args.rescale_latent)  # [B, N, D]
+                                                   scale_latent=denoiser_args.rescale_latent)  # [B, F, D], normalized
 
         loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred, latent_gt, latent_pred, weights)
 

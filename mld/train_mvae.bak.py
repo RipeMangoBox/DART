@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'    # must be put here, before importing any other modules
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,7 +23,7 @@ from pathlib import Path
 from tqdm import tqdm
 import copy
 
-from model.mld_vq import AutoMldVae
+from model.mld_vae import AutoMldVae
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
 from utilss.smpl_utils import get_smplx_param_from_6d
@@ -49,12 +49,6 @@ class VAEArgs:
 
     nfeats: int = 0
     """feature dimension, will be auto filled"""
-    
-    rep_mode: str = "vae"
-    """representation mode, choice ["vae", "bottleneck"]"""
-    
-    bottleneck_file: str = "./config_files/config_hydra/bottleneck/hfsq.yaml"
-    """bottleneck config file"""
 
 @dataclass
 class DataArgs:
@@ -110,7 +104,6 @@ class TrainArgs:
 
     weight_rec: float = 1.0  # vae only
     weight_kl: float = 1e-4  # vae only
-    weight_commitment: float = 1e-2 # bottleneck only
     weight_smpl_joints_rec: float = 0.0
     weight_joints_consistency: float = 0.0
     weight_transl_delta: float = 0.0
@@ -121,7 +114,7 @@ class TrainArgs:
 
     resume_checkpoint: str | None = None
     log_interval: int = 1000
-    val_interval: int = 10000
+    val_interval: int = 20
     save_interval: int = 100000
 
     use_predicted_joints: int = 0
@@ -260,7 +253,7 @@ class Trainer:
         self.transf_rotmat = torch.eye(3, device=self.device).unsqueeze(0)
         self.transf_transl = torch.zeros(3, device=self.device).reshape(1, 1, 3)
 
-    def calc_loss(self, motion, cond, history_motion, future_motion_gt, future_motion_pred, commit_loss, metrics):
+    def calc_loss(self, motion, cond, history_motion, future_motion_gt, future_motion_pred, latent, dist):
         train_args = self.args.train_args
         model_kwargs = cond
         future_length = self.train_dataset.future_length
@@ -268,10 +261,14 @@ class Trainer:
         num_primitive = self.train_dataset.num_primitive
 
         terms = {}
-        terms.update(metrics)
 
-        # commitment loss
-        terms['commitment_loss'] = commit_loss
+        # kl loss
+        mu_ref = torch.zeros_like(dist.loc)
+        scale_ref = torch.ones_like(dist.scale)
+        dist_ref = torch.distributions.Normal(mu_ref, scale_ref)
+        kl_loss = torch.distributions.kl_divergence(dist, dist_ref)
+        kl_loss = kl_loss.mean()
+        terms['kl_loss'] = kl_loss
 
         # reconstruction loss
         rec_loss = self.rec_criterion(future_motion_pred, future_motion_gt)
@@ -346,7 +343,7 @@ class Trainer:
         terms["transl_delta"] = self.rec_criterion(calc_transl_delta, pred_transl_delta)
         terms["orient_delta"] = self.rec_criterion(calc_orient_delta_6d, pred_orient_delta)
 
-        loss = train_args.weight_commitment * terms['commitment_loss'] + train_args.weight_rec * rec_loss + \
+        loss = train_args.weight_kl * kl_loss + train_args.weight_rec * rec_loss + \
                train_args.weight_smpl_joints_rec * terms['smpl_joints_rec'] + \
                train_args.weight_joints_consistency * terms['joints_consistency'] + \
                train_args.weight_joints_delta * terms["joints_delta"] + \
@@ -394,15 +391,10 @@ class Trainer:
                         rollout_history = self.get_rollout_history(last_primitive, cond)
                         history_motion = rollout_history    # [B, H, D]
 
-                    # latent_pred, latent_gt = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
-                    # future_motion_pred = model.decode(latent_pred, history_motion, nfuture=future_length)  # [B, F, D]
-                    future_motion_pred, commit_loss, metrics = model.forward(
-                        future_motion=future_motion_gt, 
-                        history_motion=history_motion, 
-                        nfuture=future_length,
-                    )
+                    latent, dist = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
+                    future_motion_pred = model.decode(latent, history_motion, nfuture=future_length)  # [B, F, D]
 
-                    loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred, commit_loss, metrics)
+                    loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred, latent, dist)
                     loss = loss_dict['loss']
 
                 optimizer.zero_grad()
@@ -522,9 +514,9 @@ class Trainer:
             future_motion_gt = motion_tensor[:, -future_length:, :]
             history_motion = motion_tensor[:, :history_length, :]
 
-            latent_pred, latent_gt = model.encode(future_motion=future_motion_gt, history_motion=history_motion)  # [1, B, D]
-            all_mean = latent_pred.mean()
-            all_std = (latent_pred - all_mean).pow(2).mean().sqrt()
+            latent, dist = model.encode(future_motion=future_motion_gt, history_motion=history_motion)  # [1, B, D]
+            all_mean = latent.mean()
+            all_std = (latent - all_mean).pow(2).mean().sqrt()
             model.register_buffer("latent_mean", all_mean)
             model.register_buffer("latent_std", all_std)
             print(f"latent mean: {all_mean}, latent std: {all_std}")
@@ -570,11 +562,11 @@ class Trainer:
                         rollout_history = self.get_rollout_history(last_primitive, cond)
                         history_motion = rollout_history  # [B, H, D]
 
-                    latent_pred, latent_gt = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
-                    future_motion_pred = model.decode(latent_pred, history_motion, nfuture=future_length)
+                    latent, dist = model.encode(future_motion=future_motion_gt, history_motion=history_motion)
+                    future_motion_pred = model.decode(latent, history_motion, nfuture=future_length)
 
                     loss_dict = self.calc_loss(motion, cond, history_motion, future_motion_gt, future_motion_pred,
-                                               latent_pred, latent_gt)
+                                               latent, dist)
                     for k, v in loss_dict.items():
                         if k not in losses_dict:
                             losses_dict[k] = []

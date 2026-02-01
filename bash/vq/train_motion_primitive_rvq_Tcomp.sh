@@ -1,6 +1,6 @@
-python -m mld.train_mpae \
-    --track 1 \
-    --exp_name 'mpae_babel_smplx' \
+python -m mld.train_mvae_Tcomp \
+    --track 0 \
+    --exp_name 'mrvqTcomp_babel_smplx' \
     --data_args.dataset 'mp_seq_v2' \
     --data_args.data_dir './data/seq_data_zero_male' \
     --data_args.cfg_path './config_files/config_hydra/motion_primitive/mp_h2_f8_r8.yaml' \
@@ -10,7 +10,7 @@ python -m mld.train_mpae \
     --train_args.stage1_steps 100000 \
     --train_args.stage2_steps 50000 \
     --train_args.stage3_steps 50000 \
-    --train_args.save_interval 50000 \
+    --train_args.save_interval 10 \
     --train_args.weight_smpl_joints_rec 10.0 \
     --train_args.weight_joints_consistency 10.0 \
     --train_args.weight_transl_delta 100 \
@@ -19,6 +19,6 @@ python -m mld.train_mpae \
     --model_args.arch 'all_encoder' \
     --train_args.ema_decay 0.999 \
     --model_args.num_layers 7 \
-    --model_args.latent_dim 1 256
+    --model_args.latent_dim 1 256 \
     --model_args.rep_mode 'bottleneck' \
-    --model_args.bottleneck_file './config_files/config_hydra/bottleneck/hfsq.yaml'
+    --model_args.bottleneck_file './config_files/config_hydra/bottleneck/rvq.yaml'

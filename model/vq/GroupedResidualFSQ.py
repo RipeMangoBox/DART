@@ -218,7 +218,7 @@ class ResidualFSQ(Module):
             output = torch.sum(all_projected_embs, dim=0) if need_sum else all_projected_embs
         return output
 
-    # @autocast(enabled = False)
+    @autocast(enabled = False)
     def encode_forward(
         self,
         x,
@@ -482,6 +482,7 @@ class GroupedResidualFSQ(Module):
             zs = zs.permute(2, 3, 0, 1, 4)   # g tuples of [b, n, q, l] codes  # more efficient
         return self._decode(zs, decode_mode)
     
+    @autocast(enabled = False)
     def encode_forward(
         self,
         x,
@@ -492,6 +493,7 @@ class GroupedResidualFSQ(Module):
         forward和decode出来的quantizeds维度为(b,d,n), 是为了适配encodec的docoder。请注意emb的维度差异化处理是有意为之, 不是忘记统一！
         """
         
+        x = x.float()
         input_transpose = not self.channel_last
         if input_transpose:
             x = x.permute(0, 2, 1)

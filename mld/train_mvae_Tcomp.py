@@ -23,7 +23,7 @@ from pathlib import Path
 from tqdm import tqdm
 import copy
 
-from model.mld_vae import AutoMldVae
+from model.mld_vae_Tcomp import AutoMldVae
 from data_loaders.humanml.data.dataset import PrimitiveSequenceDataset, WeightedPrimitiveSequenceDataset, WeightedPrimitiveSequenceDatasetV2
 from data_loaders.humanml.data.dataset_hml3d import HML3dDataset
 from utilss.smpl_utils import get_smplx_param_from_6d
@@ -31,7 +31,7 @@ from pytorch3d import transforms
 from diffusion.nn import mean_flat, sum_flat
 
 debug = 0
-
+torch.autograd.set_detect_anomaly(True)
 
 
 @dataclass
