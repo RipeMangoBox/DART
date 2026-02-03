@@ -86,7 +86,8 @@ class DenoiserTransformerArgs:
 class DenoiserArgs:
     mvae_path: str = ''
     rescale_latent: int = 1
-
+    use_latent_norm: int = 0 # 0: no normalization, 1: normalization, 2: normalization and clip
+    
     train_rollout_type: Literal["single", "full"] = "single"
     """whether to use the full denoising loop to generate the previous primitive or a single step in rollout training"""
     train_rollout_history: str = "gt"  # "rollout" or "gt"
@@ -263,6 +264,15 @@ class Trainer:
             param.requires_grad = False
         vae_model.eval()
 
+        # get vq mean and std
+        print('(#^.^#) use_latent_norm:', denoiser_args.use_latent_norm)
+        statics_dict = self.get_vq_mean_std(dataset=train_dataset, vae_model=vae_model, use_latent_norm=denoiser_args.use_latent_norm)
+        self.latent_param_max, self.latent_param_min, self.latent_param_mean, self.latent_param_std = statics_dict['latent_param_max'], statics_dict['latent_param_min'], statics_dict['latent_param_mean'], statics_dict['latent_param_std']
+        vae_model.latent_param_mean = self.latent_param_mean
+        vae_model.latent_param_std = self.latent_param_std
+        print('(#^.^#) latent_param_mean:', vae_model.latent_param_mean)
+        print('(#^.^#) latent_param_std:', vae_model.latent_param_std)
+
         denoiser_class = DenoiserMLP if isinstance(denoiser_model_args, DenoiserMLPArgs) else DenoiserTransformer
         denoiser_args.model_type = "mlp" if isinstance(denoiser_model_args, DenoiserMLPArgs) else "transformer"
         denoiser_model = denoiser_class(
@@ -308,6 +318,55 @@ class Trainer:
         self.transf_rotmat = torch.eye(3, device=self.device).unsqueeze(0)
         self.transf_transl = torch.zeros(3, device=self.device).reshape(1, 1, 3)
 
+    def get_vq_mean_std(self, dataset, vae_model, use_latent_norm: int = 0):
+        statistics_path = os.path.join(Path(self.args.denoiser_args.mvae_path).parent, "statistics.pt")
+        if not os.path.exists(statistics_path):
+            batch = dataset.get_full_dataset()
+            denoiser_args = self.args.denoiser_args
+            future_length = dataset.future_length
+            history_length = dataset.history_length
+            num_primitive = dataset.num_primitive
+            
+            latent_parameterization = []
+            
+            for primitive_idx in range(num_primitive):
+                with amp.autocast(enabled=True, dtype=torch.float16):
+                    motion, cond = self.get_primitive_batch(batch, primitive_idx)
+                    
+                    motion_tensor = motion.squeeze(2).permute(0, 2, 1)  # [B, T, D]
+                    future_motion_gt = motion_tensor[:, -future_length:, :]
+                    history_motion_gt = motion_tensor[:, :history_length, :]
+                    latent, _ = vae_model.encode(future_motion=future_motion_gt,
+                                                        history_motion=history_motion_gt,
+                                                        scale_latent=denoiser_args.rescale_latent)  # [T=1, B, 5*latent_dim]
+                    
+                    latent_parameterization.append(latent)
+                    
+            latent_parameterization = torch.cat(latent_parameterization, dim=0)
+            torch.save(
+            {
+                "latent_param_max": latent_parameterization.max(dim=1).values.max(dim=0).values,  # [latent_dim, T=1]
+                "latent_param_min": latent_parameterization.min(dim=1).values.min(dim=0).values,  # [latent_dim, T=1]
+                "latent_param_mean": latent_parameterization.mean(dim=(0, 1)),  # [latent_dim, T=1]
+                "latent_param_std": latent_parameterization.std(dim=(0, 1)),  # [latent_dim, T=1]
+                },
+            statistics_path
+            )
+            
+        # load statistics
+        statistics_dict = torch.load(statistics_path)
+        
+        if use_latent_norm == 0:
+            default_dict = {
+                'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),  # [latent_dim, T=1]
+                'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),  # [latent_dim, T=1]
+                'latent_param_mean': torch.zeros_like(statistics_dict['latent_param_mean']),  # [latent_dim, T=1]
+                'latent_param_std': torch.ones_like(statistics_dict['latent_param_std']),  # [latent_dim, T=1]
+            }
+            return default_dict
+        
+        return statistics_dict
+    
     def calc_loss(self, motion, cond, history_motion, future_motion_gt, future_motion_pred, latent_gt, latent_pred, weights):
         train_args = self.args.train_args
         model_kwargs = cond
@@ -464,7 +523,7 @@ class Trainer:
                         noise=None,
                         const_noise=False,
                     )
-                    latent_pred = x_start_pred.permute(1, 0, 2)  # [T=1, B, D]
+                    latent_pred = x_start_pred
                     # if torch.isnan(latent_pred).any() or torch.isinf(latent_pred).any():
                     #     print('latent_pred numerical error')
                     #     pdb.set_trace()
@@ -486,7 +545,11 @@ class Trainer:
         total_steps = train_args.stage1_steps + train_args.stage2_steps + train_args.stage3_steps
         rest_steps = (total_steps - self.start_step) // self.train_dataset.num_primitive + 1
         rest_steps = rest_steps * self.train_dataset.num_primitive
-        progress_bar = iter(tqdm(range(rest_steps)))
+        
+        # progress_bar = iter(tqdm(range(rest_steps)))
+        # 修改1: 将 tqdm 实例化为对象 pbar，以便后续调用 set_postfix
+        
+        pbar = tqdm(range(rest_steps))
         self.step = self.start_step
 
         # self.validate()
@@ -541,7 +604,11 @@ class Trainer:
                     self.validate()
 
                 self.step += 1
-                next(progress_bar)
+                # next(progress_bar)
+
+                # 修改2: 设置进度条后缀显示 loss，并手动更新进度条
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+                pbar.update(1)
             # t3 = time.time()
             # print(f"get data time: {t2 - t1}, percent:{(t2 - t1) / (t3 - t1)}, step time: {t3 - t2}")
 

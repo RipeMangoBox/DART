@@ -10,14 +10,14 @@
   \ !!python/tuple\n    - 2\n    - 276\n    n_blocks: 2\n    noise_shape: !!python/tuple\n\
   \    - 1\n    - 256\n  model_type: mlp\n  mvae_path: ./mvae/mhfsqTcomp_babel_smplx/checkpoint_200000.pt\n\
   \  rescale_latent: 1\n  train_rollout_history: rollout\n  train_rollout_type: full\n\
-  device: cuda\nexp_name: mld_hfsq_babel_smplx_TR_Tcomp\nsave_dir: !!python/object/apply:pathlib.PosixPath\n\
-  - mld_denoiser\n- mld_hfsq_babel_smplx_TR_Tcomp\nseed: 0\ntorch_deterministic: true\n\
-  track: 1\ntrain_args: !dataclass:TrainArgs\n  anneal_lr: 1\n  batch_size: 1024\n\
-  \  ema_decay: 0.999\n  grad_clip: 1.0\n  learning_rate: 0.0001\n  log_interval:\
-  \ 1000\n  resume_checkpoint: null\n  save_interval: 100000\n  stage1_steps: 100000\n\
-  \  stage2_steps: 100000\n  stage3_steps: 100000\n  use_amp: 1\n  use_predicted_joints:\
-  \ 0\n  val_interval: 10000\n  weight_commitment: 0.01\n  weight_feature_rec: 1.0\n\
-  \  weight_joints_consistency: 0.0\n  weight_joints_delta: 10000.0\n  weight_kl:\
-  \ 0.0001\n  weight_latent_rec: 1.0\n  weight_orient_delta: 10000.0\n  weight_rec:\
-  \ 1.0\n  weight_smpl_joints_rec: 0.0\n  weight_transl_delta: 10000.0\nwandb_entity:\
-  \ MangoBox\nwandb_project_name: mld_denoiser\n"
+  \  use_latent_norm: 1\ndevice: cuda\nexp_name: mld_hfsq_babel_smplx_TR_Tcomp\nsave_dir:\
+  \ !!python/object/apply:pathlib.PosixPath\n- mld_denoiser\n- mld_hfsq_babel_smplx_TR_Tcomp\n\
+  seed: 0\ntorch_deterministic: true\ntrack: 1\ntrain_args: !dataclass:TrainArgs\n\
+  \  anneal_lr: 1\n  batch_size: 1024\n  ema_decay: 0.999\n  grad_clip: 1.0\n  learning_rate:\
+  \ 0.0001\n  log_interval: 1000\n  resume_checkpoint: null\n  save_interval: 100000\n\
+  \  stage1_steps: 100000\n  stage2_steps: 100000\n  stage3_steps: 100000\n  use_amp:\
+  \ 1\n  use_predicted_joints: 0\n  val_interval: 10000\n  weight_commitment: 0.01\n\
+  \  weight_feature_rec: 1.0\n  weight_joints_consistency: 0.0\n  weight_joints_delta:\
+  \ 10000.0\n  weight_kl: 0.0001\n  weight_latent_rec: 1.0\n  weight_orient_delta:\
+  \ 10000.0\n  weight_rec: 1.0\n  weight_smpl_joints_rec: 0.0\n  weight_transl_delta:\
+  \ 10000.0\nwandb_entity: MangoBox\nwandb_project_name: mld_denoiser\n"

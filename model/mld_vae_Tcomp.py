@@ -120,6 +120,9 @@ class AutoMldVae(nn.Module):
         else:
             self.bottleneck = NoBottleneck()
 
+        self.latent_param_mean = kwargs.get('latent_param_mean', torch.tensor(0)) # will be set by train_mld_Tcomp.py
+        self.latent_param_std = kwargs.get('latent_param_std', torch.tensor(1)) # will be set by train_mld_Tcomp.py
+        
     def reparameterize(self, mu, logvar):
         # std = torch.exp(0.5 * logvar)
         # eps = torch.randn_like(std)
@@ -151,6 +154,7 @@ class AutoMldVae(nn.Module):
 
         if self.rep_mode == "bottleneck":
             latent = self.bottleneck.encode(x, encode_mode=encode_mode) # (bs, nframes, latent_dim)
+            latent = (latent - self.latent_param_mean) / (self.latent_param_std + 1e-8)
             return latent, None
         elif self.rep_mode == "vae":
             # Switch sequence and batch_size because the input of
@@ -186,6 +190,7 @@ class AutoMldVae(nn.Module):
         
         if self.rep_mode == "bottleneck":
             z = z.permute(1, 0, 2)  # [bs, nframes, latent_dim] -> [nframes, bs, latent_dim]
+            z = (z * self.latent_param_std) + self.latent_param_mean
             z = self.bottleneck.decode(z, decode_mode=decode_mode)
         z = self.decoder_latent_proj(z)  # [latent_size, bs, latent_dim] => [latent_size, bs, h_dim]
         queries = torch.zeros(nfuture, bs, self.h_dim, device=z.device)

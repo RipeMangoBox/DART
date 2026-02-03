@@ -36,6 +36,7 @@ denoiser_args:
   rescale_latent: 1
   train_rollout_history: rollout
   train_rollout_type: full
+  use_latent_norm: 1
 device: cuda
 exp_name: mld_hfsq_babel_smplx_TR_Tcomp
 save_dir: !!python/object/apply:pathlib.PosixPath

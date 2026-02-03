@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'    # must be put here, before importing any other modules
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'    # must be put here, before importing any other modules
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -210,11 +210,6 @@ class Trainer:
         with open(arg_path, "r") as f:
             mvae_args = tyro.extras.from_yaml(MVAEArgs, yaml.safe_load(f))
 
-        # get mpae mean and std
-        print('(#^.^#) use_latent_norm:', denoiser_args.use_latent_norm)
-        statics_dict = self.get_pae_mean_std(use_latent_norm=denoiser_args.use_latent_norm)
-        self.latent_param_max, self.latent_param_min, self.latent_param_mean, self.latent_param_std = statics_dict['latent_param_max'], statics_dict['latent_param_min'], statics_dict['latent_param_mean'], statics_dict['latent_param_std']
-
         run_name = f"{args.exp_name}__seed{args.seed}__{int(time.time())}"
         if args.track:
             import wandb
@@ -246,7 +241,7 @@ class Trainer:
         pae_class = AutoMldPae_Phase if denoiser_args.pae_type == 'phase' else AutoMldPae_P
         print('(#^.^#) pae class:', pae_class)
         vae_model = pae_class(
-            **asdict(mvae_args.model_args), latent_param_mean=self.latent_param_mean, latent_param_std=self.latent_param_std
+            **asdict(mvae_args.model_args)
         ).to(device)
         checkpoint = torch.load(denoiser_args.mvae_path, map_location=device)
         model_state_dict = checkpoint['model_state_dict']
@@ -264,6 +259,15 @@ class Trainer:
             param.requires_grad = False
         vae_model.eval()
 
+        # get mpae mean and std
+        print('(#^.^#) use_latent_norm:', denoiser_args.use_latent_norm)
+        statics_dict = self.get_pae_mean_std(dataset=train_dataset, vae_model=vae_model, use_latent_norm=denoiser_args.use_latent_norm)
+        self.latent_param_max, self.latent_param_min, self.latent_param_mean, self.latent_param_std = statics_dict['latent_param_max'], statics_dict['latent_param_min'], statics_dict['latent_param_mean'], statics_dict['latent_param_std']
+        vae_model.latent_param_mean = self.latent_param_mean
+        vae_model.latent_param_std = self.latent_param_std
+        print('(#^.^#) latent_param_mean:', vae_model.latent_param_mean)
+        print('(#^.^#) latent_param_std:', vae_model.latent_param_std)
+        
         denoiser_args.model_args = DenoiserMLPArgs() if denoiser_args.model_type == "mlp" else DenoiserTransformerArgs()
         denoiser_model_args = denoiser_args.model_args
         assert mvae_args.data_args.history_length == data_args.history_length
@@ -318,14 +322,14 @@ class Trainer:
         self.transf_rotmat = torch.eye(3, device=self.device).unsqueeze(0)
         self.transf_transl = torch.zeros(3, device=self.device).reshape(1, 1, 3)
 
-    def get_pae_mean_std(self, use_latent_norm: int = 0):
+    def get_pae_mean_std(self, dataset, vae_model, use_latent_norm: int = 0):
         statistics_path = os.path.join(Path(self.args.denoiser_args.mvae_path).parent, "statistics.pt")
         if not os.path.exists(statistics_path):
-            batch = self.train_dataset.get_full_dataset()
+            batch = dataset.get_full_dataset()
             denoiser_args = self.args.denoiser_args
-            future_length = self.train_dataset.future_length
-            history_length = self.train_dataset.history_length
-            num_primitive = self.train_dataset.num_primitive
+            future_length = dataset.future_length
+            history_length = dataset.history_length
+            num_primitive = dataset.num_primitive
             
             latent_parameterization = []
             
@@ -336,7 +340,7 @@ class Trainer:
                     motion_tensor = motion.squeeze(2).permute(0, 2, 1)  # [B, T, D]
                     future_motion_gt = motion_tensor[:, -future_length:, :]
                     history_motion_gt = motion_tensor[:, :history_length, :]
-                    params, _ = self.vae_model.encode(future_motion=future_motion_gt,
+                    params, _ = vae_model.encode(future_motion=future_motion_gt,
                                                         history_motion=history_motion_gt,
                                                         scale_latent=denoiser_args.rescale_latent)  # [T=1, B, 5*latent_dim]
                     
@@ -346,10 +350,10 @@ class Trainer:
             latent_parameterization = torch.cat(latent_parameterization, dim=0)
             torch.save(
             {
-                "latent_param_max": latent_parameterization.max(dim=0)[0],  # [3 * latent_dim, T=1]
-                "latent_param_min": latent_parameterization.min(dim=0)[0],  # [3 * latent_dim, T=1]
-                "latent_param_mean": latent_parameterization.mean(dim=0),  # [3 * latent_dim, T=1]
-                "latent_param_std": latent_parameterization.std(dim=0),  # [3 * latent_dim, T=1]
+                "latent_param_max": latent_parameterization.max(dim=1).values.max(dim=0).values,  # [3 * latent_dim, T=1]
+                "latent_param_min": latent_parameterization.min(dim=1).values.min(dim=0).values,  # [3 * latent_dim, T=1]
+                "latent_param_mean": latent_parameterization.mean(dim=(0, 1)),  # [3 * latent_dim, T=1]
+                "latent_param_std": latent_parameterization.std(dim=(0, 1)),  # [3 * latent_dim, T=1]
                 },
             statistics_path
             )
