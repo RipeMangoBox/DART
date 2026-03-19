@@ -36,6 +36,8 @@ from mld.train_mvae import DataArgs, TrainArgs
 from mld.train_mld import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
 from mld.rollout_mld import load_mld, ClassifierFreeWrapper
 
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+
 debug = 0
 
 @dataclass
