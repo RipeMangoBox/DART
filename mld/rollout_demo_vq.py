@@ -31,7 +31,7 @@ import trimesh
 import threading
 
 from model.mld_denoiser import DenoiserMLP, DenoiserTransformer
-from model.mld_vae import AutoMldVae
+from model.mld_vae_Tcomp import AutoMldVae
 from data_loaders.humanml.data.dataset import WeightedPrimitiveSequenceDataset, SinglePrimitiveDataset
 from utilss.smpl_utils import *
 from utilss.misc_util import encode_text, compose_texts_with_and
@@ -40,9 +40,9 @@ from diffusion import gaussian_diffusion as gd
 from diffusion.respace import SpacedDiffusion, space_timesteps
 from diffusion.resample import create_named_schedule_sampler
 
-from mld.train_mvae import Args as MVAEArgs
-from mld.train_mvae import DataArgs, TrainArgs
-from mld.train_mld import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
+from mld.train_mvae_Tcomp import Args as MVAEArgs
+from mld.train_mvae_Tcomp import DataArgs, TrainArgs
+from mld.train_mld_Tcomp import DenoiserArgs, MLDArgs, create_gaussian_diffusion, DenoiserMLPArgs, DenoiserTransformerArgs
 from visualize.vis_seq import makeLookAt
 from pyrender.trackball import Trackball
 
@@ -56,6 +56,21 @@ frame_idx = 0
 text_prompt = 'stand'
 text_embedding = None
 motion_tensor = None
+
+def get_vq_mean_std(mvae_path, use_latent_norm: int = 0):
+    statistics_path = os.path.join(Path(mvae_path).parent, "statistics.pt")
+    statistics_dict = torch.load(statistics_path)
+    
+    if use_latent_norm == 0:
+        default_dict = {
+            'latent_param_max': torch.zeros_like(statistics_dict['latent_param_max']),  # [latent_dim, T=1]
+            'latent_param_min': torch.zeros_like(statistics_dict['latent_param_min']),  # [latent_dim, T=1]
+            'latent_param_mean': torch.zeros_like(statistics_dict['latent_param_mean']),  # [latent_dim, T=1]
+            'latent_param_std': torch.ones_like(statistics_dict['latent_param_std']),  # [latent_dim, T=1]
+        }
+        return default_dict
+    
+    return statistics_dict
 
 @dataclass
 class RolloutArgs:
@@ -119,6 +134,13 @@ def load_mld(denoiser_checkpoint, device):
     vae_dir = Path(vae_checkpoint).parent
     with open(vae_dir / "args.yaml", "r") as f:
         vae_args = tyro.extras.from_yaml(MVAEArgs, yaml.safe_load(f))
+        
+    # load mvae model and freeze
+    print('vae model args:', asdict(vae_args.model_args))
+    print('(#^.^#) use_latent_norm:', denoiser_args.use_latent_norm)
+    statics_dict = get_vq_mean_std(vae_checkpoint, use_latent_norm=denoiser_args.use_latent_norm)
+    latent_param_mean, latent_param_std = statics_dict['latent_param_mean'], statics_dict['latent_param_std']
+    
     # load mvae model and freeze
     print('vae model args:', asdict(vae_args.model_args))
     vae_model = AutoMldVae(
@@ -132,12 +154,15 @@ def load_mld(denoiser_checkpoint, device):
         model_state_dict['latent_std'] = torch.tensor(1)
     vae_model.load_state_dict(model_state_dict)
     vae_model.to(device)
-    vae_model.latent_mean = model_state_dict[
-        'latent_mean']  # register buffer seems to be not loaded by load_state_dict
+    vae_model.latent_mean = model_state_dict['latent_mean']  # register buffer seems to be not loaded by load_state_dict
     vae_model.latent_std = model_state_dict['latent_std']
+    
+    vae_model.latent_param_mean = latent_param_mean
+    vae_model.latent_param_std = latent_param_std
+    print(f"latent_param_mean: {vae_model.latent_param_mean}")
+    print(f"latent_param_std: {vae_model.latent_param_std}")
+    
     print(f"Loading vae checkpoint from {denoiser_args.mvae_path}")
-    print(f"latent_mean: {vae_model.latent_mean}")
-    print(f"latent_std: {vae_model.latent_std}")
     for param in vae_model.parameters():
         param.requires_grad = False
     vae_model.eval()
@@ -306,7 +331,7 @@ def start():
             break
         if frame_idx >= motion_tensor.shape[1]:
             rollout(denoiser_args, denoiser_model, vae_args, vae_model, diffusion, dataset, rollout_args)
-        time.sleep(sleep_time) # important! if commented out, will incur loss of instruction compliance due to insufficient processing time
+        time.sleep(sleep_time)
 
     viewer.close_external()
     input_thread.join()
